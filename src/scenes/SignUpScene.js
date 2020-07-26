@@ -39,10 +39,10 @@ class SignUpScene extends Component {
         <Form style={styles.Form}>
           <Item picker inlineLabel>
             <Label>Continue As</Label>
-            <Picker
+            <Picker 
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
-              style={{width: 100}}
+            
               placeholder="Proceed As"
               placeholderStyle={{color: '#bfc6ea'}}
               placeholderIconColor="#007aff"
@@ -62,10 +62,10 @@ class SignUpScene extends Component {
           <Item inlineLabel>
             <Icon
               type="Fontawesome"
-              style={{fontSize: 20}}
+              style={styles.icon}
               name="phone-square"
             />
-            <Input placeholder="Phone Number" />
+            <Input keyboardType='number-pad' placeholder="Phone Number" />
           </Item>
 
           <Item inlineLabel>
@@ -74,6 +74,15 @@ class SignUpScene extends Component {
               secureTextEntry={this.state.secureEntry}
               placeholder="Password"
             />
+            <Button
+            transparent
+            style={styles.eye}
+            onPress={() =>
+              this.setState({secureEntry: !this.state.secureEntry})
+            }>
+            {this.state.secureEntry? <Icon type="Fontawesome" style={{fontSize:20}} name="eye-slash"/>: < Icon type="Fontawesome" style={{fontSize:20}} name="eye"/> }
+            
+          </Button>
           </Item> 
 
           <Item inlineLabel>
@@ -82,14 +91,6 @@ class SignUpScene extends Component {
               secureTextEntry={this.state.secureEntry}
               placeholder="Re-Enter Password"
             />
-            <Button
-              light
-              style={styles.eye}
-              onPress={() =>
-                this.setState({secureEntry: !this.state.secureEntry})
-              }>
-              <Icon type="Fontawesome" style={{fontSize:20}} name="eye"></Icon>
-            </Button>
           </Item>
 
           <ListItem>
@@ -106,7 +107,7 @@ class SignUpScene extends Component {
           </ListItem>
 
           <Button primary block style={styles.button}>
-            <Text style={styles.buttonText}> Create Account</Text>
+            <Text style={styles.buttonText}>Sign Up</Text>
           </Button>
         </Form>
       </Container>
@@ -117,7 +118,7 @@ class SignUpScene extends Component {
 export default SignUpScene;
 
 const styles = StyleSheet.create({
-    icon:{fontSize:20, marginRight:5},
+  icon:{fontSize:20, marginRight:5,color:'grey'},
 
   top: {
     paddingRight: 26.3,
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     paddingTop: 10,
     paddingBottom: 20,
+    paddingRight:5,
     borderRadius: 10,
   },
   eye: {
@@ -146,9 +148,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     position: 'relative',
     alignSelf: 'center',
-  },
-  bottom: {
-    backgroundColor: 'red',
   },
   button: {
     marginTop: 20,

@@ -4,7 +4,7 @@ import Logo from '../images/logo.png';
 import {Actions} from 'react-native-router-flux';
 
 const switchToAuth =()=>{
-  Actions.replace("auth");
+  Actions.replace('auth');
 }
 
 export default class LoadingScene extends Component {
