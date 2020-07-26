@@ -7,8 +7,7 @@ import {
   Button,
   Container,
   Input,
-  Label,
-
+  Label
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Actions} from 'react-native-router-flux';
@@ -58,7 +57,8 @@ class AuthScene extends Component {
             </Item>
             <Item inlineLabel>
               <Icon type="Fontawesome" style={{fontSize: 20}} name="key" />
-              <Input placeholder="Password" />
+              <Input secureTextEntry placeholder="Password" />
+             
             </Item>
             <Button primary block style={styles.button}>
               <Text style={styles.buttonText}> Sign In</Text>
