@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Modal} from 'react-native';
 import {
   Picker,
   Form,
@@ -12,6 +12,10 @@ import {
   CheckBox,
   ListItem,
   Body,
+  Header,
+  Left,
+  Title,
+  Content,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -20,6 +24,7 @@ class SignUpScene extends Component {
     selected: undefined,
     checked: false,
     secureEntry: true,
+    modalVisible: false,
   };
 
   changeChecked = () => {
@@ -35,14 +40,33 @@ class SignUpScene extends Component {
   render() {
     return (
       <Container style={styles.top}>
+        <Modal animationType="fade" visible={this.state.modalVisible}>
+          <Container>
+            <Header>
+              <Left>
+              <Button transparent onPress={() => {
+                this.setState({modalVisible: false});
+              }}>
+              <Icon style={{fontSize:20}} name="arrow-left"/>
+              </Button>
+              </Left>
+              <Body>
+                <Title>Terms & Conditions</Title>
+              </Body>
+            </Header>
+            <Content>
+              <Text>Modal Body</Text>
+            </Content>
+          </Container>
+        </Modal>
+
         <Text style={styles.textContainer}>Create An Account</Text>
         <Form style={styles.Form}>
           <Item picker inlineLabel>
-            <Label>Continue As</Label>
-            <Picker 
+            <Label>Create As</Label>
+            <Picker
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
-            
               placeholder="Proceed As"
               placeholderStyle={{color: '#bfc6ea'}}
               placeholderIconColor="#007aff"
@@ -55,38 +79,37 @@ class SignUpScene extends Component {
           </Item>
 
           <Item inlineLabel>
-            <Icon type="Fontawesome" style={styles.icon} name="user" />
+            <Icon style={styles.icon} name="user" />
             <Input placeholder="Username" />
           </Item>
 
           <Item inlineLabel>
-            <Icon
-              type="Fontawesome"
-              style={styles.icon}
-              name="phone-square"
-            />
-            <Input keyboardType='number-pad' placeholder="Phone Number" />
+            <Icon style={styles.icon} name="phone-square" />
+            <Input keyboardType="number-pad" placeholder="Phone Number" />
           </Item>
 
           <Item inlineLabel>
-            <Icon type="Fontawesome" style={styles.icon}  name="key" />
+            <Icon style={styles.icon} name="key" />
             <Input
               secureTextEntry={this.state.secureEntry}
               placeholder="Password"
             />
             <Button
-            transparent
-            style={styles.eye}
-            onPress={() =>
-              this.setState({secureEntry: !this.state.secureEntry})
-            }>
-            {this.state.secureEntry? <Icon type="Fontawesome" style={{fontSize:20}} name="eye-slash"/>: < Icon type="Fontawesome" style={{fontSize:20}} name="eye"/> }
-            
-          </Button>
-          </Item> 
+              transparent
+              style={styles.eye}
+              onPress={() =>
+                this.setState({secureEntry: !this.state.secureEntry})
+              }>
+              {this.state.secureEntry ? (
+                <Icon style={{fontSize: 20}} name="eye-slash" />
+              ) : (
+                <Icon style={{fontSize: 20}} name="eye" />
+              )}
+            </Button>
+          </Item>
 
           <Item inlineLabel>
-            <Icon type="Fontawesome" style={styles.icon} name="key" />
+            <Icon style={styles.icon} name="key" />
             <Input
               secureTextEntry={this.state.secureEntry}
               placeholder="Re-Enter Password"
@@ -101,7 +124,13 @@ class SignUpScene extends Component {
             <Body>
               <Text style={styles.subText}>
                 I Agree to the{' '}
-                <Text style={styles.link}>Terms and Conditions</Text>
+                <Text
+                  onPress={() => {
+                    this.setState({modalVisible: true});
+                  }}
+                  style={styles.link}>
+                  Terms and Conditions
+                </Text>
               </Text>
             </Body>
           </ListItem>
@@ -118,7 +147,7 @@ class SignUpScene extends Component {
 export default SignUpScene;
 
 const styles = StyleSheet.create({
-  icon:{fontSize:20, marginRight:5,color:'grey'},
+  icon: {fontSize: 20, marginRight: 5, color: 'grey'},
 
   top: {
     paddingRight: 26.3,
@@ -130,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     paddingTop: 10,
     paddingBottom: 20,
-    paddingRight:5,
+    paddingRight: 5,
     borderRadius: 10,
   },
   eye: {

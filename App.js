@@ -15,19 +15,19 @@ import AuthScene from './src/scenes/AuthScene';
 import SignUpScene from './src/scenes/SignUpScene';
 import ProfileScene from './src/scenes/ProfileScene';
 
+
 class App extends Component{
-    
+
   render(){
-    return(
+    return(    
       <Router>
        <Stack key="root">
         <Scene key="loading" component={LoadingScene} initial hideNavBar={true}></Scene>
         <Scene key="auth" component={AuthScene} hideNavBar={true} ></Scene>
         <Scene key="signup" component={SignUpScene} hideNavBar={true} ></Scene>
-        <Scene key="profile" component={ProfileScene} hideNavBar={true} ></Scene>
+        <Scene key="profile" component={ProfileScene} hideNavBar></Scene>
         </Stack>  
       </Router>
-
     );
   }
 

@@ -3,19 +3,23 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Actions} from 'react-native-router-flux';
+import { cos } from 'react-native-reanimated';
 
 const openSignUp = () => {
- 
   Actions.signup();
 };
 
 const goToProfile = (state) => {
-  {state.username ==="admin" && state.password ==="admin" ? Actions.profile() : Actions.auth(alert('wrong credentials'))}
+  /* temporary code for develpment */  
+  // TODO: code for checking username and password authorization
+  // {state.username ==="admin" && state.password ==="admin" ? Actions.profile() : alert('Invalid Credentials!')}
+  Actions.profile({state});
+    
 };
 
 export default class AuthScene extends Component {
   state = {
-    selected: undefined,
+    selected: 'patient',
     username: '',
     password: '',
   };
@@ -24,6 +28,8 @@ export default class AuthScene extends Component {
     this.setState({
       selected: value,
     });
+
+    console.log(this.state.selected);
   };
 
   render() {
@@ -42,9 +48,9 @@ export default class AuthScene extends Component {
               placeholderIconColor="#007aff"
               selectedValue={this.state.selected}
               onValueChange={this.changeValue.bind(this)}>
-              <Picker.Item label="Patient" value="key0" />
-              <Picker.Item label="Caretaker " value="key1" />
-              <Picker.Item label="Doctor" value="key2" />
+              <Picker.Item label="Patient" value="patient" />
+              <Picker.Item label="Caretaker " value="caretaker" />
+              <Picker.Item label="Doctor" value="doctor" />
             </Picker>
           </Item>
 
