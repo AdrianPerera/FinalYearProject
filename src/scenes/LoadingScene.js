@@ -1,65 +1,69 @@
-import React, {Component} from 'react';
-import {Animated,View, Text, StyleSheet, Image, ActivityIndicator} from 'react-native';
+import React, {Component, useEffect,useState} from 'react';
+import {
+  Animated,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import Logo from '../images/logo.png';
-import {Actions} from 'react-native-router-flux';
 
-const switchToAuth =()=>{
-  Actions.replace('auth');
-}
-
-export default class LoadingScene extends Component {
-  state = {
-    LogoAnime: new Animated.Value(0),
-    LogoText: new Animated.Value(0),
-    loadingSpinner: false,
+function LoadingScene({navigation}) {
+ 
+  const LogoAnime= new Animated.Value(0);
+  const LogoText= new Animated.Value(0);
+  const [loadingSpinner,setLoadingSpinner]= useState(false);
+  
+  const switchToAuth = () => {
+    navigation.replace('auth');
   };
 
-  componentDidMount() {
-    const {LogoAnime,LogoText} = this.state;
-    Animated.spring(LogoAnime, {
+  useEffect(() => {
+      Animated.spring(LogoAnime, {
       toValue: 1,
       tension: 5,
       friction: 1,
       duration: 1000,
-      useNativeDriver:false
+      useNativeDriver: false,
     }).start();
-    Animated.timing(this.state.LogoText,{
-        toValue:1,
-        duration:1000,
-        useNativeDriver:true
-    }).start(()=>{
-        this.setState({
-            loadingSpinner:true,
-        })
-    });
-    setTimeout( switchToAuth,2000);
-  }
-
-  render() {
-    return (
-      <View style={style.container}>
-        <Animated.View
-          style={{
-            opacity: this.state.LogoAnime,
-            top: this.state.LogoAnime.interpolate({
-              inputRange: [0, 1],
-              outputRange: [80, 0],
-            }),
-          }}>
-          <Image source={Logo} style={style.logo} />
-          
-        </Animated.View>
-
-        <Animated.View 
-        style={{opacity:this.state.LogoText}}>
-        <Text style={style.logotext}> UlcerNOTE </Text>
-        </Animated.View>
-        {this.state.LogoText ? <ActivityIndicator size="large" color='white' style={style.activityInd} /> : null }
-        
-      </View>
+    Animated.timing(LogoText, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start(setLoadingSpinner(true)
     );
-  }
+    setTimeout(switchToAuth,2000)
+  });
+
+  return (
+    <View style={style.container}>
+      <Animated.View
+        style={{
+          opacity: LogoAnime,
+          top: LogoAnime.interpolate({
+            inputRange: [0, 1],
+            outputRange: [80, 0],
+          }),
+        }}>
+        <Image source={Logo} style={style.logo} />
+      </Animated.View>
+
+      <Animated.View style={{opacity: LogoText}}>
+        <Text style={style.logotext}> UlcerNOTE </Text>
+      </Animated.View>
+      {LogoText ? (
+        <ActivityIndicator
+          size="large"
+          color="white"
+          style={style.activityInd}
+        />
+      ) : null}
+    </View>
+  );
 }
+
+export default LoadingScene;
 
 const style = StyleSheet.create({
   container: {
@@ -79,8 +83,13 @@ const style = StyleSheet.create({
     width: 150,
     height: 150,
   },
-  activityInd:{
-    position:'absolute',left:0,right:0,bottom:0,top:0,alignItems:"center",justifyContent:"center"
-  }
-
+  activityInd: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

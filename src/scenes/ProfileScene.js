@@ -7,34 +7,29 @@ import {
   Left,
   Right,
   Title,
-  Tabs,
-  Tab,
+ 
 } from 'native-base';
-import ProfileTab from '../tabs/ProfileTab';
 
-class ProfileScene extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.props.state;
-  }
 
-  render() {
+function ProfileScene ({route,navigation}) {
+    const { param } =route.params;
+
     return (
       <Container>
         <Header noLeft hasTabs>
           <Left />
           <Body>
             <Title style={{textTransform: 'capitalize'}}>
-              {this.state.selected}
+              {param.selected}
             </Title>
           </Body>
           <Right>
-            <Text>{this.state.username}</Text>
+            <Text>{param.username}</Text>
           </Right>
         </Header>
       </Container>
     );
-  }
+  
 }
 
 export default ProfileScene;

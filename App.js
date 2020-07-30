@@ -6,28 +6,31 @@
  * @flow strict-local
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {Router, Scene, Stack} from 'react-native-router-flux';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator, HeaderTitle} from '@react-navigation/stack';
 
 import LoadingScene from './src/scenes/LoadingScene';
 import AuthScene from './src/scenes/AuthScene';
 import SignUpScene from './src/scenes/SignUpScene';
 import ProfileScene from './src/scenes/ProfileScene';
 
+const Stack = createStackNavigator();
 
 class App extends Component{
 
   render(){
-    return(    
-      <Router>
-       <Stack key="root">
-        <Scene key="loading" component={LoadingScene} initial hideNavBar={true}></Scene>
-        <Scene key="auth" component={AuthScene} hideNavBar={true} ></Scene>
-        <Scene key="signup" component={SignUpScene} hideNavBar={true} ></Scene>
-        <Scene key="profile" component={ProfileScene} hideNavBar></Scene>
-        </Stack>  
-      </Router>
+    return(
+      <NavigationContainer>
+      <Stack.Navigator initialRouteName="loading" screenOptions={{headerShown:false}}>
+        <Stack.Screen name="loading" component={LoadingScene}  />
+        <Stack.Screen name="auth" component={AuthScene} />
+        <Stack.Screen name="signup" component={SignUpScene} />
+        <Stack.Screen name="profile" component={ProfileScene} />
+      </Stack.Navigator>
+    </NavigationContainer>
+
     );
   }
 

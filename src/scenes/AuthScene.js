@@ -2,20 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Actions} from 'react-native-router-flux';
-import { cos } from 'react-native-reanimated';
 
-const openSignUp = () => {
-  Actions.signup();
-};
-
-const goToProfile = (state) => {
-  /* temporary code for develpment */  
-  // TODO: code for checking username and password authorization
-  // {state.username ==="admin" && state.password ==="admin" ? Actions.profile() : alert('Invalid Credentials!')}
-  Actions.profile({state});
-    
-};
 
 export default class AuthScene extends Component {
   state = {
@@ -28,9 +15,13 @@ export default class AuthScene extends Component {
     this.setState({
       selected: value,
     });
-
-    console.log(this.state.selected);
   };
+
+  gotToProfile= ()=>{
+ 
+  // TODO: code for checking username and password authorization
+    this.props.navigation.navigate('profile', {param: this.state});
+  }
 
   render() {
     return (
@@ -69,7 +60,11 @@ export default class AuthScene extends Component {
               onChangeText={(text) => this.setState({password: text})}
             />
           </Item>
-          <Button primary block style={styles.button} onPress={()=>goToProfile(this.state)}>
+          <Button
+            primary
+            block
+            style={styles.button}
+            onPress={() => this.gotToProfile()}>
             <Text style={styles.buttonText}> Sign In</Text>
           </Button>
         </Form>
@@ -77,7 +72,9 @@ export default class AuthScene extends Component {
         <Text style={styles.subText}>
           {' '}
           Don't have an account?{' '}
-          <Text style={{textDecorationLine: 'underline'}} onPress={openSignUp}>
+          <Text
+            style={{textDecorationLine: 'underline'}}
+            onPress={() => this.props.navigation.navigate('signup')}>
             Sign up!
           </Text>
         </Text>
@@ -87,7 +84,7 @@ export default class AuthScene extends Component {
 }
 
 const styles = StyleSheet.create({
-  icon:{fontSize:20, marginRight:5, color:'grey'},
+  icon: {fontSize: 20, marginRight: 5, color: 'grey'},
   top: {
     paddingRight: 26.3,
     paddingLeft: 26.3,
@@ -98,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     paddingTop: 10,
     paddingBottom: 20,
-    paddingRight:10,
+    paddingRight: 10,
     borderRadius: 10,
   },
 
