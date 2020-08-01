@@ -1,16 +1,45 @@
 import React, {Component} from 'react';
-import {Container, Text, Content} from 'native-base';
+import {
+  Container,
+  Header,
+  Body,
+  Title,
+  Content,
+  Card,
+  CardItem,
+  Badge,
+  Right,
+  Left,
+  Text,
+  Button,
+} from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-class MessagesTab extends Component {
-  render() {
-    return (
-      <Container>
-        <Content>
-          <Text>Message Details</Text>
-        </Content>
-      </Container>
-    );
-  }
+function MessagesTab({navigation}) {
+  return (
+    <Container>
+      <Header>
+        <Left>
+          <Button>
+            <Icon
+              name="reorder"
+              style={{fontSize: 30, color: 'white'}}
+              onPress={() => {
+                navigation.toggleDrawer();
+              }}
+            />
+          </Button>
+        </Left>
+        <Body>
+          <Title style={{textTransform: 'capitalize'}}>Messages</Title>
+        </Body>
+        <Right>
+        <Icon name='envelope' style={{fontSize: 30, color: '#e4e213'}} />
+        <Badge style={{fontSize:50}}><Text>3</Text></Badge>
+        </Right>
+      </Header>
+    </Container>
+  );
 }
 
 export default MessagesTab;

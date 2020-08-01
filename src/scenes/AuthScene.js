@@ -20,7 +20,7 @@ export default class AuthScene extends Component {
   gotToProfile= ()=>{
  
   // TODO: code for checking username and password authorization
-    this.props.navigation.navigate('profile', {param: this.state});
+    this.props.navigation.navigate('profile', { screen:'landingTab', params: { param:this.state}});
   }
 
   render() {
