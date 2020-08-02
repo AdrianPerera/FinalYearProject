@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
+import {styles} from '../styles/AuthScStyles';
 
 export default class AuthScene extends Component {
   state = {
     selected: 'patient',
     username: '',
     password: '',
+    isLoggedIn:false
   };
 
   changeValue = (value) => {
@@ -18,8 +19,7 @@ export default class AuthScene extends Component {
   };
 
   gotToProfile= ()=>{
- 
-  // TODO: code for checking username and password authorization
+    // TODO: code for checking username and password authorization
     this.props.navigation.navigate('profile', { screen:'landingTab', params: { param:this.state}});
   }
 
@@ -82,45 +82,3 @@ export default class AuthScene extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  icon: {fontSize: 20, marginRight: 5, color: 'grey'},
-  top: {
-    paddingRight: 26.3,
-    paddingLeft: 26.3,
-    backgroundColor: '#2570e0',
-    justifyContent: 'center',
-  },
-  Form: {
-    backgroundColor: '#FFFFFF',
-    paddingTop: 10,
-    paddingBottom: 20,
-    paddingRight: 10,
-    borderRadius: 10,
-  },
-
-  textContainer: {
-    color: '#FFFFFF',
-    fontFamily: 'GoogleSans-Bold',
-    fontSize: 25,
-    fontWeight: '700',
-    marginBottom: 30,
-    position: 'relative',
-    alignSelf: 'center',
-  },
-  button: {
-    marginTop: 20,
-    width: '50%',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontFamily: 'GoogleSans-Bold',
-    fontSize: 18,
-  },
-  subText: {
-    marginTop: 30,
-    alignSelf: 'center',
-    fontSize: 16,
-  },
-});

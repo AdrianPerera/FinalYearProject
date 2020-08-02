@@ -17,8 +17,8 @@ import ProfileScene from './src/scenes/ProfileScene';
 
 const Stack = createStackNavigator();
 
-class App extends Component {
-  render() {
+function App ()  {
+  
     return (
       <NavigationContainer>
         <Stack.Navigator
@@ -32,7 +32,7 @@ class App extends Component {
 
       </NavigationContainer>
     );
-  }
+  
 }
 
 export default App;

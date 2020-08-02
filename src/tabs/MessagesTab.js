@@ -35,7 +35,7 @@ function MessagesTab({navigation}) {
         </Body>
         <Right>
         <Icon name='envelope' style={{fontSize: 30, color: '#e4e213'}} />
-        <Badge style={{fontSize:50}}><Text>3</Text></Badge>
+        <Badge><Text>3</Text></Badge>
         </Right>
       </Header>
     </Container>
