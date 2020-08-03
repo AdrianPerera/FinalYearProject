@@ -13,31 +13,45 @@ import {
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Alert} from 'react-native';
+import {Alert,StyleSheet} from 'react-native';
 
 function LandingTab({route, navigation}) {
   const {param} = route.params;
   param.isLoggedIn = true;
 
+  const logOutHandler=  ()=>{
+    Alert.alert('Log out?', 'You are about to Log out!', [
+      {text: 'Do not leave', style: 'cancel', onPress: () => {}},
+      {
+        text: 'Log Out',
+        style: 'destructive',
+        onPress: () => {
+          param.isLoggedIn = false;
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'auth'}],
+          });
+        },
+      },
+    ]);
+  }
+
+  const logOutButton = () => {
+    if (param.isLoggedIn) {
+      logOutHandler();
+    }
+  };
+
+  //hardware backbutton prevent going back
   useEffect(() =>
     navigation.addListener('beforeRemove', (e) => {
       if (param.isLoggedIn) {
-        param.isLoggedIn = false;
         e.preventDefault();
-        Alert.alert('Log out?', 'You are about to Log out!', [
-          {text: 'Do not leave', style: 'cancel', onPress: () => {}},
-          {
-            text: 'Log Out',
-            style: 'destructive',
-            onPress: () => navigation.reset({
-              index:0,
-              routes:[{name:'auth'}]
-            }),
-          },
-        ]);
+        logOutHandler();
       }
     }),
   );
+
 
   return (
     <Container>
@@ -56,10 +70,18 @@ function LandingTab({route, navigation}) {
         <Body>
           <Title style={{textTransform: 'capitalize'}}>{param.selected}</Title>
         </Body>
-        <Right />
+        <Right>
+          <Button  onPress={() => logOutButton()} >
+            <Icon
+              name="sign-out"
+              style={{fontSize: 30,color:'#dc6c4b'}}
+             
+            />
+          </Button>
+        </Right>
       </Header>
 
-      <Content padder>
+      <Content style={{padding:20}}>
         <Card
           style={{
             height: 600,
@@ -103,3 +125,7 @@ function LandingTab({route, navigation}) {
 }
 
 export default LandingTab;
+
+const style= StyleSheet.create({
+
+});
