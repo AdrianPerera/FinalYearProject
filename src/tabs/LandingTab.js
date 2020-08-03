@@ -70,15 +70,7 @@ function LandingTab({route, navigation}) {
         <Body>
           <Title style={{textTransform: 'capitalize'}}>{param.selected}</Title>
         </Body>
-        <Right>
-          <Button  onPress={() => logOutButton()} >
-            <Icon
-              name="sign-out"
-              style={{fontSize: 30,color:'#dc6c4b'}}
-             
-            />
-          </Button>
-        </Right>
+        <Right/>
       </Header>
 
       <Content style={{padding:20}}>
