@@ -2,35 +2,28 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Alert} from 'react-native';
 import {Text, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import {DrawerItem} from '@react-navigation/drawer';
+
 
 export function DrawerContent(props) {
-   function logOutHandler () {
+  function logOutHandler() {
     Alert.alert('Log out?', 'You are about to Log out!', [
-      {text: 'Do not leave', style: 'cancel', onPress: () => {}},
+      {text: 'Cancel', style: 'cancel', onPress: () => {}},
       {
         text: 'Log Out',
         style: 'destructive',
-        onPress: () => 
-        {
-            props.navigation.reset({
+        onPress: () => {
+          props.navigation.reset({
             index: 0,
             routes: [{name: 'auth'}],
           });
-        }
-
+        },
       },
     ]);
-
-  };
+  }
 
   return (
     <View>
-      <DrawerContentScrollView {...props}>
-        <View style={{}}>
-          <Text>Main Content</Text>
-        </View>
-      </DrawerContentScrollView>
       <Drawer.Section>
         <DrawerItem
           icon={({color, size}) => (
@@ -42,7 +35,9 @@ export function DrawerContent(props) {
             />
           )}
           label="Details"
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('landingTab');
+          }}
         />
         <DrawerItem
           icon={({color, size}) => (
@@ -54,7 +49,9 @@ export function DrawerContent(props) {
             />
           )}
           label="Profile"
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('profileTab');
+          }}
         />
         <DrawerItem
           icon={({color, size}) => (
@@ -66,7 +63,9 @@ export function DrawerContent(props) {
             />
           )}
           label="Messages"
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('messagesTab');
+          }}
         />
         <DrawerItem
           icon={({color, size}) => (
@@ -78,7 +77,9 @@ export function DrawerContent(props) {
             />
           )}
           label="Payments"
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('paymentsTab');
+          }}
         />
         <DrawerItem
           icon={({color, size}) => (

@@ -13,15 +13,15 @@ import {
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Alert,StyleSheet} from 'react-native';
+import {Alert, StyleSheet} from 'react-native';
 
 function LandingTab({route, navigation}) {
   const {param} = route.params;
   param.isLoggedIn = true;
 
-  const logOutHandler=  ()=>{
+  const logOutHandler = () => {
     Alert.alert('Log out?', 'You are about to Log out!', [
-      {text: 'Do not leave', style: 'cancel', onPress: () => {}},
+      {text: 'Cancel', style: 'cancel', onPress: () => {}},
       {
         text: 'Log Out',
         style: 'destructive',
@@ -34,12 +34,6 @@ function LandingTab({route, navigation}) {
         },
       },
     ]);
-  }
-
-  const logOutButton = () => {
-    if (param.isLoggedIn) {
-      logOutHandler();
-    }
   };
 
   //hardware backbutton prevent going back
@@ -51,7 +45,6 @@ function LandingTab({route, navigation}) {
       }
     }),
   );
-
 
   return (
     <Container>
@@ -70,10 +63,10 @@ function LandingTab({route, navigation}) {
         <Body>
           <Title style={{textTransform: 'capitalize'}}>{param.selected}</Title>
         </Body>
-        <Right/>
+        <Right />
       </Header>
 
-      <Content style={{padding:20}}>
+      <Content style={{padding: 20}}>
         <Card
           style={{
             height: 600,
@@ -118,6 +111,4 @@ function LandingTab({route, navigation}) {
 
 export default LandingTab;
 
-const style= StyleSheet.create({
-
-});
+const style = StyleSheet.create({});
