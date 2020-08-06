@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createDrawerNavigator,DrawerItem} from '@react-navigation/drawer';
 import MessagesTab from '../tabs/MessagesTab';
 import PaymentTab from '../tabs/PaymentTab';
 import ProfileTab from '../tabs/ProfileTab';
 import LandingTab from '../tabs/LandingTab';
-import {DrawerContent} from '../components/DrawerContent';
+import DrawerContent from '../components/DrawerContent';
 
 function ProfileScene({route}) {
   const Drawer = createDrawerNavigator();
@@ -14,15 +14,15 @@ function ProfileScene({route}) {
     return (
     
       <Drawer.Navigator 
-        backBehavior="history"
-        drawerType="front"
         minSwipeDistance={70}
         initialRouteName="landingTab"
-        drawerContent={(props) => <DrawerContent {...props} />}>
+        drawerContent={props => <DrawerContent {...props}/>}
+        >
         <Drawer.Screen name="landingTab" component={LandingTab} />
         <Drawer.Screen name="profileTab" component={ProfileTab} />
         <Drawer.Screen name="messagesTab" component={MessagesTab} />
         <Drawer.Screen name="paymentsTab" component={PaymentTab} />
+      
       </Drawer.Navigator>
         
       );

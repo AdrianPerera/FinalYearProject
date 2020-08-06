@@ -2,10 +2,14 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Alert} from 'react-native';
 import {Text, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {DrawerItem} from '@react-navigation/drawer';
+import {
+  DrawerItem,
+  DrawerItemList,
+  DrawerContentScrollView,
+} from '@react-navigation/drawer';
+import {exp} from 'react-native-reanimated';
 
-
-export function DrawerContent(props) {
+function DrawerContent({...props}) {
   function logOutHandler() {
     Alert.alert('Log out?', 'You are about to Log out!', [
       {text: 'Cancel', style: 'cancel', onPress: () => {}},
@@ -23,15 +27,15 @@ export function DrawerContent(props) {
   }
 
   return (
-    <View>
-      <Drawer.Section>
+    <DrawerContentScrollView>
+      <View style={{}}>
         <DrawerItem
-          icon={({color, size}) => (
+          icon={({focused, color, size}) => (
             <Icon
               style={{marginRight: -3}}
               name="list-alt"
               size={size}
-              color={color}
+              color={focused ? '#3eb708' : '#442b2b'}
             />
           )}
           label="Details"
@@ -39,13 +43,14 @@ export function DrawerContent(props) {
             props.navigation.navigate('landingTab');
           }}
         />
+
         <DrawerItem
-          icon={({color, size}) => (
+          icon={({focused, size}) => (
             <Icon
               style={{marginRight: 3, marginLeft: 3}}
               name="user"
               size={size}
-              color={color}
+              color={focused ? '#3eb708' : '#442b2b'}
             />
           )}
           label="Profile"
@@ -53,13 +58,14 @@ export function DrawerContent(props) {
             props.navigation.navigate('profileTab');
           }}
         />
+
         <DrawerItem
-          icon={({color, size}) => (
+          icon={({focused, size}) => (
             <Icon
               style={{marginRight: -3}}
               name="envelope"
               size={size}
-              color={color}
+              color={focused ? '#3eb708' : '#442b2b'}
             />
           )}
           label="Messages"
@@ -67,13 +73,14 @@ export function DrawerContent(props) {
             props.navigation.navigate('messagesTab');
           }}
         />
+
         <DrawerItem
-          icon={({color, size}) => (
+          icon={({focused, size}) => (
             <Icon
               style={{marginRight: -3}}
               name="money"
               size={size}
-              color={color}
+              color={focused ? '#3eb708' : '#442b2b'}
             />
           )}
           label="Payments"
@@ -81,21 +88,28 @@ export function DrawerContent(props) {
             props.navigation.navigate('paymentsTab');
           }}
         />
-        <DrawerItem
-          icon={({color, size}) => (
-            <Icon
-              style={{marginRight: -3}}
-              name="sign-out"
-              size={size}
-              color={color}
-            />
-          )}
-          label="Sign Out"
-          onPress={() => logOutHandler()}
-        />
-      </Drawer.Section>
+      </View>
+
+      <View style={{position:'relative'}}>
+      <DrawerItem
+        icon={({color, size}) => (
+          <Icon
+            style={{marginRight: -3}}
+            name="sign-out"
+            size={size}
+            color={color}
+          />
+        )}
+        label="Sign Out"
+        onPress={() => logOutHandler()}
+      />
     </View>
+    </DrawerContentScrollView>
+
+    
   );
 }
+
+export default DrawerContent;
 
 const styles = StyleSheet.create({});
