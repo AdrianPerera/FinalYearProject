@@ -7,16 +7,19 @@ import ProfileTab from '../tabs/patient/ProfileTab';
 import LandingTab from '../tabs/patient/LandingTab';
 import careLandingTab from '../tabs/caretaker/LandingTab';
 import careMessagesTab from '../tabs/caretaker/MessagesTab';
-import carePatientsTab from '../tabs/caretaker/PatientsTab';
-import carePatientViewTab from '../tabs/caretaker/PatientViewTab';
+import carePatients from '../tabs/caretaker/PatientsTab';
+import carePatientView from '../tabs/caretaker/PatientViewTab';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DrawerContent from '../components/DrawerContent';
 
-function patientStack() {
+function carePatientStack() {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator initialRouteName="patientViewTab" screenOptions={{headerShown: false}}>
-      <Stack.Screen name="patientViewTab" component={carePatientViewTab} />
+    <Stack.Navigator 
+      initialRouteName="carePatientsScene"
+      screenOptions={{headerShown: false,animationEnabled:'true'}}>
+      <Stack.Screen name="carePatientsScene" component={carePatients} />
+      <Stack.Screen name="patientViewScene" component={carePatientView} />
     </Stack.Navigator>
   );
 }
@@ -138,30 +141,14 @@ function ProfileScene({route}) {
         />
 
         <Drawer.Screen
-          name="patientsTab"
-          component={carePatientsTab}
+          name="carePatientStack"
+          component={carePatientStack}
           options={{
             title: 'Patients List',
             drawerIcon: ({focused, size}) => (
               <Icon
                 style={{marginRight: 1, marginLeft: 3}}
                 name="hospital-o"
-                size={size}
-                color={focused ? '#4544ca' : '#442b2b'}
-              />
-            ),
-          }}
-        />
-
-        <Drawer.Screen
-          name="patientStack"
-          component={patientStack}
-          options={{
-            title: 'Patient',
-            drawerIcon: ({focused, size}) => (
-              <Icon
-                style={{marginRight: 1, marginLeft: 3}}
-                name="bed"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
               />

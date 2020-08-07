@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {View, StyleSheet, Alert} from 'react-native';
-import {Text, Drawer} from 'react-native-paper';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   DrawerItem,
   DrawerItemList,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import {exp} from 'react-native-reanimated';
 
 function DrawerContent({...props}) {
   function logOutHandler() {
@@ -25,6 +24,8 @@ function DrawerContent({...props}) {
       },
     ]);
   }
+
+/* TODO : Logout button in the Drawer needs double pressing for execution. Find out why */
 
   return (
     <DrawerContentScrollView {...props}>
