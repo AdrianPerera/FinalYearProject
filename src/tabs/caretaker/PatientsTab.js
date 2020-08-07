@@ -19,63 +19,63 @@ import {DataTable} from "react-native-paper";
 import {SafeAreaFrameContext} from "react-native-safe-area-context";
 
 export default function PatientsTab({navigation}) {
-    const DATA = [
-        {
-            id: '1',
-            name: 'Magnus Carlsen',
-        },
-        {
-            id: '2',
-            name: 'Judit Polgar',
-        },
-        {
-            id: '3',
-            name: 'John Constantine',
-        },
-        {
-            id: '4',
-            name: 'John Constantine',
-        },
-        {
-            id: '5',
-            name: 'John Constantine',
-        },
-        {
-            id: '6',
-            name: 'John Constantine',
-        },
-        {
-            id: '7',
-            name: 'John Constantine',
-        },
-        {
-            id: '8',
-            name: 'John Constantine',
-        },
-        {
-            id: '9',
-            name: 'John Constantine',
-        },{
-            id: '10',
-            name: 'John Constantine',
-        },{
-            id: '11',
-            name: 'John Constantine',
-        },{
-            id: '12',
-            name: 'John Constantine',
-        },{
-            id: '13',
-            name: 'John Constantine',
-        },
+    const DATA = [{
+        "id": 1,
+        "name": "Erna Blaksland"
+      }, {
+        "id": 2,
+        "name": "Carline Kupisz"
+      }, {
+        "id": 3,
+        "name": "Robby Doghartie"
+      }, {
+        "id": 4,
+        "name": "Enid Lindup"
+      }, {
+        "id": 5,
+        "name": "Sydney Lesek"
+      }, {
+        "id": 6,
+        "name": "Bren Noddings"
+      }, {
+        "id": 7,
+        "name": "Courtnay Stockill"
+      }, {
+        "id": 8,
+        "name": "Weider Vinecombe"
+      }, {
+        "id": 9,
+        "name": "Lothaire Cabena"
+      }, {
+        "id": 10,
+        "name": "Letisha Spragge"
+      }, {
+        "id": 11,
+        "name": "Barrie Jaques"
+      }, {
+        "id": 12,
+        "name": "Quill Weinham"
+      }, {
+        "id": 13,
+        "name": "Ilaire Trodd"
+      }, {
+        "id": 14,
+        "name": "Winne Iffland"
+      }, {
+        "id": 15,
+        "name": "Nicolea Spehr"
+      }
     ];
+    const viewPatient= (name)=>{
+        navigation.navigate('patientStack',{ screen:'patientViewTab',params:{name:name}})
+    }
 
     const renderThis=({item})=>(
         <View style={{margin:15,flexDirection:'row'}}>
             <Text style={{flex:1}}>Patient {item.id} </Text>
             <Text style={{flex:2}}>{item.name} </Text>
             <View style={{flex:1}}>
-                <Button small success style={{alignSelf:'flex-end'}}><Text>View</Text></Button>
+                <Button onPress={()=>viewPatient(item.name)} small success style={{alignSelf:'flex-end'}}><Text>View</Text></Button>
             </View>
         </View>
     );
