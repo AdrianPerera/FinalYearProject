@@ -74,7 +74,7 @@ const style = StyleSheet.create({
   },
   logotext: {
     color: 'white',
-    fontFamily: 'GoogleSans-Bold',
+    
     fontSize: 30,
     marginTop: 10,
     fontWeight: '700',
