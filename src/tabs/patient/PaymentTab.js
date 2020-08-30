@@ -29,6 +29,9 @@ function PaymentTab({navigation}) {
             />
           </Button>
         </Left>
+
+
+        
         <Body>
           <Title style={{textTransform: 'capitalize'}}>Payments</Title>
         </Body>
