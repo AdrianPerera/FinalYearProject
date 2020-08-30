@@ -73,7 +73,7 @@ function ProfileScene({route}) {
           name="editTab"
           component={EditTab}
           options={{
-            title: ' My Profile',
+            title: ' Edit My Profile',
             drawerIcon: ({focused, size}) => (
               <Icon
                 style={{marginRight: -3, marginLeft: 3}}
