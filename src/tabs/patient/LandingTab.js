@@ -91,8 +91,8 @@ function LandingTab({route, navigation}) {
       <Content style={{padding: 20}}>
         <Card
           style={{
-            height: 600,
-            justifyContent: 'space-around',
+            height: 300,
+            justifyContent: 'flex-start',
             borderRadius: 5,
           }}>
           <CardItem style={{alignSelf: 'center'}} header>
@@ -124,6 +124,21 @@ function LandingTab({route, navigation}) {
             </Body>
           </CardItem>
         </Card>
+        <View style={{margin:15}} >
+          <Button 
+          primary
+          block
+          style={{alignSelf:'center',padding:5,borderRadius:5}}>
+            <Text>Edit Details</Text>
+            <Icon
+              name="edit"
+              style={{fontSize: 30, color: 'white'}}
+              onPress={() => {
+                navigation.toggleDrawer();
+              }}
+            />
+          </Button>
+        </View>
       </Content>
     </Container>
   );
