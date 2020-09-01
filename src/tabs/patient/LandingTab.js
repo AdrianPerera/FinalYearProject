@@ -15,7 +15,7 @@ import {
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Alert, StyleSheet} from 'react-native';
+import {Alert, StyleSheet,View,Image} from 'react-native';
 
 function LandingTab({route, navigation}) {
   const {param} = route.params;
@@ -68,6 +68,26 @@ function LandingTab({route, navigation}) {
         <Right />
       </Header>
 
+
+
+
+
+
+
+      <View style={styles.container}>
+          <View style={styles.header}>
+            <View style={styles.headerContent}>
+                <Image style={styles.avatar}
+                  source={{uri: 'https://bootdey.com/img/Content/avatar/avatar1.png'}}/>
+
+                 <Text style={{fontWeight: 'bold', fontSize: 35,color:'white'}}>
+              {param.username}{' '}
+            </Text>
+            </View>
+          </View>
+      </View>
+
+
       <Content style={{padding: 20}}>
         <Card
           style={{
@@ -76,9 +96,7 @@ function LandingTab({route, navigation}) {
             borderRadius: 5,
           }}>
           <CardItem style={{alignSelf: 'center'}} header>
-            <Text style={{fontWeight: 'bold', fontSize: 35}}>
-              {param.username}{' '}
-            </Text>
+           
           </CardItem>
           <CardItem>
             <Body>
@@ -113,4 +131,22 @@ function LandingTab({route, navigation}) {
 
 export default LandingTab;
 
-const style = StyleSheet.create({});
+const styles = StyleSheet.create({
+  header:{
+    backgroundColor: "#00BFFF",
+  },
+  headerContent:{
+    padding:30,
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: "white",
+    marginBottom:10,
+  },
+ 
+ 
+});
