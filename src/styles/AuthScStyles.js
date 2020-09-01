@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
 
   textContainer: {
     color: '#FFFFFF',
-    fontFamily: 'GoogleSans-Bold',
+    
     fontSize: 25,
     fontWeight: '700',
     marginBottom: 30,
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FFFFFF',
-    fontFamily: 'GoogleSans-Bold',
+    
     fontSize: 18,
   },
   subText: {
