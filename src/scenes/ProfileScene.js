@@ -5,7 +5,9 @@ import MessagesTab from '../tabs/patient/MessagesTab';
 import PaymentTab from '../tabs/patient/PaymentTab';
 import EditTab from '../tabs/patient/EditTab';
 import LandingTab from '../tabs/patient/LandingTab';
+
 import careLandingTab from '../tabs/caretaker/LandingTab';
+import careEditTab from '../tabs/caretaker/EditTab';
 import careMessagesTab from '../tabs/caretaker/MessagesTab';
 import carePatients from '../tabs/caretaker/PatientsTab';
 import carePatientView from '../tabs/caretaker/PatientViewTab';
@@ -141,6 +143,27 @@ function ProfileScene({route}) {
             ),
           }}
         />
+
+
+
+
+        <Drawer.Screen
+          name="editTab"
+          component={careEditTab}
+          options={{
+            title: ' Edit My Profile',
+            drawerIcon: ({focused, size}) => (
+              <Icon
+                style={{marginRight: -3, marginLeft: 3}}
+                name="user"
+                size={size}
+                color={focused ? '#4544ca' : '#442b2b'}
+              />
+            ),
+          }}
+        />
+
+
 
         <Drawer.Screen
           name="messagesTab"
