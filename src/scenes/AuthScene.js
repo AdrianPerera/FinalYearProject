@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/AuthScStyles';
 
 export default class AuthScene extends Component {
+ 
   state = {
     selected: 'patient',
     username: '',
