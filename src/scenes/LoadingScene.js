@@ -75,7 +75,11 @@ const style = StyleSheet.create({
   },
   logotext: {
     color: 'white',
+<<<<<<< HEAD
    
+=======
+    
+>>>>>>> development
     fontSize: 30,
     marginTop: 10,
     fontWeight: '700',
