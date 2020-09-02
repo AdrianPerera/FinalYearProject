@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "717114186513",
+    "firebase_url": "https://ulcerdatabase.firebaseio.com",
+    "project_id": "ulcerdatabase",
+    "storage_bucket": "ulcerdatabase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717114186513:android:e8a2593466692a4c7c4ab0",
+        "android_client_info": {
+          "package_name": "com.finalyearproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717114186513-4ms9ohoval65h45gbru4bb45clnpnhqj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2ybRR4GyXhAW_v6Ud_pPtjbKbTO4s1-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717114186513-4ms9ohoval65h45gbru4bb45clnpnhqj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
