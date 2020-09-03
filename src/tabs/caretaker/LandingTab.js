@@ -15,6 +15,7 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Alert, StyleSheet, Image} from 'react-native';
+import Img from '../../images/profile_pic.png';
 
 function LandingTab({route, navigation}) {
   const {param} = route.params;
@@ -70,12 +71,7 @@ function LandingTab({route, navigation}) {
       <View>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Image
-              style={styles.avatar}
-              source={{
-                uri: 'https://bootdey.com/img/Content/avatar/avatar1.png',
-              }}
-            />
+            <Image style={styles.avatar} source={Img} />
 
             <Text style={{fontWeight: 'bold', fontSize: 35, color: 'white'}}>
               {param.username}{' '}
@@ -117,19 +113,16 @@ function LandingTab({route, navigation}) {
             </Body>
           </CardItem>
         </Card>
-        <View style={{margin:15}} >
-          <Button 
-          primary
-          block
-          style={{alignSelf:'center',padding:5,borderRadius:5}}>
-            <Text>Edit Details</Text>
+        <View style={{margin: 15}}>
+          <Button
+            block
+            style={{alignSelf: 'center', padding: 5, borderRadius: 5}}
+            onPress={() => navigation.navigate('editTab')}>
             <Icon
               name="edit"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
+              style={{fontSize: 20, color: 'white',paddingLeft:10}}
             />
+            <Text>Edit</Text>
           </Button>
         </View>
       </Content>
