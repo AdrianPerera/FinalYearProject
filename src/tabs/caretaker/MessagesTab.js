@@ -9,7 +9,18 @@ import {
   Image,
   TouchableHighlight,
 } from 'react-native';
-
+import {
+  Container,
+  Content,
+  Body,
+  Header,
+  Left,
+  Right,
+  Button,
+  Title,
+} from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default class MessagesTab extends Component {
   state = {
@@ -69,7 +80,7 @@ export default class MessagesTab extends Component {
     return (
       <View
         style={{
-          height: 0.5,
+          height: 1,
           width: '100%',
           backgroundColor: '#000',
         }}
@@ -77,10 +88,10 @@ export default class MessagesTab extends Component {
     );
   };
 
-  GetListViewItem(rowData) {
+  OpenModal(rowData) {
     // Alert.alert(rowData.message.notification.body);
     this.setState({modalBody: rowData.message.notification.body});
-    this.setState({modalTopic:rowData.message.notification.topic})
+    this.setState({modalTopic: rowData.message.notification.topic});
     this.setState({modalVisible: true});
   }
 
@@ -96,39 +107,84 @@ export default class MessagesTab extends Component {
 
   render() {
     return (
-      <View style={styles.MainContainer}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}>
-          <View>
-            <View>
-              <Text>{this.state.modalBody}</Text>
-              <Text>{this.state.modalTopic}</Text>
-              <TouchableHighlight
-                onPress={() => this.setState({modalVisible: false})}>
-                <Text>Hide Modal </Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
+      <Container>
+        <Header>
+          <Left>
+            <Button>
+              <Icon
+                name="reorder"
+                style={{fontSize: 30, color: 'white'}}
+                onPress={() => {
+                 this.props.navigation.toggleDrawer();
+                }}
+              />
+            </Button>
+          </Left>
+          <Body>
+            <Title style={{textTransform: 'capitalize'}}>Messages</Title>
+          </Body>
+          <Right />
+        </Header>
 
-        <FlatList
-          data={this.state.dataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={this.ListViewItemSeparator}
-          ref={(ref) => {
-            this.ListView_Ref = ref;
-          }}
-          renderItem={({item}) => (
-            <TouchableHighlight
-              style={styles.rowViewContainer}
-              onPress={this.GetListViewItem.bind(this, item)}>
-              <Text>{item.message.notification.topic}</Text>
-            </TouchableHighlight>
-          )}
-        />
-      </View>
+        <View style={styles.MainContainer}>
+          <Modal
+            animationType="fade"
+            transparent={false}
+            visible={this.state.modalVisible}>
+            <View
+              style={{
+                borderColor:'#DDCCCC',
+                borderWidth:1,
+                backgroundColor: '#00BFFF',
+                margin:5,
+                flexDirection: 'row',
+                padding: 10,
+              }}>
+              <View style={{flex: 7,flexDirection:'row'}}>
+              <Text style={{fontSize: 20}}>{this.state.modalTopic}</Text>
+              </View>
+             
+              <View style={{flex: 1}}>
+              <Button style={{justifyContent:'center',alignSelf:'flex-end'}} danger small width={30} onPress={() => this.setState({modalVisible: false})}>
+              <Icon
+                  name="remove"
+                  style={{fontSize: 20,color:'white'}}
+                />
+              </Button> 
+              
+              </View>
+            </View>
+            <ScrollView
+              style={{
+                flex: 1,
+                borderColor: '#DDDDDD',
+                borderWidth: 1,
+                margin: 5,
+                padding: 10,
+              }}>
+              <Text>{this.state.modalBody}</Text>
+            </ScrollView>
+            
+          </Modal>
+
+          <FlatList
+            data={this.state.dataSource}
+            keyExtractor={(item, index) => index.toString()}
+            ref={(ref) => {
+              this.ListView_Ref = ref;
+            }}
+            renderItem={({item}) => (
+              <TouchableHighlight
+                activeOpacity={0.2}
+                underlayColor="#DDD"
+                style={styles.rowViewContainer}
+                onPress={this.OpenModal.bind(this, item)}>
+                <Text style={{fontWeight:'bold'}}> {item.message.notification.topic}</Text>
+              </TouchableHighlight>
+            )}
+          />
+        </View>
+      </Container>
     );
   }
 }
@@ -138,40 +194,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 10,
-    paddingTop: 40,
   },
   rowViewContainer: {
-    fontSize: 18,
-    paddingRight: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  upButton: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    bottom: 70,
-  },
-  upButtonImage: {
-    resizeMode: 'contain',
-    width: 30,
-    height: 30,
-  },
-  downButton: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    top: 70,
-  },
-  downButtonImage: {
-    resizeMode: 'contain',
-    width: 30,
-    height: 30,
+    fontSize: 20,
+    marginBottom:3,
+    padding: 10,
+    borderBottomColor: 'grey',
+    borderWidth:1,
   },
 });
