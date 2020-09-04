@@ -1,56 +1,69 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 //import react in our code.
-
 import {
   StyleSheet,
   View,
-  Alert,
+  Modal,
   FlatList,
   Text,
-  TouchableOpacity,
   Image,
+  TouchableHighlight,
 } from 'react-native';
-//import all the components we are going to use.
 
-export default class Mynewproject extends Component {
-  constructor(props) {
-    super(props);
-    //Preparing the data for the ListView
-    this.state = {
-      dataSource: [
-        'Chinkara',
-        'MotorsForce',
-        'MotorsIPMLHindustan',
-        'Mahindra',
-        'Reva',
-        'Electric',
-        'VehiclesMaruti',
-        'Suzuki',
-        'IndiaOpel',
-        'IndiaPremier',
-        'LtdSan',
-        'StormSML',
-        'IsuzuStandardTara',
-        'InternationalTata',
-        'Motor',
-        'Chinkara',
-        'MotorsForce',
-        'MotorsIPMLHindustan',
-        'Mahindra',
-        'Reva',
-        'Electric',
-        'VehiclesMaruti',
-        'Suzuki',
-        'IndiaOpel',
-        'IndiaPremier',
-        'LtdSan',
-        'StormSML',
-        'IsuzuStandardTara',
-        'InternationalTata',
-        'Motor',
-      ]
-    };
-  }
+
+export default class MessagesTab extends Component {
+  state = {
+    modalVisible: false,
+    modalBody: '',
+    modalTopic: '',
+    dataSource: [
+      {
+        message: {
+          token: '4ed48743-7372-41d5-9ce1-4ce532b9d5da',
+          notification: {
+            topic: 'Lodovico Gammon',
+            body: 'Vision-oriented radical infrastructure',
+          },
+        },
+      },
+      {
+        message: {
+          token: 'e86336e6-2a36-4c16-a69b-7810a5d811b2',
+          notification: {
+            topic: 'Katine Eberst',
+            body: 'Ergonomic dedicated help-desk',
+          },
+        },
+      },
+      {
+        message: {
+          token: '7a1eba9e-389c-4d26-8eac-70dcfbd2d139',
+          notification: {
+            topic: 'Vanna Gaukrodge',
+            body: 'Universal full-range infrastructure',
+          },
+        },
+      },
+      {
+        message: {
+          token: '079dede2-9809-4196-90ea-5a0506f60b5a',
+          notification: {
+            topic: 'Saleem MacCollom',
+            body: 'Visionary radical methodology',
+          },
+        },
+      },
+      {
+        message: {
+          token: '75e8f6d7-a8ea-4a04-9a98-07326df08b58',
+          notification: {
+            topic: 'Jeniffer Quimby',
+            body: 'Persevering asynchronous time-frame',
+          },
+        },
+      },
+    ],
+  };
 
   ListViewItemSeparator = () => {
     return (
@@ -65,22 +78,41 @@ export default class Mynewproject extends Component {
   };
 
   GetListViewItem(rowData) {
-    Alert.alert(rowData);
+    // Alert.alert(rowData.message.notification.body);
+    this.setState({modalBody: rowData.message.notification.body});
+    this.setState({modalTopic:rowData.message.notification.topic})
+    this.setState({modalVisible: true});
   }
 
   upButtonHandler = () => {
     //OnCLick of Up button we scrolled the list to top
-    this.ListView_Ref.scrollToOffset({ offset: 0,  animated: true });
+    this.ListView_Ref.scrollToOffset({offset: 0, animated: true});
   };
 
   downButtonHandler = () => {
     //OnCLick of down button we scrolled the list to bottom
-    this.ListView_Ref.scrollToEnd({ animated: true });
+    this.ListView_Ref.scrollToEnd({animated: true});
   };
 
   render() {
     return (
       <View style={styles.MainContainer}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}>
+          <View>
+            <View>
+              <Text>{this.state.modalBody}</Text>
+              <Text>{this.state.modalTopic}</Text>
+              <TouchableHighlight
+                onPress={() => this.setState({modalVisible: false})}>
+                <Text>Hide Modal </Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+
         <FlatList
           data={this.state.dataSource}
           keyExtractor={(item, index) => index.toString()}
@@ -88,39 +120,14 @@ export default class Mynewproject extends Component {
           ref={(ref) => {
             this.ListView_Ref = ref;
           }}
-          renderItem={({ item }) => (
-            <Text
+          renderItem={({item}) => (
+            <TouchableHighlight
               style={styles.rowViewContainer}
               onPress={this.GetListViewItem.bind(this, item)}>
-              {item}
-            </Text>
+              <Text>{item.message.notification.topic}</Text>
+            </TouchableHighlight>
           )}
         />
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={this.downButtonHandler}
-          style={styles.downButton}>
-          <Image
-            source={{
-              uri:
-                'https://raw.githubusercontent.com/AboutReact/sampleresource/master/arrow_down.png',
-            }}
-            style={styles.downButtonImage}
-
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={this.upButtonHandler}
-          style={styles.upButton}>
-          <Image
-            source={{
-              uri:
-                'https://raw.githubusercontent.com/AboutReact/sampleresource/master/arrow_up.png',
-            }}
-            style={styles.upButtonImage}
-          />
-        </TouchableOpacity>
       </View>
     );
   }

@@ -124,17 +124,6 @@ export default LandingTab;
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#00BFFF',
-  },
-  headerContent: {
-    padding: 30,
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
-    borderWidth: 4,
-    borderColor: 'white',
     marginBottom: 10,
   },
 });

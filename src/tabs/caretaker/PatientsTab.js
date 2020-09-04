@@ -5,19 +5,13 @@ import {
   Header,
   Body,
   Title,
-  Content,
-  Card,
-  CardItem,
-  Badge,
   Right,
   Left,
   Text,
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {DataTable} from 'react-native-paper';
-import {SafeAreaFrameContext} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
+
 
 export default function PatientsTab({navigation}) {
   const DATA = [
@@ -40,47 +34,7 @@ export default function PatientsTab({navigation}) {
     {
       id: 5,
       name: 'Sydney Lesek',
-    },
-    {
-      id: 6,
-      name: 'Bren Noddings',
-    },
-    {
-      id: 7,
-      name: 'Courtnay Stockill',
-    },
-    {
-      id: 8,
-      name: 'Weider Vinecombe',
-    },
-    {
-      id: 9,
-      name: 'Lothaire Cabena',
-    },
-    {
-      id: 10,
-      name: 'Letisha Spragge',
-    },
-    {
-      id: 11,
-      name: 'Barrie Jaques',
-    },
-    {
-      id: 12,
-      name: 'Quill Weinham',
-    },
-    {
-      id: 13,
-      name: 'Ilaire Trodd',
-    },
-    {
-      id: 14,
-      name: 'Winne Iffland',
-    },
-    {
-      id: 15,
-      name: 'Nicolea Spehr',
-    },
+    }
   ];
   const viewPatient = (name) => {
     navigation.navigate(
