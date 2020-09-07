@@ -21,7 +21,6 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 export default class MessagesTab extends Component {
   state = {
     modalVisible: false,
@@ -35,39 +34,40 @@ export default class MessagesTab extends Component {
             topic: 'notification 1',
             body: [
               {patient: 'patient1', posture: 'posture1', time: '00:00:00'},
-              {patient: 'patient2', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient2', posture: 'posture2', time: '00:00:00'},
               {patient: 'patient3', posture: 'posture1', time: '00:00:00'},
             ],
           },
         },
-      },{
+      },
+      {
         message: {
           token: '4ed48743-7372-41d5-9ce1-4ce532b9d5da',
           notification: {
             topic: 'notification 2',
             body: [
               {patient: 'patient1', posture: 'posture1', time: '00:00:00'},
-              {patient: 'patient2', posture: 'posture1', time: '00:00:00'},
-              {patient: 'patient3', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient2', posture: 'posture2', time: '00:00:00'},
+              {patient: 'patient3', posture: 'posture3', time: '00:00:00'},
             ],
           },
         },
-      },{
+      },
+      {
         message: {
           token: '4ed48743-7372-41d5-9ce1-4ce532b9d5da',
           notification: {
             topic: 'notification 3',
             body: [
               {patient: 'patient1', posture: 'posture1', time: '00:00:00'},
-              {patient: 'patient2', posture: 'posture1', time: '00:00:00'},
-              {patient: 'patient3', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient2', posture: 'posture2', time: '00:00:00'},
+              {patient: 'patient3', posture: 'posture3', time: '00:00:00'},
             ],
           },
         },
       },
     ],
   };
-
 
   OpenModal(rowData) {
     // Alert.alert(rowData.message.notification.body);
@@ -125,33 +125,55 @@ export default class MessagesTab extends Component {
                 </Button>
               </View>
             </View>
-            <View style={{marginTop:20,marginLeft:10,justifyContent:'center'}}>
+            <View
+              style={{marginTop: 20, marginLeft: 10, justifyContent: 'center'}}>
               <FlatList
                 data={this.state.modalBody}
                 keyExtractor={(item, index) => index.toString()}
                 ref={(ref) => {
                   this.ListView_Ref = ref;
                 }}
-                renderItem={({item}) => (
-                   
-                  <View style={{flexDirection: 'row',marginBottom:5,marginRight:10,padding:10,borderColor:'black',borderWidth:1}}>
-                    <Text style={{flex: 1}}>{item.patient}</Text>
-                    <View style={{flex: 1}}>
-                    <Text>
-                    {item.posture}
-                    
-                    </Text>
-                    <Image  
-                    style={{width:100,height:100,alignSelf:'flex-start'}}
-                    source={require('../../images/postures/posture1.jpg')}/>
+                renderItem={({item}) => {
+                  
+                  const setImage=(posture)=>{
+                    const postures = {
+                      posture1: require('../../images/postures/posture1.jpg'),
+                      posture2: require('../../images/postures/posture2.jpg'),
+                      posture3: require('../../images/postures/posture3.jpg') ,
+                    }
+                    return postures[posture];
+                  }
+              
+
+                  return (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginBottom: 5,
+                        marginRight: 10,
+                        padding: 10,
+                        borderColor: 'black',
+                        borderWidth: 1,
+                      }}>
+                      <Text style={{flex: 1}}>{item.patient}</Text>
+                      <View style={{flex: 1}}>
+                        <Text>{item.posture}</Text>
+                        <Image
+                          style={{
+                            width: 100,
+                            height: 100,
+                            alignSelf: 'flex-start',
+                          }}
+                          source={setImage(item.posture)}
+                        />
+                      </View>
+                      <Text style={{flex: 1}}>{item.time}</Text>
                     </View>
-                    <Text style={{flex: 1}}>{item.time}</Text>
-                  </View>
-                )}
+                  );
+                }}
               />
             </View>
           </Modal>
-
 
           <FlatList
             data={this.state.dataSource}
