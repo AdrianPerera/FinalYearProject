@@ -20,7 +20,7 @@ import {
   Title,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {ScrollView} from 'react-native-gesture-handler';
+
 
 export default class MessagesTab extends Component {
   state = {
@@ -32,61 +32,42 @@ export default class MessagesTab extends Component {
         message: {
           token: '4ed48743-7372-41d5-9ce1-4ce532b9d5da',
           notification: {
-            topic: 'Lodovico Gammon',
-            body: 'Vision-oriented radical infrastructure',
+            topic: 'notification 1',
+            body: [
+              {patient: 'patient1', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient2', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient3', posture: 'posture1', time: '00:00:00'},
+            ],
           },
         },
-      },
-      {
+      },{
         message: {
-          token: 'e86336e6-2a36-4c16-a69b-7810a5d811b2',
+          token: '4ed48743-7372-41d5-9ce1-4ce532b9d5da',
           notification: {
-            topic: 'Katine Eberst',
-            body: 'Ergonomic dedicated help-desk',
+            topic: 'notification 2',
+            body: [
+              {patient: 'patient1', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient2', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient3', posture: 'posture1', time: '00:00:00'},
+            ],
           },
         },
-      },
-      {
+      },{
         message: {
-          token: '7a1eba9e-389c-4d26-8eac-70dcfbd2d139',
+          token: '4ed48743-7372-41d5-9ce1-4ce532b9d5da',
           notification: {
-            topic: 'Vanna Gaukrodge',
-            body: 'Universal full-range infrastructure',
-          },
-        },
-      },
-      {
-        message: {
-          token: '079dede2-9809-4196-90ea-5a0506f60b5a',
-          notification: {
-            topic: 'Saleem MacCollom',
-            body: 'Visionary radical methodology',
-          },
-        },
-      },
-      {
-        message: {
-          token: '75e8f6d7-a8ea-4a04-9a98-07326df08b58',
-          notification: {
-            topic: 'Jeniffer Quimby',
-            body: 'Persevering asynchronous time-frame',
+            topic: 'notification 3',
+            body: [
+              {patient: 'patient1', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient2', posture: 'posture1', time: '00:00:00'},
+              {patient: 'patient3', posture: 'posture1', time: '00:00:00'},
+            ],
           },
         },
       },
     ],
   };
 
-  ListViewItemSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '100%',
-          backgroundColor: '#000',
-        }}
-      />
-    );
-  };
 
   OpenModal(rowData) {
     // Alert.alert(rowData.message.notification.body);
@@ -94,16 +75,6 @@ export default class MessagesTab extends Component {
     this.setState({modalTopic: rowData.message.notification.topic});
     this.setState({modalVisible: true});
   }
-
-  upButtonHandler = () => {
-    //OnCLick of Up button we scrolled the list to top
-    this.ListView_Ref.scrollToOffset({offset: 0, animated: true});
-  };
-
-  downButtonHandler = () => {
-    //OnCLick of down button we scrolled the list to bottom
-    this.ListView_Ref.scrollToEnd({animated: true});
-  };
 
   render() {
     return (
@@ -115,7 +86,7 @@ export default class MessagesTab extends Component {
                 name="reorder"
                 style={{fontSize: 30, color: 'white'}}
                 onPress={() => {
-                 this.props.navigation.toggleDrawer();
+                  this.props.navigation.toggleDrawer();
                 }}
               />
             </Button>
@@ -128,44 +99,59 @@ export default class MessagesTab extends Component {
 
         <View style={styles.MainContainer}>
           <Modal
-            animationType="fade"
+            animationType="slide"
             transparent={false}
             visible={this.state.modalVisible}>
             <View
               style={{
-                borderColor:'#DDCCCC',
-                borderWidth:1,
-                backgroundColor: '#00BFFF',
-                margin:5,
+                borderColor: '#DDCCCC',
+                borderWidth: 1,
+                margin: 5,
                 flexDirection: 'row',
                 padding: 10,
               }}>
-              <View style={{flex: 7,flexDirection:'row'}}>
-              <Text style={{fontSize: 20}}>{this.state.modalTopic}</Text>
+              <View style={{flex: 7, flexDirection: 'row'}}>
+                <Text style={{fontSize: 20}}>{this.state.modalTopic}</Text>
               </View>
-             
+
               <View style={{flex: 1}}>
-              <Button style={{justifyContent:'center',alignSelf:'flex-end'}} danger small width={30} onPress={() => this.setState({modalVisible: false})}>
-              <Icon
-                  name="remove"
-                  style={{fontSize: 20,color:'white'}}
-                />
-              </Button> 
-              
+                <Button
+                  style={{justifyContent: 'center', alignSelf: 'flex-end'}}
+                  danger
+                  small
+                  width={30}
+                  onPress={() => this.setState({modalVisible: false})}>
+                  <Icon name="remove" style={{fontSize: 20, color: 'white'}} />
+                </Button>
               </View>
             </View>
-            <ScrollView
-              style={{
-                flex: 1,
-                borderColor: '#DDDDDD',
-                borderWidth: 1,
-                margin: 5,
-                padding: 10,
-              }}>
-              <Text>{this.state.modalBody}</Text>
-            </ScrollView>
-            
+            <View style={{marginTop:20,marginLeft:10,justifyContent:'center'}}>
+              <FlatList
+                data={this.state.modalBody}
+                keyExtractor={(item, index) => index.toString()}
+                ref={(ref) => {
+                  this.ListView_Ref = ref;
+                }}
+                renderItem={({item}) => (
+                   
+                  <View style={{flexDirection: 'row',marginBottom:5,marginRight:10,padding:10,borderColor:'black',borderWidth:1}}>
+                    <Text style={{flex: 1}}>{item.patient}</Text>
+                    <View style={{flex: 1}}>
+                    <Text>
+                    {item.posture}
+                    
+                    </Text>
+                    <Image  
+                    style={{width:100,height:100,alignSelf:'flex-start'}}
+                    source={require('../../images/postures/posture1.jpg')}/>
+                    </View>
+                    <Text style={{flex: 1}}>{item.time}</Text>
+                  </View>
+                )}
+              />
+            </View>
           </Modal>
+
 
           <FlatList
             data={this.state.dataSource}
@@ -179,7 +165,10 @@ export default class MessagesTab extends Component {
                 underlayColor="#DDD"
                 style={styles.rowViewContainer}
                 onPress={this.OpenModal.bind(this, item)}>
-                <Text style={{fontWeight:'bold'}}> {item.message.notification.topic}</Text>
+                <Text style={{fontWeight: 'bold'}}>
+                  {' '}
+                  {item.message.notification.topic}
+                </Text>
               </TouchableHighlight>
             )}
           />
@@ -197,9 +186,9 @@ const styles = StyleSheet.create({
   },
   rowViewContainer: {
     fontSize: 20,
-    marginBottom:3,
+    marginBottom: 3,
     padding: 10,
     borderBottomColor: 'grey',
-    borderWidth:1,
+    borderWidth: 1,
   },
 });
