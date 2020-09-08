@@ -11,25 +11,17 @@ import {
   Right,
   Left,
   Text,
-  Button,
-  Form,
-  View,
+  Button, 
   Input,
   Label,
-  Item,
   List,
   ListItem,
-  ScrollView 
-  
+
 } from 'native-base';
-import { RadioButton, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {styles} from '../../styles/EditTabStyles';
 
-
-
-
-function EditTab({navigation},{props}) {
+function EditTab({navigation}) {
 
   const [value, setValue] = React.useState('male');
 
@@ -94,8 +86,6 @@ function EditTab({navigation},{props}) {
         <Input  style={styles.formItem} placeholder="Eg: 0710311885"/>      
         </ListItem>
 
-
-
        <ListItem itemHeader first style={{marginBottom:-50}}>
         <Label style={styles.formLabel} >Working Hours</Label>
         </ListItem>
@@ -109,20 +99,12 @@ function EditTab({navigation},{props}) {
         <ListItem>
         <Input  style={styles.formItem} placeholder="Eg: De Silva"/>      
         </ListItem>
-
-       
-
-        
-
-       
-
-        
               
       </List>
      </CardItem>
      <CardItem>
-          <Button primary block style={styles.button}>
-            <Text style={styles.buttonText}>Save</Text>
+          <Button primary block style={{flex:1}}>
+            <Text>Save</Text>
           </Button>
           </CardItem>
     
