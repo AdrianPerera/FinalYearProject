@@ -134,7 +134,7 @@ function LandingTab({route, navigation}) {
               name="edit"
               style={{fontSize: 30, color: 'white'}}
               onPress={() => {
-                navigation.toggleDrawer();
+               
               }}
             />
           </Button>

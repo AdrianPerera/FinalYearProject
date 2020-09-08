@@ -25,7 +25,6 @@ export const styles = StyleSheet.create({
   },
   textContainer: {
     color: '#FFFFFF',
-    
     fontSize: 25,
     fontWeight: '700',
     marginBottom: 30,
@@ -38,9 +37,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonText: {
-    color: '#FFFFFF',
-    
-  },
+    color: '#FFFFFF'},
   subText: {
     alignSelf: 'flex-start',
     fontSize: 15,

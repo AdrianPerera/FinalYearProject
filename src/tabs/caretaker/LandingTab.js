@@ -1,3 +1,4 @@
+
 import React, {useEffect} from 'react';
 import {
   Container,
@@ -87,15 +88,11 @@ function LandingTab({route, navigation}) {
       <Content style={{padding: 20}}>
         <Card
           style={{
-            height: 300,
+            height: 200,
             justifyContent: 'flex-start',
             borderRadius: 5,
           }}>
-          <CardItem>
-            <Body>
-              <Text>Full Name: </Text>
-            </Body>
-          </CardItem>
+         
           <CardItem>
             <Body>
               <Text>Registration ID : </Text>
@@ -127,7 +124,7 @@ function LandingTab({route, navigation}) {
               name="edit"
               style={{fontSize: 30, color: 'white'}}
               onPress={() => {
-                navigation.toggleDrawer();
+               
               }}
             />
           </Button>
