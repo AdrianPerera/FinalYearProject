@@ -20,6 +20,7 @@ function LoadingScene({navigation}) {
   };
 
   useEffect(() => {
+
       Animated.spring(LogoAnime, {
       toValue: 1,
       tension: 5,
@@ -74,7 +75,6 @@ const style = StyleSheet.create({
   },
   logotext: {
     color: 'white',
-    
     fontSize: 30,
     marginTop: 10,
     fontWeight: '700',

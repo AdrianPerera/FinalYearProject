@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
 
   textContainer: {
     color: '#FFFFFF',
-    
     fontSize: 25,
     fontWeight: '700',
     marginBottom: 30,
@@ -32,7 +31,6 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FFFFFF',
-    
     fontSize: 18,
   },
   subText: {
