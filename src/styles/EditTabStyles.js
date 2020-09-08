@@ -18,9 +18,7 @@ export const styles = StyleSheet.create({
       margin: 20
     },
     formLabel: {
-       
         fontSize: 18,
-        
     },
     formItem: {
         fontSize: 15,

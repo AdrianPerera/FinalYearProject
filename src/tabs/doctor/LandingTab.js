@@ -15,6 +15,7 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Alert, StyleSheet, Image} from 'react-native';
+import Img from '../../images/profile_pic.png';
 
 function LandingTab({route, navigation}) {
   const {param} = route.params;
@@ -68,9 +69,7 @@ function LandingTab({route, navigation}) {
           <View style={styles.headerContent}>
             <Image
               style={styles.avatar}
-              source={{
-                uri: 'https://bootdey.com/img/Content/avatar/avatar1.png',
-              }}
+              source={Img}
             />
 
             <Text style={{fontWeight: 'bold', fontSize: 35, color: 'white'}}>

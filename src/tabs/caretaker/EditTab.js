@@ -8,11 +8,19 @@ import {
   Left,
   Text,
   Button,
+  Content,
+  Card,
+  CardItem,
+  List,
+  ListItem,
+  Input,
+  Label
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {styles} from '../../styles/EditTabStyles';
 
 export default function EditTab({navigation}) {
+    
   return (
     <Container>
       <Header>

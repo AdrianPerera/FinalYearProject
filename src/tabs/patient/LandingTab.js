@@ -16,7 +16,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Alert, StyleSheet, View, Image} from 'react-native';
 import Img from '../../images/profile_pic.png';
 
-
 function LandingTab({route, navigation}) {
   const {param} = route.params;
   param.isLoggedIn = true;
@@ -52,13 +51,10 @@ function LandingTab({route, navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button 
-          style={{width:50,justifyContent:'center'}}
-          onPress={() => navigation.toggleDrawer()} >
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-            />
+          <Button
+            style={{width: 50, justifyContent: 'center'}}
+            onPress={() => navigation.toggleDrawer()}>
+            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
         <Body>
@@ -113,17 +109,16 @@ function LandingTab({route, navigation}) {
             </Body>
           </CardItem>
         </Card>
-        <View style={{margin:15}} >
-          <Button 
-          primary
-          block
-          style={{alignSelf:'center',padding:5,borderRadius:5}}>
-            <Text>Edit Details</Text>
+        <View style={{margin: 15}}>
+          <Button
+            block
+            style={{alignSelf: 'center', padding: 5, borderRadius: 5}}
+            onPress={() => navigation.navigate('editTab')}>
             <Icon
               name="edit"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {navigation.navigate('editTab') }}
+              style={{fontSize: 20, color: 'white', paddingLeft: 10}}
             />
+            <Text>Edit</Text>
           </Button>
         </View>
       </Content>
@@ -150,4 +145,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
