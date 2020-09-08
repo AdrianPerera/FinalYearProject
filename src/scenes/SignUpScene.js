@@ -19,41 +19,12 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/SignUpStyles';
-import AsyncStorage from '@react-native-community/async-storage';
-import firebase from 'react-native-firebase';
+
 
 class SignUpScene extends Component {
-  // async componentDidMount() {
-  //   //we check if user has granted permission to receive push notifications.
-  //   this.checkPermission();
-  // }
-
-   componentDidMount() {
-    const enabled = await firebase.messaging().hasPermission();
-
-    // If Premission granted proceed towards token fetch
-    if (enabled) {
-      this.getToken();
-    } else {
-      // If permission hasn’t been granted to our app, request user in requestPermission method.
-      this.requestPermission();
-    }
-   }
-
-  // async requestPermission() {
-  //   try {
-  //     await firebase.messaging().requestPermission();
-  //     // User has authorised
-  //     this.getToken();
-  //   } catch (error) {
-  //     // User has rejected permissions
-  //     console.log('permission rejected');
-  //   }
-  // }
-
   state = {
     secureEntry: true,
-    mosdalVisible: false,
+    modalVisible: false,
     selected: undefined,
     checked: false,
     fcmToken: '',
@@ -64,19 +35,6 @@ class SignUpScene extends Component {
     reEnterPassword: '',
   };
 
-  // async getToken() {
-  //   var fcmToken = AsyncStorage.getItem('fcmToken').then((value) =>
-  //     this.setState({fcmToken: value}),
-  //   );
-  //   if (!fcmToken) {
-  //     fcmToken = await firebase.messaging().getToken();
-  //     if (fcmToken) {
-  //       // user has a device token
-  //       await AsyncStorage.setItem('fcmToken', fcmToken);
-  //     }
-  //   }
-  // }
-
   changeChecked = () => {
     this.setState({checked: !this.state.checked});
   };
@@ -86,11 +44,6 @@ class SignUpScene extends Component {
       selected: value,
     });
   };
-
-  beforeSubmit() {
-    // this.getToken();
-    console.log(this.state);
-  }
 
   render() {
     return (
