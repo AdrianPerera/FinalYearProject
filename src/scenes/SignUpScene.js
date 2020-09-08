@@ -19,6 +19,7 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/SignUpStyles';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class SignUpScene extends Component {
   state = {
@@ -26,7 +27,13 @@ class SignUpScene extends Component {
     checked: false,
     secureEntry: true,
     modalVisible: false,
+    fcmToken: '',
   };
+
+  async getToken() {
+    var fcmToken = AsyncStorage.getItem('fcmToken');
+    this.setState({fcmToken:fcmToken});
+  } 
 
   changeChecked = () => {
     this.setState({checked: !this.state.checked});
@@ -45,11 +52,13 @@ class SignUpScene extends Component {
           <Container>
             <Header>
               <Left>
-              <Button transparent onPress={() => {
-                this.setState({modalVisible: false});
-              }}>
-              <Icon style={{fontSize:20}} name="arrow-left"/>
-              </Button>
+                <Button
+                  transparent
+                  onPress={() => {
+                    this.setState({modalVisible: false});
+                  }}>
+                  <Icon style={{fontSize: 20}} name="arrow-left" />
+                </Button>
               </Left>
               <Body>
                 <Title>Terms & Conditions</Title>
@@ -136,7 +145,12 @@ class SignUpScene extends Component {
             </Body>
           </ListItem>
 
-          <Button primary block style={styles.button}>
+          <Button
+            primary
+            block
+            style={styles.button}
+            onPress={()=>console.log(this.state)}
+            >
             <Text style={styles.buttonText}>Sign Up</Text>
           </Button>
         </Form>
@@ -146,4 +160,3 @@ class SignUpScene extends Component {
 }
 
 export default SignUpScene;
-

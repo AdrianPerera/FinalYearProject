@@ -134,6 +134,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
       
     }
     splits {
@@ -192,6 +193,8 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:20.1.5"
     implementation "com.google.android.gms:play-services-base:17.2.1"
     implementation "com.google.firebase:firebase-core:16.0.8"
+
+    implementation project(':@react-native-community_async-storage')
 
      compile(project(':react-native-firebase')) {   
        transitive = false

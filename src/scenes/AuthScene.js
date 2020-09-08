@@ -30,7 +30,6 @@ export default class AuthScene extends Component {
 
   async getToken() {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
-    // console.log("fcmToken  "+ fcmToken);
     if (!fcmToken) {
       fcmToken = await firebase.messaging().getToken();
     
