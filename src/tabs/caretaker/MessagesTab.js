@@ -81,14 +81,10 @@ export default class MessagesTab extends Component {
       <Container>
         <Header>
           <Left>
-            <Button>
-              <Icon
-                name="reorder"
-                style={{fontSize: 30, color: 'white'}}
-                onPress={() => {
-                  this.props.navigation.toggleDrawer();
-                }}
-              />
+            <Button
+              style={{width: 50, justifyContent: 'center'}}
+              onPress={() => this.props.navigation.toggleDrawer()}>
+              <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
             </Button>
           </Left>
           <Body>
@@ -134,16 +130,14 @@ export default class MessagesTab extends Component {
                   this.ListView_Ref = ref;
                 }}
                 renderItem={({item}) => {
-                  
-                  const setImage=(posture)=>{
+                  const setImage = (posture) => {
                     const postures = {
                       posture1: require('../../images/postures/posture1.jpg'),
                       posture2: require('../../images/postures/posture2.jpg'),
-                      posture3: require('../../images/postures/posture3.jpg') ,
-                    }
+                      posture3: require('../../images/postures/posture3.jpg'),
+                    };
                     return postures[posture];
-                  }
-              
+                  };
 
                   return (
                     <View

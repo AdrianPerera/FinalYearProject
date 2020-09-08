@@ -20,21 +20,17 @@ function MessagesTab({navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button>
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            />
+          <Button
+            style={{width: 50, justifyContent: 'center'}}
+            onPress={() => navigation.toggleDrawer()}>
+            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
         <Body>
           <Title style={{textTransform: 'capitalize'}}>Messages</Title>
         </Body>
         <Right>
-        <Icon name='envelope' style={{fontSize: 30, color: '#e4e213'}} />
+          <Icon name="envelope" style={{fontSize: 30, color: '#e4e213'}} />
         </Right>
       </Header>
     </Container>

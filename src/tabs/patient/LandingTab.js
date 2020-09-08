@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Alert, StyleSheet, View, Image} from 'react-native';
 import Img from '../../images/profile_pic.png';
 
+
 function LandingTab({route, navigation}) {
   const {param} = route.params;
   param.isLoggedIn = true;
@@ -51,13 +52,12 @@ function LandingTab({route, navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button>
+          <Button 
+          style={{width:50,justifyContent:'center'}}
+          onPress={() => navigation.toggleDrawer()} >
             <Icon
               name="reorder"
               style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
             />
           </Button>
         </Left>
@@ -124,6 +124,17 @@ export default LandingTab;
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#00BFFF',
+  },
+  headerContent: {
+    padding: 30,
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: 'white',
     marginBottom: 10,
   },
 });

@@ -16,20 +16,14 @@ import LetterImg from '../../images/tab-Icons/secured-letter.png';
 import CalenderImg from '../../images/tab-Icons/age.png';
 
 function ProfileTab({navigation}) {
-
-  
   return (
     <Container>
       <Header>
         <Left>
-          <Button>
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            />
+          <Button
+            style={{width: 50, justifyContent: 'center'}}
+            onPress={() => navigation.toggleDrawer()}>
+            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
         <Body>
@@ -48,10 +42,7 @@ function ProfileTab({navigation}) {
             underlineColorAndroid="transparent"
             onChangeText={(email) => this.setState({email})}
           />
-          <Image
-            style={styles.inputIcon}
-            source={UserImg}
-          />
+          <Image style={styles.inputIcon} source={UserImg} />
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -60,10 +51,7 @@ function ProfileTab({navigation}) {
             underlineColorAndroid="transparent"
             onChangeText={(email) => this.setState({email})}
           />
-          <Image
-            style={styles.inputIcon}
-            source={IdImg}
-          />
+          <Image style={styles.inputIcon} source={IdImg} />
         </View>
 
         <View style={styles.inputContainer}>
@@ -73,10 +61,7 @@ function ProfileTab({navigation}) {
             underlineColorAndroid="transparent"
             onChangeText={(email) => this.setState({email})}
           />
-          <Image
-            style={styles.inputIcon}
-            source={CalenderImg}
-          />
+          <Image style={styles.inputIcon} source={CalenderImg} />
         </View>
 
         <View style={styles.inputContainer}>
@@ -87,10 +72,7 @@ function ProfileTab({navigation}) {
             underlineColorAndroid="transparent"
             onChangeText={(email) => this.setState({email})}
           />
-          <Image
-            style={styles.inputIcon}
-            source={LetterImg}
-          />
+          <Image style={styles.inputIcon} source={LetterImg} />
         </View>
 
         <View style={styles.inputContainer}>
@@ -101,10 +83,7 @@ function ProfileTab({navigation}) {
             underlineColorAndroid="transparent"
             onChangeText={(password) => this.setState({password})}
           />
-          <Image
-            style={styles.inputIcon}
-            source={PasswordImg}
-          />
+          <Image style={styles.inputIcon} source={PasswordImg} />
         </View>
 
         <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]}>

@@ -110,14 +110,10 @@ export default function PatientsTab({navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button>
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            />
+          <Button
+            style={{width: 50, justifyContent: 'center'}}
+            onPress={() => navigation.toggleDrawer()}>
+            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
         <Body>
@@ -132,14 +128,12 @@ export default function PatientsTab({navigation}) {
       </Header>
 
       <View>
-        
-          <FlatList
-            data={DATA}
-            renderItem={renderThis}
-            keyExtractor={(item) => item.id}
-            numColumns={1}
-          />
-        
+        <FlatList
+          data={DATA}
+          renderItem={renderThis}
+          keyExtractor={(item) => item.id}
+          numColumns={1}
+        />
       </View>
     </Container>
   );

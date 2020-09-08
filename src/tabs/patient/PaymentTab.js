@@ -19,21 +19,17 @@ function PaymentTab({navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button>
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            />
+          <Button
+            style={{width: 50, justifyContent: 'center'}}
+            onPress={() => navigation.toggleDrawer()}>
+            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
         <Body>
           <Title style={{textTransform: 'capitalize'}}>Payments</Title>
         </Body>
         <Right>
-        <Icon name='money' style={{fontSize: 30, color: '#92d26b'}} />
+          <Icon name="money" style={{fontSize: 30, color: '#92d26b'}} />
         </Right>
       </Header>
     </Container>

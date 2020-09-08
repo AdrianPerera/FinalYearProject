@@ -64,15 +64,14 @@ export default function PatientsTab({navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button>
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            />
-          </Button>
+        <Button 
+        style={{width:50,justifyContent:'center'}}
+        onPress={() => navigation.toggleDrawer()} >
+          <Icon
+            name="reorder"
+            style={{fontSize: 30, color: 'white'}}
+          />
+        </Button>
         </Left>
         <Body>
           <Title style={{textTransform: 'capitalize'}}>Patients</Title>

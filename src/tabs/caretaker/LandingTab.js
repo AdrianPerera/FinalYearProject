@@ -52,14 +52,10 @@ function LandingTab({route, navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button>
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            />
+          <Button
+            style={{width: 50, justifyContent: 'center'}}
+            onPress={() => navigation.toggleDrawer()}>
+            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
         <Body>
@@ -120,7 +116,7 @@ function LandingTab({route, navigation}) {
             onPress={() => navigation.navigate('editTab')}>
             <Icon
               name="edit"
-              style={{fontSize: 20, color: 'white',paddingLeft:10}}
+              style={{fontSize: 20, color: 'white', paddingLeft: 10}}
             />
             <Text>Edit</Text>
           </Button>

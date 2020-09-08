@@ -51,14 +51,10 @@ function LandingTab({route, navigation}) {
     <Container>
       <Header>
         <Left>
-          <Button>
-            <Icon
-              name="reorder"
-              style={{fontSize: 30, color: 'white'}}
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            />
+          <Button
+            style={{width: 50, justifyContent: 'center'}}
+            onPress={() => navigation.toggleDrawer()}>
+            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
         <Body>
@@ -117,11 +113,11 @@ function LandingTab({route, navigation}) {
             </Body>
           </CardItem>
         </Card>
-        <View style={{margin:15}} >
-          <Button 
-          primary
-          block
-          style={{alignSelf:'center',padding:5,borderRadius:5}}>
+        <View style={{margin: 15}}>
+          <Button
+            primary
+            block
+            style={{alignSelf: 'center', padding: 5, borderRadius: 5}}>
             <Text>Edit Details</Text>
             <Icon
               name="edit"
