@@ -82,9 +82,9 @@ class SignUpScene extends Component {
               placeholderIconColor="#007aff"
               selectedValue={this.state.selected}
               onValueChange={this.changeValue.bind(this)}>
-              <Picker.Item label="Patient" value="key0" />
-              <Picker.Item label="Caretaker " value="key1" />
-              <Picker.Item label="Doctor" value="key2" />
+              <Picker.Item label="Patient" value="patient" />
+              <Picker.Item label="Caretaker " value="caretaker" />
+              <Picker.Item label="Doctor" value="doctor" />
             </Picker>
           </Item>
 
