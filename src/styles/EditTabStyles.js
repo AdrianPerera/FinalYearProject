@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     },
     formItem: {
         fontSize: 15,
-        
+
        
     }
 });

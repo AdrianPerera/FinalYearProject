@@ -113,7 +113,19 @@ function LandingTab({route, navigation}) {
             </Body>
           </CardItem>
         </Card>
-       
+        <View style={{margin:15}} >
+          <Button 
+          primary
+          block
+          style={{alignSelf:'center',padding:5,borderRadius:5}}>
+            <Text>Edit Details</Text>
+            <Icon
+              name="edit"
+              style={{fontSize: 30, color: 'white'}}
+              onPress={() => {navigation.navigate('editTab') }}
+            />
+          </Button>
+        </View>
       </Content>
     </Container>
   );

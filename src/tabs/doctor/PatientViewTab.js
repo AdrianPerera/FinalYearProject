@@ -15,9 +15,12 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
+
 export default function PatientViewTab({route, navigation}) {
   const {name} = route.params;
-  
+
+
   return (
     <Container>
       <Header noLeft>
@@ -30,9 +33,9 @@ export default function PatientViewTab({route, navigation}) {
         </Right>
       </Header>
 
-
       <Content>
-        <Text> {name}</Text>
+        <Text> {name} </Text>
+      
       </Content>
     </Container>
   );

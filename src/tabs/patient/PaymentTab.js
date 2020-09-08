@@ -25,6 +25,9 @@ function PaymentTab({navigation}) {
             <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
           </Button>
         </Left>
+
+
+        
         <Body>
           <Title style={{textTransform: 'capitalize'}}>Payments</Title>
         </Body>

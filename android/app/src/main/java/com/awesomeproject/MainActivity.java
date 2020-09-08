@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.finalyearproject;
 
 import com.facebook.react.ReactActivity;
 

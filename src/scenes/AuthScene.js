@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { Text }  from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/AuthScStyles';
 
 export default class AuthScene extends Component {
+
   state = {
     selected: 'patient',
     username: '',
@@ -67,6 +68,7 @@ export default class AuthScene extends Component {
             onPress={() => this.gotToProfile()}>
             <Text style={styles.buttonText}> Sign In</Text>
           </Button>
+
         </Form>
 
         <Text style={styles.subText}>
