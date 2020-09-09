@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import { Text }  from 'react-native';
+import {Text, Alert} from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/AuthScStyles';
 
 export default class AuthScene extends Component {
-
   state = {
     selected: 'patient',
     username: '',
     password: '',
-    isLoggedIn:false
+    isLoggedIn: false,
+    token:''
   };
 
   changeValue = (value) => {
@@ -19,10 +19,36 @@ export default class AuthScene extends Component {
     });
   };
 
-  gotToProfile= ()=>{
-    // TODO: code for checking username and password authorization
-    this.props.navigation.navigate('profile', { screen:'landingTab', params: { param:this.state}});
-  }
+  gotToProfile = () => {
+    // var raw = JSON.stringify({username: 'nimal_new', password: 'hello123456'});
+
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        username:this.state.username,
+        password:this.state.password
+      }),
+      redirect: 'follow',
+    };
+
+    fetch('http://prevelcer.herokuapp.com/api-token-auth/', requestOptions)
+      .then((response) => response.text())
+      .then((token) => this.setState({token:token}))
+      .catch((error) => console.log('error', error));
+    
+    if(this.state.token){
+      this.props.navigation.navigate('profile', {
+        screen: 'landingTab',
+        params: {param: this.state},
+      });
+    }else{
+      Alert.alert('Login Failed','Invalid Credentials')
+    }
+   
+  };
 
   render() {
     return (
@@ -68,7 +94,6 @@ export default class AuthScene extends Component {
             onPress={() => this.gotToProfile()}>
             <Text style={styles.buttonText}> Sign In</Text>
           </Button>
-
         </Form>
 
         <Text style={styles.subText}>
