@@ -10,7 +10,7 @@ export default class AuthScene extends Component {
     username: '',
     password: '',
     isLoggedIn: false,
-    token:''
+    token: '',
   };
 
   changeValue = (value) => {
@@ -19,36 +19,45 @@ export default class AuthScene extends Component {
     });
   };
 
-  gotToProfile = () => {
+  async goToProfile() {
     // var raw = JSON.stringify({username: 'nimal_new', password: 'hello123456'});
-
     var requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type':'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username:this.state.username,
-        password:this.state.password
+        username: this.state.username,
+        password: this.state.password,
       }),
       redirect: 'follow',
     };
 
-    fetch('http://prevelcer.herokuapp.com/api-token-auth/', requestOptions)
-      .then((response) => response.text())
-      .then((token) => this.setState({token:token}))
-      .catch((error) => console.log('error', error));
-    
-    if(this.state.token){
+    loginHandle = () => {
       this.props.navigation.navigate('profile', {
         screen: 'landingTab',
         params: {param: this.state},
       });
-    }else{
-      Alert.alert('Login Failed','Invalid Credentials')
-    }
-   
-  };
+    };
+
+    await fetch(
+      'http://prevelcer.herokuapp.com/api-token-auth/',
+      requestOptions,
+    )
+      .then(
+        (response) => response.json(),
+        (error) => console.log(error),
+      )
+      .then((token) => console.log(token))
+      .catch((error) => console.log('error', error));
+
+    // if (this.state.token) {
+    //   console.log(this.state.token);
+    //
+    // } else {
+    //   Alert.alert('Login Failed', 'Invalid Credentials');
+    // }
+  }
 
   render() {
     return (
@@ -91,7 +100,7 @@ export default class AuthScene extends Component {
             primary
             block
             style={styles.button}
-            onPress={() => this.gotToProfile()}>
+            onPress={() => this.goToProfile()}>
             <Text style={styles.buttonText}> Sign In</Text>
           </Button>
         </Form>
