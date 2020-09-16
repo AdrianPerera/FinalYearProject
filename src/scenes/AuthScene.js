@@ -45,18 +45,14 @@ export default class AuthScene extends Component {
       requestOptions,
     )
       .then(
-        (response) => response.json(),
+        (response) => response.status,
         (error) => console.log(error),
       )
-      .then((token) => console.log(token))
+      .then((status) => {(status=='200')? loginHandle():Alert.alert("cannot login",'Wrong login credentials')})
+                        
       .catch((error) => console.log('error', error));
 
-    // if (this.state.token) {
-    //   console.log(this.state.token);
-    //
-    // } else {
-    //   Alert.alert('Login Failed', 'Invalid Credentials');
-    // }
+
   }
 
   render() {
