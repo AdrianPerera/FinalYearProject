@@ -3,6 +3,7 @@ import {Text, Alert} from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/AuthScStyles';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class AuthScene extends Component {
   state = {
@@ -34,7 +35,12 @@ export default class AuthScene extends Component {
     };
 
     loginHandle = () => {
-      this.props.navigation.navigate('profile', {
+
+      fetch('http://prevelcer.herokuapp.com/api-token-auth/',
+      requestOptions,
+    ).then((response)=> response.json()).then((token)=> AsyncStorage.setItem('userToken',JSON.stringify(token))).catch((error)=>console.log(error));
+      
+        this.props.navigation.navigate('profile', {
         screen: 'landingTab',
         params: {param: this.state},
       });
@@ -48,7 +54,7 @@ export default class AuthScene extends Component {
         (response) => response.status,
         (error) => console.log(error),
       )
-      .then((status) => {(status=='200')? loginHandle():Alert.alert("cannot login",'Wrong login credentials')})
+      .then((status) => {(status=='200')? loginHandle():Alert.alert("Login Failure",'Wrong login credentials')})
                         
       .catch((error) => console.log('error', error));
 

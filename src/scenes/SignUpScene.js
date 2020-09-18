@@ -106,6 +106,14 @@ class SignUpScene extends Component {
           </Item>
 
           <Item inlineLabel>
+            <Icon style={styles.icon} name="envelope" />
+            <Input
+              placeholder="E-mail"
+              onChangeText={(value) => this.setState({email: value})}
+            />
+          </Item>
+
+          <Item inlineLabel>
             <Icon style={styles.icon} name="key" />
             <Input
               secureTextEntry={this.state.secureEntry}

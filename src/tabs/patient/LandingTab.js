@@ -15,10 +15,22 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Alert, StyleSheet, View, Image} from 'react-native';
 import Img from '../../images/profile_pic.png';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function LandingTab({route, navigation}) {
   const {param} = route.params;
   param.isLoggedIn = true;
+
+  const retrieveData = () =>{
+    AsyncStorage.getItem('userToken')
+   .then((value)=>{
+    const user = JSON.stringify(value);
+    Alert.alert('userToken',user);
+   })
+   .catch((error)=>{
+   console.log(error);
+   })
+  };
 
   const logOutHandler = () => {
     Alert.alert('Log out?', 'You are about to Log out!', [
@@ -120,6 +132,16 @@ function LandingTab({route, navigation}) {
             />
             <Text>Edit</Text>
           </Button>
+          <Button
+          block
+          style={{alignSelf: 'center', padding: 5, borderRadius: 5}}
+          onPress={() => retrieveData()}>
+          <Icon
+            name="edit"
+            style={{fontSize: 20, color: 'white', paddingLeft: 10}}
+          />
+          <Text>Show token</Text>
+        </Button>
         </View>
       </Content>
     </Container>
