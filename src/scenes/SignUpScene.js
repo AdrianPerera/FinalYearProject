@@ -29,6 +29,8 @@ class SignUpScene extends Component {
     checked: false,
     fcmToken: '',
     username: '',
+    firstName:'',
+    lastName:'',
     phoneNumber: '',
     email: '',
     password: '',
@@ -44,6 +46,30 @@ class SignUpScene extends Component {
       selected: value,
     });
   };
+
+  beforeSubmit=()=>{
+     
+    var data = JSON.stringify({
+      username: this.state.username,
+      password: this.state.password,
+      email: this.state.email,
+      first_name: this.state.firstName,
+      last_name: this.state.lastName,
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers:  {"Content-Type": "application/json"},
+      body: data,
+      redirect: 'follow'
+    };
+
+    fetch("https://prevelcer.herokuapp.com/api/register/", requestOptions)
+      .then(response => response)
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+
+  }
 
   render() {
     return (
@@ -93,6 +119,22 @@ class SignUpScene extends Component {
             <Input
               placeholder="Username"
               onChangeText={(value) => this.setState({username: value})}
+            />
+          </Item>
+          
+          <Item inlineLabel>
+            <Icon style={styles.icon} name="user-circle" />
+            <Input
+              placeholder="first name"
+              onChangeText={(value) => this.setState({firstName: value})}
+            />
+          </Item>
+
+          <Item inlineLabel>
+            <Icon style={styles.icon} name="user-circle" />
+            <Input
+              placeholder="last name"
+              onChangeText={(value) => this.setState({lastName: value})}
             />
           </Item>
 
