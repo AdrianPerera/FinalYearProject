@@ -33,7 +33,7 @@ function LandingTab({route, navigation}) {
   };
 
   const logOutHandler = () => {
-    Alert.alert('Log out?', 'You are about to Log out!', [
+    Alert.alert('Log out From Landing Tab?', 'You are about to Log out!', [
       {text: 'Cancel', style: 'cancel', onPress: () => {}},
       {
         text: 'Log Out',

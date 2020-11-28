@@ -16,6 +16,7 @@ function DrawerContent({...props}) {
         text: 'Log Out',
         style: 'destructive',
         onPress: () => {
+          props.state.routes[0].params.param.isLoggedIn=false;
           props.navigation.reset({
             index: 0,
             routes: [{name: 'auth'}],

@@ -20,6 +20,13 @@ export default class AuthScene extends Component {
     });
   };
 
+  loginHandle = () => {
+    this.props.navigation.navigate('profile', {
+    screen: 'landingTab',
+    params: {param: this.state},
+  });
+};
+
   async goToProfile() {
     // var raw = JSON.stringify({username: 'nimal_new', password: 'hello123456'});
     var requestOptions = {
@@ -34,29 +41,7 @@ export default class AuthScene extends Component {
       redirect: 'follow',
     };
 
-    loginHandle = () => {
-
-      fetch('http://prevelcer.herokuapp.com/api-token-auth/',
-      requestOptions,
-    ).then((response)=> response.json()).then((token)=> AsyncStorage.setItem('userToken',JSON.stringify(token))).catch((error)=>console.log(error));
-      
-        this.props.navigation.navigate('profile', {
-        screen: 'landingTab',
-        params: {param: this.state},
-      });
-    };
-
-    await fetch(
-      'http://prevelcer.herokuapp.com/api-token-auth/',
-      requestOptions,
-    )
-      .then(
-        (response) => response.status,
-        (error) => console.log(error),
-      )
-      .then((status) => {(status=='200')? loginHandle():Alert.alert("Login Failure",'Wrong login credentials')})
-                        
-      .catch((error) => console.log('error', error));
+  
 
 
   }
@@ -102,7 +87,7 @@ export default class AuthScene extends Component {
             primary
             block
             style={styles.button}
-            onPress={() => this.goToProfile()}>
+            onPress={() => this.loginHandle()}>
             <Text style={styles.buttonText}> Sign In</Text>
           </Button>
         </Form>
