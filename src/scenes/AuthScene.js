@@ -3,7 +3,6 @@ import {Text, Alert} from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/AuthScStyles';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export default class AuthScene extends Component {
   state = {
@@ -28,7 +27,6 @@ export default class AuthScene extends Component {
 };
 
   async goToProfile() {
-    // var raw = JSON.stringify({username: 'nimal_new', password: 'hello123456'});
     var requestOptions = {
       method: 'POST',
       headers: {

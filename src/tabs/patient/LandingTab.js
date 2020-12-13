@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Alert, StyleSheet, View, Image} from 'react-native';
 import Img from '../../images/profile_pic.png';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LandingTab({route, navigation}) {
   const {param} = route.params;
@@ -97,27 +97,27 @@ function LandingTab({route, navigation}) {
           <CardItem style={{alignSelf: 'center'}} header></CardItem>
           <CardItem>
             <Body>
-              <Text>Registration ID : </Text>
+              <Text>Reg ID : 187654</Text>
             </Body>
           </CardItem>
           <CardItem>
             <Body>
-              <Text>Doctor : </Text>
+              <Text>Doctor : Sarath Perera </Text>
             </Body>
           </CardItem>
           <CardItem>
             <Body>
-              <Text>Caretaker : </Text>
+              <Text>Caretaker : Surangi Peiris  </Text>
             </Body>
           </CardItem>
           <CardItem>
             <Body>
-              <Text>Room Number : </Text>
+              <Text>Room No : 5 </Text>
             </Body>
           </CardItem>
           <CardItem>
             <Body>
-              <Text>Status : </Text>
+              <Text>Status : no ulcers </Text>
             </Body>
           </CardItem>
         </Card>
@@ -134,7 +134,7 @@ function LandingTab({route, navigation}) {
           </Button>
           <Button
           block
-          style={{alignSelf: 'center', padding: 5, borderRadius: 5}}
+          style={{alignSelf: 'center', padding: 5, borderRadius: 5,marginTop:5}}
           onPress={() => retrieveData()}>
           <Icon
             name="edit"
