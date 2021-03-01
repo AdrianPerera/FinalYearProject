@@ -19,23 +19,36 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/SignUpStyles';
-
+import {auth, messaging} from 'react-native-firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class SignUpScene extends Component {
   state = {
     secureEntry: true,
     modalVisible: false,
-    selected: undefined,
+    selected: '1',
     checked: false,
     fcmToken: '',
     username: '',
-    firstName:'',
-    lastName:'',
+    firstName: '',
+    lastName: '',
     phoneNumber: '',
     email: '',
     password: '',
     reEnterPassword: '',
+    auth_token: '',
   };
+
+  componentDidMount() {
+    messaging()
+      .getToken()
+      .then((token) => {
+        console.log(token);
+        AsyncStorage.setItem('@fcm_token', token);
+        this.setState({fcmToken: token});
+        // console.log("token :"+ this.state.fcmToken);
+      });
+  }
 
   changeChecked = () => {
     this.setState({checked: !this.state.checked});
@@ -47,8 +60,7 @@ class SignUpScene extends Component {
     });
   };
 
-  beforeSubmit=()=>{
-     
+  async beforeSubmit() {
     var data = JSON.stringify({
       username: this.state.username,
       password: this.state.password,
@@ -57,19 +69,71 @@ class SignUpScene extends Component {
       last_name: this.state.lastName,
     });
 
-    var requestOptions = {
+    var requestOptions1 = {
       method: 'POST',
-      headers:  {"Content-Type": "application/json"},
+      headers: {'Content-Type': 'application/json'},
       body: data,
-      redirect: 'follow'
+      redirect: 'follow',
     };
 
-    fetch("https://prevelcer.herokuapp.com/api/register/", requestOptions)
-      .then(response => response)
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+    await fetch(
+      'https://prevelcer.herokuapp.com/api/register/',
+      requestOptions1,
+    )
+      .then((response) => response)
+      .then((result) => result)
+      .catch((error) => console.log('error', error));
+    var credentials = JSON.stringify({
+      "username": this.state.username,
+      "password": this.state.password,
+    });
 
+    console.log(credentials);
+
+    var requestOptions2 = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: credentials,
+    };
+
+    await fetch(
+      'https://prevelcer.herokuapp.com/api-token-auth/',
+      requestOptions2,
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        AsyncStorage.setItem('@auth_token',result.token)
+        this.setState({auth_token:result.token})
+      })
+      .catch((error) => console.log('error', error));
+
+    var updateData =JSON.stringify({
+      'phone_number': this.state.phoneNumber,
+      'fcm_token': this.state.fcmToken,
+      'role': parseInt(this.state.selected)
+    })
+    
+    const sendingToken = "Token " + this.state.auth_token;
+    console.log(sendingToken);
+    console.log(parseInt(this.state.selected));
+    console.log("updateData",updateData);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", sendingToken);
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions3 = {
+      method: 'POST',
+      headers: myHeaders,
+      body: updateData,
+      redirect: 'follow',
+    };
+    await fetch('https://prevelcer.herokuapp.com/api/profile/', requestOptions3)
+      .then((response) => response.text())
+      .then((result) => console.log(result)).catch((error)=>console.log('update Error',error));
+
+      this.props.navigation.navigate('auth');
   }
+
+  async postSubmit() {}
 
   render() {
     return (
@@ -108,9 +172,9 @@ class SignUpScene extends Component {
               placeholderIconColor="#007aff"
               selectedValue={this.state.selected}
               onValueChange={this.changeValue.bind(this)}>
-              <Picker.Item label="Patient" value="patient" />
-              <Picker.Item label="Caretaker " value="caretaker" />
-              <Picker.Item label="Doctor" value="doctor" />
+              <Picker.Item label="Patient" value="1" />
+              <Picker.Item label="Caretaker " value="2" />
+              <Picker.Item label="Doctor" value="3" />
             </Picker>
           </Item>
 
@@ -121,7 +185,7 @@ class SignUpScene extends Component {
               onChangeText={(value) => this.setState({username: value})}
             />
           </Item>
-          
+
           <Item inlineLabel>
             <Icon style={styles.icon} name="user-circle" />
             <Input
@@ -193,7 +257,8 @@ class SignUpScene extends Component {
             <Body>
               <Text style={styles.subText}>
                 I Agree to the
-                <Text onPress={() =>this.setState({modalVisible: true})}
+                <Text
+                  onPress={() => this.setState({modalVisible: true})}
                   style={styles.link}>
                   Terms and Conditions
                 </Text>
@@ -208,6 +273,8 @@ class SignUpScene extends Component {
             onPress={() => this.beforeSubmit()}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </Button>
+
+         
         </Form>
       </Container>
     );

@@ -31,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           packages.add(new RNFirebaseMessagingPackage()); // add this line 
           packages.add(new RNFirebaseNotificationsPackage()); // add this line 
+          // packages.add(new AsyncStoragePackage());
           return packages;   
         }
       
