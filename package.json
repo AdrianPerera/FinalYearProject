@@ -1,5 +1,5 @@
 {
-  "name": "AwesomeProject",
+  "name": "uclerNOTE",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "@react-navigation/drawer": "^5.8.6",
     "@react-navigation/native": "^5.7.1",
     "@react-navigation/stack": "^5.7.1",
+    "lodash.merge": "^4.6.2",
     "native-base": "^2.13.13",
     "react": "16.13.1",
     "react-native": "0.63.2",
