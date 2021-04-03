@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Text, Alert} from 'react-native';
+import {Text, Alert, StyleSheet} from 'react-native';
 import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles} from '../styles/AuthScStyles';
+
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class AuthScene extends Component {
   state = {
@@ -10,8 +12,9 @@ export default class AuthScene extends Component {
     username: '',
     password: '',
     isLoggedIn: false,
-    token: '',
+    auth_token: '',
   };
+
 
   changeValue = (value) => {
     this.setState({
@@ -19,30 +22,60 @@ export default class AuthScene extends Component {
     });
   };
 
-  loginHandle = () => {
-    this.props.navigation.navigate('profile', {
-    screen: 'landingTab',
-    params: {param: this.state},
-  });
-};
+  goToProfile() {
 
-  async goToProfile() {
+    var data = JSON.stringify({
+      'username': this.state.username,
+      'password': this.state.password,
+    });
     var requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password,
-      }),
+      body: data,
       redirect: 'follow',
     };
 
-  
 
+    fetch(
+      'https://prevelcer.herokuapp.com/api-token-auth/',
+      requestOptions,
+    )
+      .then((response) => response.json())
+      .then((result) => {
+      console.log(result)
+      this.setState({ auth_token : result.token})
+      console.log("rabbit");
 
+var new_auth_token = this.state.auth_token;
+
+console.log(new_auth_token);
+if (new_auth_token == undefined){
+  console.log("yeah");
+  const logOutHandler = () => {
+    Alert.alert('Password or Username is not correct?', 'Password or Username or wrong', [
+      {text: 'OK', style: 'cancel', onPress: () => {}},
+    ]);
+  };
+
+  logOutHandler();
+
+}
+else{
+  this.props.navigation.navigate('profile', {
+    screen: 'landingTab',
+    params: {param: this.state},
+  });
+
+}
+    })
+
+      .catch((error) => console.log('error', error));
   }
+
+
+
 
   render() {
     return (
@@ -65,7 +98,6 @@ export default class AuthScene extends Component {
               <Picker.Item label="Doctor" value="doctor" />
             </Picker>
           </Item>
-
           <Item inlineLabel>
             <Icon type="Fontawesome" style={styles.icon} name="user" />
             <Input
@@ -85,11 +117,10 @@ export default class AuthScene extends Component {
             primary
             block
             style={styles.button}
-            onPress={() => this.loginHandle()}>
+            onPress={() => this.goToProfile()}>
             <Text style={styles.buttonText}> Sign In</Text>
           </Button>
         </Form>
-
         <Text style={styles.subText}>
           {' '}
           Don't have an account?{' '}
