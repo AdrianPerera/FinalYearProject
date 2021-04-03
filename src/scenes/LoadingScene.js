@@ -1,4 +1,4 @@
-import React, {Component, useEffect,useState} from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import {
   Animated,
   View,
@@ -9,19 +9,19 @@ import {
 } from 'react-native';
 import Logo from '../images/logo.png';
 
-function LoadingScene({navigation}) {
- 
-  const LogoAnime= new Animated.Value(0);
-  const LogoText= new Animated.Value(0);
-  const [loadingSpinner,setLoadingSpinner]= useState(false);
-  
+function LoadingScene({ navigation }) {
+
+  const LogoAnime = new Animated.Value(0);
+  const LogoText = new Animated.Value(0);
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
+
   const switchToAuth = () => {
     navigation.replace('auth');
   };
 
   useEffect(() => {
 
-      Animated.spring(LogoAnime, {
+    Animated.spring(LogoAnime, {
       toValue: 1,
       tension: 5,
       friction: 1,
@@ -34,7 +34,7 @@ function LoadingScene({navigation}) {
       useNativeDriver: true,
     }).start(setLoadingSpinner(true)
     );
-    setTimeout(switchToAuth,2000)
+    setTimeout(switchToAuth, 2000)
   });
 
   return (
@@ -50,7 +50,7 @@ function LoadingScene({navigation}) {
         <Image source={Logo} style={style.logo} />
       </Animated.View>
 
-      <Animated.View style={{opacity: LogoText}}>
+      <Animated.View style={{ opacity: LogoText }}>
         <Text style={style.logotext}> UlcerNOTE </Text>
       </Animated.View>
       {LogoText ? (

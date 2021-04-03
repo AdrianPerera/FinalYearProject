@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Text, Alert, StyleSheet} from 'react-native';
-import {Picker, Form, Item, Button, Container, Input, Label} from 'native-base';
+import React, { Component } from 'react';
+import { Text, View, Alert, ActivityIndicator, StyleSheet } from 'react-native';
+import { Picker, Form, Item, Button, Container, Input, Label } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {styles} from '../styles/AuthScStyles';
+import { styles } from '../styles/AuthScStyles';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,6 +13,7 @@ export default class AuthScene extends Component {
     password: '',
     isLoggedIn: false,
     auth_token: '',
+    loadingSpinner: false,
   };
 
 
@@ -23,7 +24,7 @@ export default class AuthScene extends Component {
   };
 
   goToProfile() {
-
+    this.setState({ loadingSpinner: true });
     var data = JSON.stringify({
       'username': this.state.username,
       'password': this.state.password,
@@ -37,43 +38,41 @@ export default class AuthScene extends Component {
       redirect: 'follow',
     };
 
-
     fetch(
       'https://prevelcer.herokuapp.com/api-token-auth/',
       requestOptions,
     )
       .then((response) => response.json())
       .then((result) => {
-      console.log(result)
-      this.setState({ auth_token : result.token})
-      console.log("rabbit");
+        console.log(result)
+        this.setState({ loadingSpinner: false });
+        this.setState({ auth_token: result.token });
+        console.log("rabbit");
 
-var new_auth_token = this.state.auth_token;
+        var new_auth_token = this.state.auth_token;
 
-console.log(new_auth_token);
-if (new_auth_token == undefined){
-  console.log("yeah");
-  const logOutHandler = () => {
-    Alert.alert('Password or Username is not correct?', 'Password or Username or wrong', [
-      {text: 'OK', style: 'cancel', onPress: () => {}},
-    ]);
-  };
+        console.log(new_auth_token);
+        if (new_auth_token == undefined) {
 
-  logOutHandler();
 
-}
-else{
-  this.props.navigation.navigate('profile', {
-    screen: 'landingTab',
-    params: {param: this.state},
-  });
-
-}
-    })
-
+          console.log("yeah");
+          const logOutHandler = () => {
+            Alert.alert('Password or Username is not correct?', 'Password or Username or wrong', [
+              { text: 'OK', style: 'cancel', onPress: () => { } },
+            ]);
+          };
+          logOutHandler();
+        }
+        else {
+          this.setState({ loadingSpinner: true });
+          this.props.navigation.navigate('profile', {
+            screen: 'landingTab',
+            params: { param: this.state },
+          });
+        }
+      })
       .catch((error) => console.log('error', error));
   }
-
 
 
 
@@ -87,9 +86,9 @@ else{
             <Picker
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
-              style={{width: 100}}
+              style={{ width: 100 }}
               placeholder="Proceed As"
-              placeholderStyle={{color: '#bfc6ea'}}
+              placeholderStyle={{ color: '#bfc6ea' }}
               placeholderIconColor="#007aff"
               selectedValue={this.state.selected}
               onValueChange={this.changeValue.bind(this)}>
@@ -102,7 +101,7 @@ else{
             <Icon type="Fontawesome" style={styles.icon} name="user" />
             <Input
               placeholder="Username"
-              onChangeText={(text) => this.setState({username: text})}
+              onChangeText={(text) => this.setState({ username: text })}
             />
           </Item>
           <Item inlineLabel>
@@ -110,14 +109,17 @@ else{
             <Input
               secureTextEntry
               placeholder="Password"
-              onChangeText={(text) => this.setState({password: text})}
+              onChangeText={(text) => this.setState({ password: text })}
             />
           </Item>
+
           <Button
             primary
             block
+            disabled={this.state.loadingSpinner}
             style={styles.button}
             onPress={() => this.goToProfile()}>
+
             <Text style={styles.buttonText}> Sign In</Text>
           </Button>
         </Form>
@@ -125,12 +127,38 @@ else{
           {' '}
           Don't have an account?{' '}
           <Text
-            style={{textDecorationLine: 'underline'}}
+            style={{ textDecorationLine: 'underline' }}
             onPress={() => this.props.navigation.navigate('signup')}>
             Sign up!
           </Text>
         </Text>
+        <View>
+          {this.state.loadingSpinner ?
+            <ActivityIndicator
+              size={60}
+              color="white"
+              style={style.activityInd}
+            /> : null}
+        </View >
+
       </Container>
+
     );
   }
 }
+
+const style = StyleSheet.create({
+  spinnerView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activityInd: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: -187,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+})
