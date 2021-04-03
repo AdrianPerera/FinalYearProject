@@ -30,7 +30,7 @@ jobs:
 
 
   upload-android:
-    needs: install-and-test
+    needs: build-android
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
