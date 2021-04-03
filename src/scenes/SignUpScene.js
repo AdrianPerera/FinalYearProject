@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {StyleSheet, Modal} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Modal } from 'react-native';
 import {
   Picker,
   Form,
@@ -18,8 +18,8 @@ import {
   Content,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {styles} from '../styles/SignUpStyles';
-import {auth, messaging} from 'react-native-firebase';
+import { styles } from '../styles/SignUpStyles';
+import { auth, messaging } from 'react-native-firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class SignUpScene extends Component {
@@ -45,13 +45,13 @@ class SignUpScene extends Component {
       .then((token) => {
         console.log(token);
         AsyncStorage.setItem('@fcm_token', token);
-        this.setState({fcmToken: token});
+        this.setState({ fcmToken: token });
         // console.log("token :"+ this.state.fcmToken);
       });
   }
 
   changeChecked = () => {
-    this.setState({checked: !this.state.checked});
+    this.setState({ checked: !this.state.checked });
   };
 
   changeValue = (value) => {
@@ -71,7 +71,7 @@ class SignUpScene extends Component {
 
     var requestOptions1 = {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: data,
       redirect: 'follow',
     };
@@ -92,7 +92,7 @@ class SignUpScene extends Component {
 
     var requestOptions2 = {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: credentials,
     };
 
@@ -102,21 +102,20 @@ class SignUpScene extends Component {
     )
       .then((response) => response.json())
       .then((result) => {
-        AsyncStorage.setItem('@auth_token',result.token)
-        this.setState({auth_token:result.token})
+        AsyncStorage.setItem('@auth_token', result.token)
+        this.setState({ auth_token: result.token })
       })
       .catch((error) => console.log('error', error));
 
-    var updateData =JSON.stringify({
+    var updateData = JSON.stringify({
       'phone_number': this.state.phoneNumber,
-      'fcm_token': this.state.fcmToken,
       'role': parseInt(this.state.selected)
     })
-    
+
     const sendingToken = "Token " + this.state.auth_token;
-    console.log(sendingToken);
-    console.log(parseInt(this.state.selected));
-    console.log("updateData",updateData);
+    // console.log(sendingToken);
+    // console.log(parseInt(this.state.selected));
+    // console.log("updateData",updateData);
     var myHeaders = new Headers();
     myHeaders.append("Authorization", sendingToken);
     myHeaders.append("Content-Type", "application/json");
@@ -128,12 +127,27 @@ class SignUpScene extends Component {
     };
     await fetch('https://prevelcer.herokuapp.com/api/profile/', requestOptions3)
       .then((response) => response.text())
-      .then((result) => console.log(result)).catch((error)=>console.log('update Error',error));
+      .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
 
-      this.props.navigation.navigate('auth');
+
+    var requestOptions4 = {
+      method: 'POST',
+      headers: myHeaders,
+      body:  JSON.stringify({
+        "registration_id": this.state.fcmToken,
+        "type": "android"
+      }),
+      redirect: 'follow',
+    };
+
+    await fetch('https://prevelcer.herokuapp.com/api/device', requestOptions4)
+      .then((response) => response.text())
+      .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
+
+    this.props.navigation.navigate('auth');
   }
 
-  async postSubmit() {}
+  async postSubmit() { }
 
   render() {
     return (
@@ -145,9 +159,9 @@ class SignUpScene extends Component {
                 <Button
                   transparent
                   onPress={() => {
-                    this.setState({modalVisible: false});
+                    this.setState({ modalVisible: false });
                   }}>
-                  <Icon style={{fontSize: 20}} name="arrow-left" />
+                  <Icon style={{ fontSize: 20 }} name="arrow-left" />
                 </Button>
               </Left>
               <Body>
@@ -168,7 +182,7 @@ class SignUpScene extends Component {
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
               placeholder="Proceed As"
-              placeholderStyle={{color: '#bfc6ea'}}
+              placeholderStyle={{ color: '#bfc6ea' }}
               placeholderIconColor="#007aff"
               selectedValue={this.state.selected}
               onValueChange={this.changeValue.bind(this)}>
@@ -182,7 +196,7 @@ class SignUpScene extends Component {
             <Icon style={styles.icon} name="user" />
             <Input
               placeholder="Username"
-              onChangeText={(value) => this.setState({username: value})}
+              onChangeText={(value) => this.setState({ username: value })}
             />
           </Item>
 
@@ -190,7 +204,7 @@ class SignUpScene extends Component {
             <Icon style={styles.icon} name="user-circle" />
             <Input
               placeholder="first name"
-              onChangeText={(value) => this.setState({firstName: value})}
+              onChangeText={(value) => this.setState({ firstName: value })}
             />
           </Item>
 
@@ -198,7 +212,7 @@ class SignUpScene extends Component {
             <Icon style={styles.icon} name="user-circle" />
             <Input
               placeholder="last name"
-              onChangeText={(value) => this.setState({lastName: value})}
+              onChangeText={(value) => this.setState({ lastName: value })}
             />
           </Item>
 
@@ -207,7 +221,7 @@ class SignUpScene extends Component {
             <Input
               keyboardType="number-pad"
               placeholder="Phone Number"
-              onChangeText={(value) => this.setState({phoneNumber: value})}
+              onChangeText={(value) => this.setState({ phoneNumber: value })}
             />
           </Item>
 
@@ -215,7 +229,7 @@ class SignUpScene extends Component {
             <Icon style={styles.icon} name="envelope" />
             <Input
               placeholder="E-mail"
-              onChangeText={(value) => this.setState({email: value})}
+              onChangeText={(value) => this.setState({ email: value })}
             />
           </Item>
 
@@ -224,18 +238,18 @@ class SignUpScene extends Component {
             <Input
               secureTextEntry={this.state.secureEntry}
               placeholder="Password"
-              onChangeText={(value) => this.setState({password: value})}
+              onChangeText={(value) => this.setState({ password: value })}
             />
             <Button
               transparent
               style={styles.eye}
               onPress={() =>
-                this.setState({secureEntry: !this.state.secureEntry})
+                this.setState({ secureEntry: !this.state.secureEntry })
               }>
               {this.state.secureEntry ? (
-                <Icon style={{fontSize: 20}} name="eye-slash" />
+                <Icon style={{ fontSize: 20 }} name="eye-slash" />
               ) : (
-                <Icon style={{fontSize: 20}} name="eye" />
+                <Icon style={{ fontSize: 20 }} name="eye" />
               )}
             </Button>
           </Item>
@@ -245,7 +259,7 @@ class SignUpScene extends Component {
             <Input
               secureTextEntry={this.state.secureEntry}
               placeholder="Re-Enter Password"
-              onChangeText={(value) => this.setState({reEnterPassword: value})}
+              onChangeText={(value) => this.setState({ reEnterPassword: value })}
             />
           </Item>
 
@@ -258,7 +272,7 @@ class SignUpScene extends Component {
               <Text style={styles.subText}>
                 I Agree to the
                 <Text
-                  onPress={() => this.setState({modalVisible: true})}
+                  onPress={() => this.setState({ modalVisible: true })}
                   style={styles.link}>
                   Terms and Conditions
                 </Text>
@@ -274,7 +288,7 @@ class SignUpScene extends Component {
             <Text style={styles.buttonText}>Sign Up</Text>
           </Button>
 
-         
+
         </Form>
       </Container>
     );
