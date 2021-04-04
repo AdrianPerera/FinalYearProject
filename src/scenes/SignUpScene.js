@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Modal } from 'react-native';
+import { StyleSheet, Modal, ActivityIndicator, View, Alert } from 'react-native';
 import {
   Picker,
   Form,
@@ -19,7 +19,6 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { styles } from '../styles/SignUpStyles';
-import { auth, messaging } from 'react-native-firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class SignUpScene extends Component {
@@ -28,7 +27,6 @@ class SignUpScene extends Component {
     modalVisible: false,
     selected: '1',
     checked: false,
-    fcmToken: '',
     username: '',
     firstName: '',
     lastName: '',
@@ -37,18 +35,9 @@ class SignUpScene extends Component {
     password: '',
     reEnterPassword: '',
     auth_token: '',
+    loadingSpinner: false
   };
 
-  componentDidMount() {
-    messaging()
-      .getToken()
-      .then((token) => {
-        console.log(token);
-        AsyncStorage.setItem('@fcm_token', token);
-        this.setState({ fcmToken: token });
-        // console.log("token :"+ this.state.fcmToken);
-      });
-  }
 
   changeChecked = () => {
     this.setState({ checked: !this.state.checked });
@@ -61,6 +50,8 @@ class SignUpScene extends Component {
   };
 
   async beforeSubmit() {
+    this.setState({ loadingSpinner: true });
+
     var data = JSON.stringify({
       username: this.state.username,
       password: this.state.password,
@@ -88,8 +79,6 @@ class SignUpScene extends Component {
       "password": this.state.password,
     });
 
-    console.log(credentials);
-
     var requestOptions2 = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -102,49 +91,70 @@ class SignUpScene extends Component {
     )
       .then((response) => response.json())
       .then((result) => {
-        AsyncStorage.setItem('@auth_token', result.token)
-        this.setState({ auth_token: result.token })
+        if (result.token == undefined) {
+          const errorHandler = () => {
+            Alert.alert('Password or Username is not correct?', 'Username not available', [
+              { text: 'OK', style: 'cancel', onPress: () => { } },
+            ]);
+          };
+          errorHandler();
+          this.setState({ loadingSpinner: false })
+        } else {
+          AsyncStorage.setItem('@auth_token', result.token)
+          this.setState({ auth_token: result.token })
+
+          var updateData = JSON.stringify({
+            'phone_number': this.state.phoneNumber,
+            'role': parseInt(this.state.selected)
+          })
+
+          const sendingToken = "Token " + this.state.auth_token;
+          var myHeaders = new Headers();
+          myHeaders.append("Authorization", sendingToken);
+          myHeaders.append("Content-Type", "application/json");
+          var requestOptions3 = {
+            method: 'POST',
+            headers: myHeaders,
+            body: updateData,
+            redirect: 'follow',
+          };
+          fetch('https://prevelcer.herokuapp.com/api/profile/', requestOptions3)
+            .then((response) => {
+              this.setState({ loadingSpinner: false })
+              response.text()
+            })
+            .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
+
+          this.props.navigation.navigate('auth');
+
+        }
+
       })
       .catch((error) => console.log('error', error));
 
-    var updateData = JSON.stringify({
-      'phone_number': this.state.phoneNumber,
-      'role': parseInt(this.state.selected)
-    })
+    // var updateData = JSON.stringify({
+    //   'phone_number': this.state.phoneNumber,
+    //   'role': parseInt(this.state.selected)
+    // })
 
-    const sendingToken = "Token " + this.state.auth_token;
-    // console.log(sendingToken);
-    // console.log(parseInt(this.state.selected));
-    // console.log("updateData",updateData);
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", sendingToken);
-    myHeaders.append("Content-Type", "application/json");
-    var requestOptions3 = {
-      method: 'POST',
-      headers: myHeaders,
-      body: updateData,
-      redirect: 'follow',
-    };
-    await fetch('https://prevelcer.herokuapp.com/api/profile/', requestOptions3)
-      .then((response) => response.text())
-      .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
+    // const sendingToken = "Token " + this.state.auth_token;
+    // var myHeaders = new Headers();
+    // myHeaders.append("Authorization", sendingToken);
+    // myHeaders.append("Content-Type", "application/json");
+    // var requestOptions3 = {
+    //   method: 'POST',
+    //   headers: myHeaders,
+    //   body: updateData,
+    //   redirect: 'follow',
+    // };
+    // await fetch('https://prevelcer.herokuapp.com/api/profile/', requestOptions3)
+    //   .then((response) => {
+    //     this.setState({loadingSpinner:false})
+    //     response.text()
+    //   })
+    //   .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
 
-
-    var requestOptions4 = {
-      method: 'POST',
-      headers: myHeaders,
-      body:  JSON.stringify({
-        "registration_id": this.state.fcmToken,
-        "type": "android"
-      }),
-      redirect: 'follow',
-    };
-
-    await fetch('https://prevelcer.herokuapp.com/api/device', requestOptions4)
-      .then((response) => response.text())
-      .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
-
-    this.props.navigation.navigate('auth');
+    // this.props.navigation.navigate('auth');
   }
 
   async postSubmit() { }
@@ -283,16 +293,41 @@ class SignUpScene extends Component {
           <Button
             primary
             block
+            disabled={this.state.loadingSpinner}
             style={styles.button}
             onPress={() => this.beforeSubmit()}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </Button>
-
-
         </Form>
+
+        <View>
+          {this.state.loadingSpinner ?
+            <ActivityIndicator
+              size={54}
+              color="white"
+              style={style.activityInd}
+            /> : null}
+        </View >
       </Container>
     );
   }
 }
 
 export default SignUpScene;
+
+
+const style = StyleSheet.create({
+  spinnerView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activityInd: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: -89,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+})

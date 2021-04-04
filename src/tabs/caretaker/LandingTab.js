@@ -60,7 +60,7 @@ function LandingTab({route, navigation}) {
           </Button>
         </Left>
         <Body>
-          <Title style={{textTransform: 'capitalize'}}>{param.selected}</Title>
+          <Title style={{textTransform: 'capitalize'}}>Caretaker</Title>
         </Body>
         <Right />
       </Header>

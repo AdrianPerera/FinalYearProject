@@ -2,20 +2,31 @@ import React, { Component } from 'react';
 import { Text, View, Alert, ActivityIndicator, StyleSheet } from 'react-native';
 import { Picker, Form, Item, Button, Container, Input, Label } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { messaging } from 'react-native-firebase';
 import { styles } from '../styles/AuthScStyles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class AuthScene extends Component {
   state = {
-    selected: 'patient',
+    selected: '1',
     username: '',
     password: '',
     isLoggedIn: false,
     auth_token: '',
     loadingSpinner: false,
+    fcmToken: '',
   };
 
+  componentDidMount() {
+    messaging()
+      .getToken()
+      .then((token) => {
+        AsyncStorage.setItem('@fcm_token', token);
+        this.setState({ fcmToken: token });
+      });
+  }
 
   changeValue = (value) => {
     this.setState({
@@ -44,18 +55,12 @@ export default class AuthScene extends Component {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
-        this.setState({ loadingSpinner: false });
-        this.setState({ auth_token: result.token });
-        console.log("rabbit");
-
+        this.setState({
+          loadingSpinner: false,
+          auth_token: result.token
+        })
         var new_auth_token = this.state.auth_token;
-
-        console.log(new_auth_token);
         if (new_auth_token == undefined) {
-
-
-          console.log("yeah");
           const logOutHandler = () => {
             Alert.alert('Password or Username is not correct?', 'Password or Username or wrong', [
               { text: 'OK', style: 'cancel', onPress: () => { } },
@@ -64,7 +69,24 @@ export default class AuthScene extends Component {
           logOutHandler();
         }
         else {
-          this.setState({ loadingSpinner: true });
+          //sending the fcm_token to database in every login to differentiate multiple device login
+          var myHeaders = new Headers();
+          myHeaders.append("Authorization",  "Token " + this.state.auth_token);
+          myHeaders.append("Content-Type", "application/json");
+          var requestOptions_1 = {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({
+              registration_id: this.state.fcmToken,
+              type: "android"
+            }),
+            redirect: 'follow',
+          };
+
+          fetch('https://prevelcer.herokuapp.com/api/device', requestOptions_1)
+            .then((response) => response.text())
+            .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
+
           this.props.navigation.navigate('profile', {
             screen: 'landingTab',
             params: { param: this.state },
@@ -79,8 +101,9 @@ export default class AuthScene extends Component {
   render() {
     return (
       <Container style={styles.top}>
-        <Text style={styles.textContainer}>You are ready to go! </Text>
+        <Text style={styles.textContainer}>Login to continue </Text>
         <Form style={styles.Form}>
+        
           <Item picker inlineLabel>
             <Label>Continue As</Label>
             <Picker
@@ -92,9 +115,9 @@ export default class AuthScene extends Component {
               placeholderIconColor="#007aff"
               selectedValue={this.state.selected}
               onValueChange={this.changeValue.bind(this)}>
-              <Picker.Item label="Patient" value="patient" />
-              <Picker.Item label="Caretaker " value="caretaker" />
-              <Picker.Item label="Doctor" value="doctor" />
+              <Picker.Item label="Patient" value="1" />
+              <Picker.Item label="Caretaker " value="2" />
+              <Picker.Item label="Doctor" value="3" />
             </Picker>
           </Item>
           <Item inlineLabel>

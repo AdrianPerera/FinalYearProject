@@ -48,7 +48,7 @@ function ProfileScene({route}) {
   const Drawer = createDrawerNavigator();
   const {param} = route.params.params;
 
-  if (param.selected === 'patient') {
+  if (param.selected === '1') {
     return (
       <Drawer.Navigator
         drawerContent={(props) => <DrawerContent {...props} />}
@@ -120,7 +120,7 @@ function ProfileScene({route}) {
     );
   }
 
-  if (param.selected === 'caretaker' ) {
+  if (param.selected === '2' ) {
     return (
       <Drawer.Navigator
         drawerContent={(props) => <DrawerContent {...props} />}
@@ -200,7 +200,7 @@ function ProfileScene({route}) {
     );
   }
 
-  if (param.selected === 'doctor' ) {
+  if (param.selected === '3' ) {
     return (
       <Drawer.Navigator
         drawerContent={(props) => <DrawerContent {...props} />}
