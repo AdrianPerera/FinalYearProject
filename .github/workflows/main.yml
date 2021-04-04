@@ -40,7 +40,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: artifact
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
