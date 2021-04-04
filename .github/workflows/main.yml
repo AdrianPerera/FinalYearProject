@@ -40,12 +40,12 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: android/app/build/outputs/apk/release/app-release.apk
+          name: app-release.apk
           path: android/app/build/outputs/apk/release/
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.FIREBASE_APP_ID_ANDROID}}
           token: ${{secrets.FIREBASE_TOKEN}}
-          groups: android_testers
-          file: app-release.apk
+          groups: fyp-group
+          file: android/app/build/outputs/apk/release/app-release.apk
