@@ -27,7 +27,7 @@ jobs:
         run: |
           cd android && ./gradlew assembleRelease
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
           path: android/app/build/outputs/apk/release/
@@ -40,7 +40,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: artifact
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
