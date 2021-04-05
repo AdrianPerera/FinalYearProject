@@ -21,18 +21,7 @@ function LandingTab({ route, navigation }) {
   const { param } = route.params;
   param.isLoggedIn = true;
 
-  const retrieveData = () => {
-    AsyncStorage.getItem('userToken')
-      .then((value) => {
-        const user = JSON.stringify(value);
-        Alert.alert('userToken', user);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  };
-
-
+ 
   const logOutHandler = () => {
     Alert.alert('Log out From Landing Tab?', 'You are about to Log out!', [
       { text: 'Cancel', style: 'cancel', onPress: () => { } },
@@ -133,7 +122,8 @@ function LandingTab({ route, navigation }) {
             />
             <Text>Edit</Text>
           </Button>
-          
+        
+
         </View>
       </Content>
     </Container>
