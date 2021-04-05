@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class AuthScene extends Component {
+class AuthScene extends Component {
   state = {
     selected: '1',
     username: '',
@@ -33,6 +33,15 @@ export default class AuthScene extends Component {
       selected: value,
     });
   };
+
+
+  setToken = async (value) => {
+    try {
+      await AsyncStorage.setItem('@auth_token', this.state.auth_token);
+    } catch (e) {
+      console.log("could not save auth token");
+    }
+  }
 
   goToProfile() {
     this.setState({ loadingSpinner: true });
@@ -59,6 +68,7 @@ export default class AuthScene extends Component {
           loadingSpinner: false,
           auth_token: result.token
         })
+        this.setToken();
         var new_auth_token = this.state.auth_token;
         if (new_auth_token == undefined) {
           const logOutHandler = () => {
@@ -71,7 +81,7 @@ export default class AuthScene extends Component {
         else {
           //sending the fcm_token to database in every login to differentiate multiple device login
           var myHeaders = new Headers();
-          myHeaders.append("Authorization",  "Token " + this.state.auth_token);
+          myHeaders.append("Authorization", "Token " + this.state.auth_token);
           myHeaders.append("Content-Type", "application/json");
           var requestOptions_1 = {
             method: 'POST',
@@ -103,7 +113,7 @@ export default class AuthScene extends Component {
       <Container style={styles.top}>
         <Text style={styles.textContainer}>Login to continue </Text>
         <Form style={styles.Form}>
-        
+
           <Item picker inlineLabel>
             <Label>Continue As</Label>
             <Picker
@@ -185,3 +195,5 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   }
 })
+
+export default AuthScene;

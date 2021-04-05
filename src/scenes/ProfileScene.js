@@ -1,10 +1,12 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 import MessagesTab from '../tabs/patient/MessagesTab';
 import PaymentTab from '../tabs/patient/PaymentTab';
 import EditTab from '../tabs/patient/EditTab';
 import LandingTab from '../tabs/patient/LandingTab';
+import FindUsersTab from "../tabs/patient/FindUsersTab";
 
 import careLandingTab from '../tabs/caretaker/LandingTab';
 import careEditTab from '../tabs/caretaker/EditTab';
@@ -20,12 +22,13 @@ import doctorPatientView from '../tabs/doctor/PatientViewTab';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DrawerContent from '../components/DrawerContent';
 
+
 function carePatientStack() {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator 
+    <Stack.Navigator
       initialRouteName="carePatientsScene"
-      screenOptions={{headerShown: false,animationEnabled:'true'}}>
+      screenOptions={{ headerShown: false, animationEnabled: 'true' }}>
       <Stack.Screen name="carePatientsScene" component={carePatients} />
       <Stack.Screen name="patientViewScene" component={carePatientView} />
     </Stack.Navigator>
@@ -35,18 +38,18 @@ function carePatientStack() {
 function doctorPatientStack() {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator 
+    <Stack.Navigator
       initialRouteName="doctorPatientsScene"
-      screenOptions={{headerShown: false,animationEnabled:'true'}}>
+      screenOptions={{ headerShown: false, animationEnabled: 'true' }}>
       <Stack.Screen name="doctorPatientsScene" component={doctorPatients} />
       <Stack.Screen name="patientViewScene" component={doctorPatientView} />
     </Stack.Navigator>
   );
 }
 
-function ProfileScene({route}) {
+function ProfileScene({ route }) {
   const Drawer = createDrawerNavigator();
-  const {param} = route.params.params;
+  const { param } = route.params.params;
 
   if (param.selected === '1') {
     return (
@@ -61,9 +64,9 @@ function ProfileScene({route}) {
           component={LandingTab}
           options={{
             title: 'Profile Details',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3}}
+                style={{ marginRight: -3 }}
                 name="list-alt"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -76,9 +79,9 @@ function ProfileScene({route}) {
           component={EditTab}
           options={{
             title: ' Edit My Profile',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3, marginLeft: 3}}
+                style={{ marginRight: -3, marginLeft: 3 }}
                 name="user"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -91,9 +94,9 @@ function ProfileScene({route}) {
           component={MessagesTab}
           options={{
             title: 'Messages',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3}}
+                style={{ marginRight: -3 }}
                 name="envelope-o"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -106,10 +109,26 @@ function ProfileScene({route}) {
           component={PaymentTab}
           options={{
             title: 'Payments',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -4}}
+                style={{ marginRight: -4 }}
                 name="money"
+                size={size}
+                color={focused ? '#4544ca' : '#442b2b'}
+              />
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="findUsersTab"
+          component={FindUsersTab}
+          options={{
+            title: 'Find',
+            drawerIcon: ({ focused, size }) => (
+              <Icon
+                style={{ marginRight: -4 }}
+                name="search"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
               />
@@ -120,7 +139,7 @@ function ProfileScene({route}) {
     );
   }
 
-  if (param.selected === '2' ) {
+  if (param.selected === '2') {
     return (
       <Drawer.Navigator
         drawerContent={(props) => <DrawerContent {...props} />}
@@ -133,9 +152,9 @@ function ProfileScene({route}) {
           component={careLandingTab}
           options={{
             title: 'Details',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3}}
+                style={{ marginRight: -3 }}
                 name="list-alt"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -152,9 +171,9 @@ function ProfileScene({route}) {
           component={careEditTab}
           options={{
             title: ' Edit My Profile',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3, marginLeft: 3}}
+                style={{ marginRight: -3, marginLeft: 3 }}
                 name="user"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -170,9 +189,9 @@ function ProfileScene({route}) {
           component={careMessagesTab}
           options={{
             title: 'Messages',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3}}
+                style={{ marginRight: -3 }}
                 name="envelope"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -186,9 +205,9 @@ function ProfileScene({route}) {
           component={carePatientStack}
           options={{
             title: 'Patients List',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: 1, marginLeft: 3}}
+                style={{ marginRight: 1, marginLeft: 3 }}
                 name="hospital-o"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -200,7 +219,7 @@ function ProfileScene({route}) {
     );
   }
 
-  if (param.selected === '3' ) {
+  if (param.selected === '3') {
     return (
       <Drawer.Navigator
         drawerContent={(props) => <DrawerContent {...props} />}
@@ -213,9 +232,9 @@ function ProfileScene({route}) {
           component={doctorLandingTab}
           options={{
             title: 'Details',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3}}
+                style={{ marginRight: -3 }}
                 name="list-alt"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -229,9 +248,9 @@ function ProfileScene({route}) {
           component={doctorMessagesTab}
           options={{
             title: 'Messages',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: -3}}
+                style={{ marginRight: -3 }}
                 name="envelope"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
@@ -245,9 +264,9 @@ function ProfileScene({route}) {
           component={doctorPatientStack}
           options={{
             title: 'Patients List',
-            drawerIcon: ({focused, size}) => (
+            drawerIcon: ({ focused, size }) => (
               <Icon
-                style={{marginRight: 1, marginLeft: 3}}
+                style={{ marginRight: 1, marginLeft: 3 }}
                 name="hospital-o"
                 size={size}
                 color={focused ? '#4544ca' : '#442b2b'}
