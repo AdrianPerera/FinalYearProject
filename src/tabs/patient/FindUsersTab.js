@@ -33,6 +33,23 @@ function FindUserTab({ route, navigation }) {
         }
     }
 
+    const getSentRequests = async (token) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Token " + token);
+        myHeaders.append("Content-Type", "application/json");
+        var requestOption = {
+            method: 'GET',
+            headers: myHeaders,
+        };
+        await fetch('https://prevelcer.herokuapp.com/api/outgoing_requests/', requestOption)
+            .then((response) => response.json())
+            .then((sentRequests) => {
+                var reducedmap = sentRequests.map(a => a.receiver_name)
+                console.log(reducedmap);
+                setSentRequests(reducedmap);
+            }).catch((error) => console.log('sent Requests ', error));
+    }
+
     const getUsers = async (token) => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Token " + token);
@@ -53,14 +70,7 @@ function FindUserTab({ route, navigation }) {
             .then((carerList) => {
                 setCarers(carerList.results);
             }).catch((error) => console.log('carer list ', error));
-
-        await fetch('https://prevelcer.herokuapp.com/api/outgoing_requests/', requestOption)
-            .then((response) => response.json())
-            .then((sentRequests) => {
-                var reducedmap = sentRequests.map(a => a.receiver_name)
-                console.log(reducedmap);
-                setSentRequests(reducedmap);
-            }).catch((error) => console.log('sent Requests ', error));
+        getSentRequests(token);
     }
 
     const sendFriendRequest = async (username) => {
@@ -81,10 +91,9 @@ function FindUserTab({ route, navigation }) {
         await fetch('https://prevelcer.herokuapp.com/api/friend_request/', requestOptions)
             .then((response) => response.json())
             .then((result) => {
-
                 console.log(result);
             }).catch((error) => console.log('friend request error', error));
-
+        getSentRequests(token);
     }
 
     const cancelFriendRequest = async (username) => {
@@ -107,6 +116,7 @@ function FindUserTab({ route, navigation }) {
             .then((result) => {
                 console.log(result);
             }).catch((error) => console.log('friend request error', error));
+        getSentRequests(token);
     }
 
     useEffect(() => {
@@ -218,8 +228,8 @@ const styles = StyleSheet.create({
     button: {
         alignSelf: 'flex-end',
         borderRadius: 8,
-        width:100,
-        justifyContent:'center'
+        width: 100,
+        justifyContent: 'center'
     }
     ,
     listCard: {
