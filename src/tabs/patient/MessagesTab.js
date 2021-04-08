@@ -1,39 +1,105 @@
-import React, {Component} from 'react';
+import React, { Component,useState } from 'react';
 import {
   Container,
   Header,
   Body,
   Title,
-  Content,
-  Card,
-  CardItem,
-  Badge,
+
   Right,
   Left,
-  Text,
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Plotly from 'react-native-plotly';
+import { View ,Text} from 'react-native';
+import { useEffect } from 'react/cjs/react.development';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function MessagesTab({navigation}) {
+function MessagesTab({ navigation }) {
+  const [data ,setData]=useState([]);
+  const [layout,setLayout]=useState({ title: 'Ucler Pressure Map' });
+
+  const fetchDetails = async () => {
+    try {
+        const token = await AsyncStorage.getItem('@auth_token');
+        if (token === null) {
+            console.log('token null');
+        }
+        console.log("token " + token);
+        getData(token)
+    } catch (e) {
+        console.log("token error: " + e);
+    }
+}
+  
+  const getData= async(token)=>{
+
+    var headers = new Headers();
+    headers.append("Authorization", "Token " + token);
+    headers.append("Content-Type", "application/json");
+    var requestOption = {
+        method: 'GET',
+        headers: headers,
+    };
+
+    await fetch('http://prevelcer.herokuapp.com/pressure/visualize?patient=martha', requestOption)
+        .then((response) => response.json())
+        .then((result) => {
+            setData(result.image)
+        }).catch((error) => console.log('Doctor list', error));
+    
+  }
+  const data1 = [
+    {
+      z: data,
+      type: 'heatmap',
+      colorscale: 'Jet',
+      zmin: 0,
+      zmax: 700,
+      zsmooth: 'best'
+    }
+  ];
+
+  const update = (_, { data, layout, config }, plotly) => {
+    plotly.react(data, layout, config);
+  };
+
+  useEffect(()=>{
+    fetchDetails();
+  },[])
+
   return (
+
+
     <Container>
       <Header>
         <Left>
           <Button
-            style={{width: 50, justifyContent: 'center'}}
+            style={{ width: 50, justifyContent: 'center' }}
             onPress={() => navigation.toggleDrawer()}>
-            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
+            <Icon name="reorder" style={{ fontSize: 30, color: 'white' }} />
           </Button>
         </Left>
         <Body>
-          <Title style={{textTransform: 'capitalize'}}>Messages</Title>
+          <Title style={{ textTransform: 'capitalize' }}>Messages</Title>
         </Body>
         <Right>
-          <Icon name="envelope" style={{fontSize: 30, color: '#e4e213'}} />
+          <Icon name="envelope" style={{ fontSize: 30, color: '#e4e213' }} />
         </Right>
       </Header>
+     
+      <Plotly
+        data={data1}
+        layout={layout}
+        update={update}
+        onLoad={() => console.log('loaded')}
+        debug
+        enableFullPlotly
+      />
+
+
     </Container>
+
   );
 }
 
