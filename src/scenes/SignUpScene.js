@@ -132,29 +132,6 @@ class SignUpScene extends Component {
       })
       .catch((error) => console.log('error', error));
 
-    // var updateData = JSON.stringify({
-    //   'phone_number': this.state.phoneNumber,
-    //   'role': parseInt(this.state.selected)
-    // })
-
-    // const sendingToken = "Token " + this.state.auth_token;
-    // var myHeaders = new Headers();
-    // myHeaders.append("Authorization", sendingToken);
-    // myHeaders.append("Content-Type", "application/json");
-    // var requestOptions3 = {
-    //   method: 'POST',
-    //   headers: myHeaders,
-    //   body: updateData,
-    //   redirect: 'follow',
-    // };
-    // await fetch('https://prevelcer.herokuapp.com/api/profile/', requestOptions3)
-    //   .then((response) => {
-    //     this.setState({loadingSpinner:false})
-    //     response.text()
-    //   })
-    //   .then((result) => console.log(result)).catch((error) => console.log('update Error', error));
-
-    // this.props.navigation.navigate('auth');
   }
 
   async postSubmit() { }

@@ -16,8 +16,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Alert, StyleSheet, View, Image, FlatList, SafeAreaView } from 'react-native';
 import Img from '../../images/profile_pic.png';
 
-
-
 function LandingTab({ route, navigation }) {
   const { param } = route.params;
   const [token, setToken] = useState(param.auth_token);
@@ -63,11 +61,6 @@ function LandingTab({ route, navigation }) {
       .then((carers) => {
         setCarers(carers);
       }).catch((error) => console.log('Doctor retrieve', error));
-
-    console.log(details);
-    console.log(phoneNumber);
-    console.log(doctors);
-    console.log(carers);
   }
 
   const logOutHandler = () => {
