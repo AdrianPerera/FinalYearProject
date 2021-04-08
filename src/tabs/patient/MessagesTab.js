@@ -42,11 +42,11 @@ function MessagesTab({ navigation }) {
         headers: headers,
     };
 
-    await fetch('http://prevelcer.herokuapp.com/pressure/visualize?patient=martha', requestOption)
+    await fetch('http://prevelcer.herokuapp.com/pressure/visualize?patient=Adrian', requestOption)
         .then((response) => response.json())
         .then((result) => {
             setData(result.image)
-        }).catch((error) => console.log('Doctor list', error));
+        }).catch((error) => console.log('Data list ', error));
     
   }
   const data1 = [
@@ -93,7 +93,7 @@ function MessagesTab({ navigation }) {
         layout={layout}
         update={update}
         onLoad={() => console.log('loaded')}
-        debug
+        
         enableFullPlotly
       />
 
