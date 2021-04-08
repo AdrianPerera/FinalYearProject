@@ -26,8 +26,6 @@ function FindUserTab({ route, navigation }) {
     const [loadingSpinner, setLoadingSpinner] = useState(false);
 
 
-
-
     const fetchDetails = async () => {
         try {
             const token = await AsyncStorage.getItem('@auth_token');
@@ -41,8 +39,6 @@ function FindUserTab({ route, navigation }) {
             console.log("token error: " + e);
         }
     }
-
-
 
     const getUsers = async (token) => {
         var myHeaders = new Headers();
@@ -58,7 +54,6 @@ function FindUserTab({ route, navigation }) {
             .then((response) => response.json())
             .then((conn) => {
                 var reducedmap = conn.map(a => a.username)
-                console.log("all friends", reducedmap);
                 setConnected(reducedmap);
             }).catch((error) => console.log('Connected list', error));
 
@@ -75,7 +70,8 @@ function FindUserTab({ route, navigation }) {
                 var map = friendRequests.map(a => a.sender_name)
                 setIncomingRequestsMap(map);
                 setIncomingRequests(friendRequests);
-                console.log('incoming requests map' + map);
+                
+                
             }).catch((error) => console.log('incoming friendlist', error));
 
         await fetch('https://prevelcer.herokuapp.com/api/community/Doctor', requestOption)
@@ -113,7 +109,6 @@ function FindUserTab({ route, navigation }) {
             .then((response) => response.json())
             .then((result) => {
                 result
-                // console.log(result);
             }).catch((error) => console.log('friend request error', error));
         getUsers(token);
     }
@@ -154,7 +149,6 @@ function FindUserTab({ route, navigation }) {
         await fetch('https://prevelcer.herokuapp.com/api/unfriend/', requestOptionUnfriend)
             .then((response) => response.json())
             .then((unfriend) => {
-                // console.log(unfriend);
             }).catch((error) => console.log('unfriend error', error));
         getUsers(token);
     }
@@ -176,7 +170,6 @@ function FindUserTab({ route, navigation }) {
         await fetch('https://prevelcer.herokuapp.com/api/accept_request/', requestsOptionsAccept)
             .then((response) => response.json())
             .then((unfriend) => {
-                // console.log(unfriend);
             }).catch((error) => console.log('unfriend error', error));
         getUsers(token);
     }
@@ -376,7 +369,7 @@ const styles = StyleSheet.create({
     },
     connectedText: {
         alignSelf: 'flex-end',
-        paddingRight: 12,
+        paddingRight: 4,
         justifyContent: 'center',
         color: '#0000008c'
     },
@@ -390,8 +383,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: 80,
         justifyContent: 'center'
-    }
-    ,
+    },
     listCard: {
         margin: 5,
         flexDirection: 'row',
