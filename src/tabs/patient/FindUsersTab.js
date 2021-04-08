@@ -7,8 +7,7 @@ import {
     Right,
     Left,
     Text,
-    Button,
-    Row
+    Button
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
