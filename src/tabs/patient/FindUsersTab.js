@@ -7,7 +7,8 @@ import {
     Right,
     Left,
     Text,
-    Button
+    Button,
+    Row
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
@@ -20,7 +21,13 @@ function FindUserTab({ route, navigation }) {
     const [carers, setCarers] = useState([]);
     const [sentRequests, setSentRequests] = useState([]);
     const [connected, setConnected] = useState([]);
+    const [incomingRequests, setIncomingRequests] = useState([]);
+    const [incomingRequestsMap, setIncomingRequestsMap] = useState([]);
     const [loadingSpinner, setLoadingSpinner] = useState(false);
+
+
+
+
     const fetchDetails = async () => {
         try {
             const token = await AsyncStorage.getItem('@auth_token');
@@ -35,25 +42,7 @@ function FindUserTab({ route, navigation }) {
         }
     }
 
-    const getSentRequests = async (token) => {
-        setLoadingSpinner(true)
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Token " + token);
-        myHeaders.append("Content-Type", "application/json");
-        var requestOption = {
-            method: 'GET',
-            headers: myHeaders,
-        };
-        await fetch('https://prevelcer.herokuapp.com/api/outgoing_requests/', requestOption)
-            .then((response) => response.json())
-            .then((sentRequests) => {
-                var reducedmap = sentRequests.map(a => a.receiver_name)
-                console.log(reducedmap);
-                setSentRequests(reducedmap);
-                setLoadingSpinner(false)
-            }).catch((error) => console.log('sent Requests ', error));
 
-    }
 
     const getUsers = async (token) => {
         var myHeaders = new Headers();
@@ -63,6 +52,31 @@ function FindUserTab({ route, navigation }) {
             method: 'GET',
             headers: myHeaders,
         };
+
+
+        await fetch('https://prevelcer.herokuapp.com/api/show_friends/', requestOption)
+            .then((response) => response.json())
+            .then((conn) => {
+                var reducedmap = conn.map(a => a.username)
+                console.log("all friends", reducedmap);
+                setConnected(reducedmap);
+            }).catch((error) => console.log('Connected list', error));
+
+        await fetch('https://prevelcer.herokuapp.com/api/outgoing_requests/', requestOption)
+            .then((response) => response.json())
+            .then((sentRequests) => {
+                var reducedmap = sentRequests.map(a => a.receiver_name)
+                setSentRequests(reducedmap);
+                setLoadingSpinner(false);
+            }).catch((error) => console.log('sent Requests ', error));
+        await fetch('https://prevelcer.herokuapp.com/api/friend_request/', requestOption)
+            .then((response) => response.json())
+            .then((friendRequests) => {
+                var map = friendRequests.map(a => a.sender_name)
+                setIncomingRequestsMap(map);
+                setIncomingRequests(friendRequests);
+                console.log('incoming requests map' + map);
+            }).catch((error) => console.log('incoming friendlist', error));
 
         await fetch('https://prevelcer.herokuapp.com/api/community/Doctor', requestOption)
             .then((response) => response.json())
@@ -77,22 +91,11 @@ function FindUserTab({ route, navigation }) {
             }).catch((error) => console.log('carer list ', error));
 
 
-        await fetch('https://prevelcer.herokuapp.com/api/show_friends/', requestOption)
-            .then((response) => response.json())
-            .then((conn) => {
-                var reducedmap = conn.map(a => a.username)
-                console.log(reducedmap);
-                setConnected(reducedmap);
-            }).catch((error) => console.log('Connected list', error));
         setLoadingSpinner(false);
-        getSentRequests(token);
 
     }
 
-
-
     const sendFriendRequest = async (username) => {
-
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Token " + token);
         myHeaders.append("Content-Type", "application/json");
@@ -109,9 +112,10 @@ function FindUserTab({ route, navigation }) {
         await fetch('https://prevelcer.herokuapp.com/api/friend_request/', requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
+                result
+                // console.log(result);
             }).catch((error) => console.log('friend request error', error));
-        getSentRequests(token);
+        getUsers(token);
     }
 
     const cancelFriendRequest = async (receiver) => {
@@ -130,11 +134,53 @@ function FindUserTab({ route, navigation }) {
 
         await fetch('https://prevelcer.herokuapp.com/api/friend_request/', requestOptions)
             .then((response) => response.json())
-            .then((result) => {
-                console.log(result);
-            }).catch((error) => console.log('friend request error', error));
-        getSentRequests(token);
+            .then((result) => { result }).catch((error) => console.log('friend request error', error));
+        getUsers(token);
     }
+
+    const unfriend = async (username) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Token " + token);
+        myHeaders.append("Content-Type", "application/json");
+        var data = JSON.stringify(
+            { "username": username }
+        );
+        var requestOptionUnfriend = {
+            method: 'DELETE',
+            headers: myHeaders,
+            body: data
+        };
+
+        await fetch('https://prevelcer.herokuapp.com/api/unfriend/', requestOptionUnfriend)
+            .then((response) => response.json())
+            .then((unfriend) => {
+                // console.log(unfriend);
+            }).catch((error) => console.log('unfriend error', error));
+        getUsers(token);
+    }
+
+    const acceptFriendRequest = async (username) => {
+
+        var id = incomingRequests[incomingRequestsMap.indexOf(username)].id;
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Token " + token);
+        myHeaders.append("Content-Type", "application/json");
+        var data = JSON.stringify(
+            { "id": id }
+        );
+        var requestsOptionsAccept = {
+            method: 'POST',
+            headers: myHeaders,
+            body: data
+        };
+        await fetch('https://prevelcer.herokuapp.com/api/accept_request/', requestsOptionsAccept)
+            .then((response) => response.json())
+            .then((unfriend) => {
+                // console.log(unfriend);
+            }).catch((error) => console.log('unfriend error', error));
+        getUsers(token);
+    }
+
 
     useEffect(() => {
         fetchDetails();
@@ -156,7 +202,7 @@ function FindUserTab({ route, navigation }) {
                 <Right>
                     <Button
                         style={{ width: 50, justifyContent: 'center' }}
-                        onPress={() => getSentRequests(token)}>
+                        onPress={() => getUsers(token)}>
                         <Icon name="refresh" style={{ fontSize: 25, color: 'yellow' }} />
                     </Button>
                 </Right>
@@ -179,29 +225,55 @@ function FindUserTab({ route, navigation }) {
                         <View style={styles.listCard}>
                             <Text style={styles.font}>{item.first_name + " " + item.last_name} </Text>
 
-                            <View style={{ flex: 1 }}>
-                                {connected.indexOf(item.username) < 0 ?
-                                    sentRequests.indexOf(item.username) < 0 ?
+                            {incomingRequestsMap.indexOf(item.username) < 0 ?
+
+                                <View style={{ flex: 1 }}>
+                                    {connected.indexOf(item.username) < 0 ?
+                                        sentRequests.indexOf(item.username) < 0 ?
+                                            <Button
+                                                onPress={() => sendFriendRequest(item.username)}
+                                                small
+                                                primary
+                                                style={styles.button}>
+                                                <Text style={styles.buttonFont}>Add</Text>
+                                            </Button>
+                                            :
+                                            < Button
+                                                onPress={() => cancelFriendRequest(item.username)}
+                                                small
+                                                danger
+                                                style={styles.button}>
+                                                <Text style={styles.buttonFont}>Cancel</Text>
+                                            </Button>
+                                        :
+                                        <Text style={styles.connectedText}>Connected</Text>
+                                    }
+
+                                </View>
+                                :
+                                <View>
+                                    <View style={{ flex: 1 }}>
                                         <Button
-                                            onPress={() => sendFriendRequest(item.username)}
+                                            onPress={() => acceptFriendRequest(item.username)}
                                             small
                                             primary
                                             style={styles.button}>
-                                            <Text style={styles.buttonFont}>Add</Text>
+                                            <Text style={styles.buttonFont}>Accept</Text>
                                         </Button>
-                                        :
-                                        < Button
-                                            onPress={() => cancelFriendRequest(item.username)}
+                                    </View>
+                                    <View style={{ flex: 1 }}>
+                                        <Button
+                                            onPress={() => unfriend(item.username)}
                                             small
                                             danger
                                             style={styles.button}>
-                                            <Text style={styles.buttonFont}>Cancel</Text>
+                                            <Text style={styles.buttonFont}>Delete</Text>
                                         </Button>
-                                    :
-                                    <Text>Connected</Text>
-                                }
+                                    </View>
 
-                            </View>
+                                </View>
+
+                            }
                         </View>
                     }
 
@@ -212,32 +284,69 @@ function FindUserTab({ route, navigation }) {
                     keyExtractor={(item) => item.username}
                     renderItem={({ item }) =>
                         <View style={styles.listCard}>
-                            <Text style={styles.font}>{item.first_name + " " + item.last_name} </Text>
-                            <View style={{ flex: 1 }}>
-                                {connected.indexOf(item.username) < 0 ?
-                                    sentRequests.indexOf(item.username) < 0 ?
-                                        <Button
-                                            onPress={() => sendFriendRequest(item.username)}
-                                            small
-                                            primary
-                                            style={styles.button}>
-                                            <Text style={styles.buttonFont}>Add</Text>
-                                        </Button> :
-                                        < Button
-                                            onPress={() => cancelFriendRequest(item.username)}
-                                            small
-                                            danger
-                                            style={styles.button}>
-                                            <Text style={styles.buttonFont}>Cancel</Text>
-                                        </Button> :
-                                    <Text style={{
-                                        alignSelf: 'flex-end',
-                                        paddingRight: 12,
-                                        justifyContent: 'center',
-                                        color: '#0000008c'
-                                    }} >Connected</Text>
-                                }
-                            </View>
+                            {incomingRequestsMap.indexOf(item.username) < 0 ?
+                                <Text style={styles.font}>{item.first_name + " " + item.last_name} </Text>
+                                :
+                                <Text style={{ flex: 1, color: "#000099", fontWeight: 'bold' }}>
+                                    {item.first_name + " " + item.last_name}</Text>
+                            }
+
+                            {incomingRequestsMap.indexOf(item.username) < 0 ?
+
+                                <View style={{ flex: 1 }}>
+                                    {connected.indexOf(item.username) < 0 ?
+                                        sentRequests.indexOf(item.username) < 0 ?
+                                            <Button
+                                                onPress={() => sendFriendRequest(item.username)}
+                                                small
+                                                primary
+                                                style={styles.button}>
+                                                <Text style={styles.buttonFont}>Add</Text>
+                                            </Button>
+                                            :
+                                            < Button
+                                                onPress={() => cancelFriendRequest(item.username)}
+                                                small
+                                                danger
+                                                style={styles.button}>
+                                                <Text style={styles.buttonFont}>Cancel</Text>
+                                            </Button>
+                                        :
+                                        <Text style={styles.connectedText}>Connected</Text>
+                                    }
+
+                                </View>
+                                :
+
+                                <View style={{ flex: 1,flexDirection:"row",justifyContent:'flex-end' }}>
+                                    <Button
+                                        onPress={() => acceptFriendRequest(item.username)}
+                                        small
+                                        warning
+                                        style={{
+                                            alignSelf: 'flex-end',
+                                            borderRadius: 8,
+                                            width: 80,
+                                            justifyContent: 'center',
+                                            marginRight:10
+                                        }}>
+                                        <Text style={styles.buttonFont}>Accept</Text>
+                                    </Button>
+
+                                    <Button
+                                        onPress={() => unfriend(item.username)}
+                                        small
+                                        danger
+                                        style={{
+                                            alignSelf: 'flex-end',
+                                            borderRadius: 8,
+                                            width: 80,
+                                            justifyContent: 'center'
+                                        }}>
+                                        <Text style={styles.buttonFont}>Delete</Text>
+                                    </Button>
+                                </View>
+                            }
                         </View>
                     }
 
@@ -265,6 +374,12 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 22
     },
+    connectedText: {
+        alignSelf: 'flex-end',
+        paddingRight: 12,
+        justifyContent: 'center',
+        color: '#0000008c'
+    },
     item: {
         padding: 10,
         fontSize: 18,
@@ -273,7 +388,7 @@ const styles = StyleSheet.create({
     button: {
         alignSelf: 'flex-end',
         borderRadius: 8,
-        width: 100,
+        width: 80,
         justifyContent: 'center'
     }
     ,

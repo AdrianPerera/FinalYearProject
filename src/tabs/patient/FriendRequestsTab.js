@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet, View, FlatList } from 'react-native';
 
+
 function FriendRequestsTab({ navigation }) {
   const [token, setToken] = useState('');
   const [incomingRequests, setIncomingRequests] = useState([]);
@@ -119,7 +120,7 @@ function FriendRequestsTab({ navigation }) {
           </Button>
         </Right>
       </Header>
-
+    
       <View style={{ margin: 15 }}>
         <FlatList
           data={incomingRequests}
@@ -131,7 +132,7 @@ function FriendRequestsTab({ navigation }) {
                 <Button
                   onPress={() => acceptFriendRequest(item.id)}
                   small
-                  primary
+                  warning
                   style={styles.button}>
                   <Text style={styles.buttonFont}>Accept</Text>
                 </Button>
@@ -178,5 +179,14 @@ const styles = StyleSheet.create({
     padding: 5,
     borderTopWidth: 0.75,
     borderTopColor: "grey"
-  }
+  },
+  activityInd: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
