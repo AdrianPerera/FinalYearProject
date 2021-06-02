@@ -130,7 +130,7 @@ function LandingTab({ route, navigation }) {
         <Card style={styles.card}>
           <CardItem>
             <Body style={{ flexDirection: 'row' }}>
-              <Text style={{ flex: 1 }}> <Icon name="envelope" style={{ fontSize: 20, color: 'blacks' }} /> </Text>
+              <Text style={{ flex: 1 }}> <Icon name="envelope" style={{ fontSize: 20, color: 'black' }} /> </Text>
               <Text style={{ flex: 4 }}>{details.email}</Text>
             </Body>
           </CardItem>
