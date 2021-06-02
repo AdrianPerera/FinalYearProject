@@ -1,37 +1,31 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Header,
   Body,
   Title,
   Content,
-  Card,
-  CardItem,
   Right,
   Left,
   Text,
   Button,
-  Form,
-  View,
   Input,
   Label,
-  Item,
   List,
   ListItem,
-  ScrollView,
 } from 'native-base';
-import {RadioButton, Checkbox} from 'react-native-paper';
+import { RadioButton, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {styles} from '../../styles/EditTabStyles';
+import { styles } from '../../styles/EditTabStyles';
 
-function EditTab({navigation}) {
-  const [value, setValue] = React.useState('male');
+function EditTab({ navigation }) {
+  const [value, setValue] = useState('male');
 
-  const [ans, setAns] = React.useState('no');
+  const [ans, setAns] = useState('no');
 
-  const [diabetes, set_Diabetes_Checked] = React.useState(false);
+  const [diabetes, set_Diabetes_Checked] = useState(false);
 
-  const [high_blood_pressure, set_High_Blood_Pressure_Checked] = React.useState(
+  const [high_blood_pressure, set_High_Blood_Pressure_Checked] = useState(
     false,
   );
 
@@ -40,22 +34,22 @@ function EditTab({navigation}) {
       <Header>
         <Left>
           <Button
-            style={{width: 50, justifyContent: 'center'}}
+            style={{ width: 50, justifyContent: 'center' }}
             onPress={() => navigation.toggleDrawer()}>
-            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
+            <Icon name="reorder" style={{ fontSize: 30, color: 'white' }} />
           </Button>
         </Left>
         <Body>
-          <Title style={{textTransform: 'capitalize'}}>Edit My Profile</Title>
+          <Title style={{ textTransform: 'capitalize' }}>Edit My Profile</Title>
         </Body>
         <Right>
-          <Icon name="user" style={{fontSize: 30, color: 'white'}} />
+          <Icon name="user" style={{ fontSize: 30, color: 'white' }} />
         </Right>
       </Header>
 
       <Content>
         <List>
-          <ListItem itemHeader first style={{marginBottom: -50}}>
+          <ListItem itemHeader first style={{ marginBottom: -50 }}>
             <Label style={styles.formLabel}>Name in Full</Label>
           </ListItem>
           <ListItem>
@@ -65,14 +59,14 @@ function EditTab({navigation}) {
             />
           </ListItem>
 
-          <ListItem itemHeader first style={{marginBottom: -50}}>
+          <ListItem itemHeader first style={{ marginBottom: -50 }}>
             <Label style={styles.formLabel}>NIC Number</Label>
           </ListItem>
           <ListItem>
             <Input style={styles.formItem} placeholder="Eg: 968460595v" />
           </ListItem>
 
-          <ListItem itemHeader first style={{marginBottom: -20}}>
+          <ListItem itemHeader first style={{ marginBottom: -20 }}>
             <Label style={styles.formLabel}>Gender</Label>
           </ListItem>
           <ListItem>
@@ -87,7 +81,7 @@ function EditTab({navigation}) {
             </RadioButton.Group>
           </ListItem>
 
-          <ListItem itemHeader first style={{marginBottom: -50}}>
+          <ListItem itemHeader first style={{ marginBottom: -50 }}>
             <Label style={styles.formLabel}>Age</Label>
           </ListItem>
           <ListItem>
@@ -97,7 +91,7 @@ function EditTab({navigation}) {
             />
           </ListItem>
 
-          <ListItem itemHeader first style={{marginBottom: -50}}>
+          <ListItem itemHeader first style={{ marginBottom: -50 }}>
             <Label style={styles.formLabel}>Weight</Label>
           </ListItem>
           <ListItem>
@@ -107,7 +101,7 @@ function EditTab({navigation}) {
             />
           </ListItem>
 
-          <ListItem itemHeader first style={{marginBottom: -20}}>
+          <ListItem itemHeader first style={{ marginBottom: -20 }}>
             <Label style={styles.formLabel}>Presence of Ulcers</Label>
           </ListItem>
           <ListItem>
@@ -123,7 +117,7 @@ function EditTab({navigation}) {
             </RadioButton.Group>
           </ListItem>
 
-          <ListItem itemHeader first style={{marginBottom: -20}}>
+          <ListItem itemHeader first style={{ marginBottom: -20 }}>
             <Label style={styles.formLabel}>
               Select if you have any of the following Diseases
             </Label>
