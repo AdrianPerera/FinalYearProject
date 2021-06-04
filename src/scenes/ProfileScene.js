@@ -17,10 +17,12 @@ import carePatientView from '../tabs/caretaker/PatientViewTab';
 import doctorLandingTab from '../tabs/doctor/LandingTab';
 import doctorMessagesTab from '../tabs/doctor/MessagesTab';
 import doctorPatients from '../tabs/doctor/PatientsTab';
-import doctorPatientView from '../tabs/doctor/PatientViewTab';
+import doctorRiskScaleScene from '../tabs/doctor/RiskScaleScene';
+import ulcerRecordScene from '../tabs/doctor/UlcerRecordScene';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DrawerContent from '../components/DrawerContent';
+
 
 
 
@@ -32,6 +34,7 @@ function carePatientStack() {
       screenOptions={{ headerShown: false, animationEnabled: 'true' }}>
       <Stack.Screen name="carePatientsScene" component={carePatients} />
       <Stack.Screen name="patientViewScene" component={carePatientView} />
+    
     </Stack.Navigator>
   );
 }
@@ -43,7 +46,8 @@ function doctorPatientStack() {
       initialRouteName="doctorPatientsScene"
       screenOptions={{ headerShown: false, animationEnabled: 'true' }}>
       <Stack.Screen name="doctorPatientsScene" component={doctorPatients} />
-      <Stack.Screen name="patientViewScene" component={doctorPatientView} />
+      <Stack.Screen name="doctorRiskScaleScene" component={doctorRiskScaleScene} />
+      <Stack.Screen name="ulcerRecordScene" component={ulcerRecordScene} />
     </Stack.Navigator>
   );
 }

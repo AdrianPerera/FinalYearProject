@@ -23,7 +23,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
-export default function PatientViewTab({ route, navigation }) {
+export default function RiskScaleScene({ route, navigation }) {
   const { name } = route.params;
   const [assignedBy, setAssignedBy] = useState("");
   const [gender, setGender] = useState("M");

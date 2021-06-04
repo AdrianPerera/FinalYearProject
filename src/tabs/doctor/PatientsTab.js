@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, SafeAreaView} from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import {
   Container,
   Header,
@@ -15,11 +15,11 @@ import {
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {DataTable} from 'react-native-paper';
-import {SafeAreaFrameContext} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
+import { DataTable } from 'react-native-paper';
+import { SafeAreaFrameContext } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
 
-export default function PatientsTab({navigation}) {
+export default function PatientsTab({ navigation }) {
   const DATA = [
     {
       id: 1,
@@ -82,25 +82,40 @@ export default function PatientsTab({navigation}) {
       name: 'Nicolea Spehr',
     },
   ];
-  const viewPatient = (name) => {
+  const viewPatientRiskScale = (name) => {
     navigation.navigate(
-      'patientViewScene',
-      {name: name},
-      //TODO: mock parameter sent to PatientViewScene. All the  reposition data needs to be fetched before that
+      'doctorRiskScaleScene',
+      { name: name },
+      //TODO: mock parameter sent to doctorRiskScaleTab. All the  reposition data needs to be fetched before that
     );
   };
 
-  const renderThis = ({item}) => (
-    <View style={{margin: 15, flexDirection: 'row'}}>
-      <Text style={{flex: 1}}>Patient {item.id} </Text>
-      <Text style={{flex: 2}}>{item.name} </Text>
-      <View style={{flex: 1}}>
+  const viewPatientUclerRecord = (name)=>{
+    navigation.navigate(
+      'ulcerRecordScene',
+      { name: name },
+      //TODO: mock parameter sent to doctorRiskScaleTab. All the  reposition data needs to be fetched before that
+    );
+
+  }
+
+  const renderThis = ({ item }) => (
+    <View style={{ marginTop: 3, marginHorizontal: 10, padding: 5 }}>
+      <Text style={{ flex: 1 }}>{item.name} </Text>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
         <Button
-          onPress={() => viewPatient(item.name)}
+          onPress={() => viewPatientRiskScale(item.name)}
           small
           success
-          style={{alignSelf: 'flex-end'}}>
-          <Text>View</Text>
+          style={styles.button}>
+          <Text>risk scale</Text>
+        </Button>
+        <Button
+          onPress={() => viewPatientUclerRecord(item.name)}
+          small
+          primary
+          style={styles.button}>
+          <Text>Record Ulcer</Text>
         </Button>
       </View>
     </View>
@@ -111,23 +126,23 @@ export default function PatientsTab({navigation}) {
       <Header>
         <Left>
           <Button
-            style={{width: 50, justifyContent: 'center'}}
+            style={{ width: 50, justifyContent: 'center' }}
             onPress={() => navigation.toggleDrawer()}>
-            <Icon name="reorder" style={{fontSize: 30, color: 'white'}} />
+            <Icon name="reorder" style={{ fontSize: 30, color: 'white' }} />
           </Button>
         </Left>
         <Body>
-          <Title style={{textTransform: 'capitalize'}}>Patients</Title>
+          <Title style={{ textTransform: 'capitalize' }}>Patients</Title>
         </Body>
         <Right>
           <Icon
             name="hospital-o"
-            style={{fontSize: 30, color: '#dff604', marginRight: 5}}
+            style={{ fontSize: 30, color: '#dff604', marginRight: 5 }}
           />
         </Right>
       </Header>
 
-      <View>
+      <View style={{ marginBottom: 50 }}>
         <FlatList
           data={DATA}
           renderItem={renderThis}
@@ -138,3 +153,7 @@ export default function PatientsTab({navigation}) {
     </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  button: { flex: 1, justifyContent: 'center', borderRadius: 10,marginTop:1,marginHorizontal:5 }
+});
