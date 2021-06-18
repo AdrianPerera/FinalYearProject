@@ -19,13 +19,14 @@ import {
   Text,
   CheckBox
 } from 'native-base';
+import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
 export default function RiskScaleScene({ route, navigation }) {
-  const { name } = route.params;
-  const [assignedBy, setAssignedBy] = useState("");
+  const { name, token ,username} = route.params;
+  const [assessedBy, setAssessedBy] = useState("");
   const [gender, setGender] = useState("M");
   const [age, setAge] = useState(0);
   const [weight, setWeight] = useState(0);
@@ -33,17 +34,58 @@ export default function RiskScaleScene({ route, navigation }) {
   const [sensoryPerception, setSensoryPerception] = useState(0);
   const [moisture, setMoisture] = useState(0);
   const [activity, setActivity] = useState(0);
-  const [mobility,setMobility]= useState(0);
-  const [nutriotion, setNutrition] = useState(0);
+  const [mobility, setMobility] = useState(0);
+  const [nutrition, setNutrition] = useState(0);
   const [friction, setFriction] = useState(0);
-  const [diabetes, setDiabetesChecked] = useState(false);
+  const [diabetesChecked, setDiabetesChecked] = useState(false);
   const [peripheralVascularDiseaseChecked, setPeripheralVascularDiseaseChecked] = useState(false);
   const [cerebralVascularAccident, setCerebralVascularAccident] = useState(false);
   const [hypotension, setHypotension] = useState(false);
   const [hypoalbuminemia, setHypoalbuminemia] = useState(false);
   const [incontinence, setIncontinence] = useState(false);
   const [venusThrombosis, setVenusThrombosis] = useState(false);
-  const [comments, setComments] = useState("")
+  const [comments, setComments] = useState("");
+  const [doctors, setDoctors] = useState([]);
+
+  const saveRiskData = async () => {
+    const data = JSON.stringify({
+      patient: name,
+      gender: gender,
+      age: age,
+      weight: weight,
+      height: height,
+      sensory_perception: sensoryPerception,
+      moisture: moisture,
+      activity: activity,
+      mobility: mobility,
+      nutrition: nutrition,
+      friction_shear: friction,
+      diabetes_mellitus: diabetesChecked,
+      peripheral_vascular_disease: peripheralVascularDiseaseChecked,
+      cerebral_vascular_accident: cerebralVascularAccident,
+      hypotension: hypotension,
+      hypoalbuminemia: hypoalbuminemia,
+      incontinence: incontinence,
+      venus_thrombosis: venusThrombosis,
+      comments: comments
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: data,
+      redirect: 'follow',
+    };
+
+
+    await fetch('https://prevelcer.herokuapp.com/api/show_friends/', requestOptions)
+      .then((response) => response.json())
+      .then((conn) => console.log("saving success")).catch((error) => console.log('saving error', error));
+
+  }
 
   return (
     <Container>
@@ -74,11 +116,9 @@ export default function RiskScaleScene({ route, navigation }) {
               placeholder="assigned by"
               placeholderStyle={{ color: '#bfc6ea' }}
               placeholderIconColor="#007aff"
-              selectedValue={assignedBy}
-              onValueChange={(value) => setAssignedBy(value)}>
-              <Picker.Item label="Doctor1" value="1" />
-              <Picker.Item label="Doctor2 " value="2" />
-              <Picker.Item label="Doctor3" value="3" />
+              selectedValue={assessedBy}
+              onValueChange={(value) => setAssessedBy(value)}>
+              <Picker.Item label={username} value={username} />
             </Picker>
           </Item>
           <Item picker inlineLabel>
@@ -116,134 +156,134 @@ export default function RiskScaleScene({ route, navigation }) {
           <Item picker inlineLabel>
             <Label>Sensory Perception</Label>
             <Right>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: 100, }}
-              placeholder="assigned by"
-              placeholderStyle={{ color: '#bfc6ea' }}
-              placeholderIconColor="#007aff"
-              selectedValue={sensoryPerception}
-              onValueChange={(value) => setSensoryPerception(value)}
-            >
-              <Picker.Item label="---" value={0} />
-              <Picker.Item label="1" value={1} />
-              <Picker.Item label="2 " value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-            </Picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{ width: 100, }}
+                placeholder="assigned by"
+                placeholderStyle={{ color: '#bfc6ea' }}
+                placeholderIconColor="#007aff"
+                selectedValue={sensoryPerception}
+                onValueChange={(value) => setSensoryPerception(value)}
+              >
+                <Picker.Item label="---" value={0} />
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2 " value={2} />
+                <Picker.Item label="3" value={3} />
+                <Picker.Item label="4" value={4} />
+              </Picker>
             </Right>
           </Item>
           <Item picker inlineLabel>
             <Label>Moisture</Label>
             <Right>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: 100, }}
-              placeholder="assigned by"
-              placeholderStyle={{ color: '#bfc6ea' }}
-              placeholderIconColor="#007aff"
-              selectedValue={moisture}
-              onValueChange={(value) => setMoisture(value)}
-            >
-              <Picker.Item label="---" value={0} />
-              <Picker.Item label="1" value={1} />
-              <Picker.Item label="2 " value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-            </Picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{ width: 100, }}
+                placeholder="assigned by"
+                placeholderStyle={{ color: '#bfc6ea' }}
+                placeholderIconColor="#007aff"
+                selectedValue={moisture}
+                onValueChange={(value) => setMoisture(value)}
+              >
+                <Picker.Item label="---" value={0} />
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2 " value={2} />
+                <Picker.Item label="3" value={3} />
+                <Picker.Item label="4" value={4} />
+              </Picker>
             </Right>
           </Item>
           <Item picker inlineLabel>
             <Label>Activity</Label>
             <Right>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: 100, }}
-              placeholder="assigned by"
-              placeholderStyle={{ color: '#bfc6ea' }}
-              placeholderIconColor="#007aff"
-              selectedValue={activity}
-              onValueChange={(value) => setActivity(value)}
-            >
-              <Picker.Item label="---" value={0} />
-              <Picker.Item label="1" value={1} />
-              <Picker.Item label="2 " value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-            </Picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{ width: 100, }}
+                placeholder="assigned by"
+                placeholderStyle={{ color: '#bfc6ea' }}
+                placeholderIconColor="#007aff"
+                selectedValue={activity}
+                onValueChange={(value) => setActivity(value)}
+              >
+                <Picker.Item label="---" value={0} />
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2 " value={2} />
+                <Picker.Item label="3" value={3} />
+                <Picker.Item label="4" value={4} />
+              </Picker>
             </Right>
           </Item>
           <Item picker inlineLabel>
             <Label>Mobility</Label>
             <Right>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: 100, }}
-              placeholder="assigned by"
-              placeholderStyle={{ color: '#bfc6ea' }}
-              placeholderIconColor="#007aff"
-              selectedValue={mobility}
-              onValueChange={(value) => setMobility(value)}
-            >
-              <Picker.Item label="---" value={0} />
-              <Picker.Item label="1" value={1} />
-              <Picker.Item label="2 " value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-            </Picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{ width: 100, }}
+                placeholder="assigned by"
+                placeholderStyle={{ color: '#bfc6ea' }}
+                placeholderIconColor="#007aff"
+                selectedValue={mobility}
+                onValueChange={(value) => setMobility(value)}
+              >
+                <Picker.Item label="---" value={0} />
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2 " value={2} />
+                <Picker.Item label="3" value={3} />
+                <Picker.Item label="4" value={4} />
+              </Picker>
             </Right>
           </Item>
           <Item picker inlineLabel>
             <Label>Nutrition</Label>
             <Right>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: 100, }}
-              placeholder="assigned by"
-              placeholderStyle={{ color: '#bfc6ea' }}
-              placeholderIconColor="#007aff"
-              selectedValue={nutriotion}
-              onValueChange={(value) => setNutrition(value)}
-            >
-              <Picker.Item label="---" value={0} />
-              <Picker.Item label="1" value={1} />
-              <Picker.Item label="2 " value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-            </Picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{ width: 100, }}
+                placeholder="assigned by"
+                placeholderStyle={{ color: '#bfc6ea' }}
+                placeholderIconColor="#007aff"
+                selectedValue={nutrition}
+                onValueChange={(value) => setNutrition(value)}
+              >
+                <Picker.Item label="---" value={0} />
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2 " value={2} />
+                <Picker.Item label="3" value={3} />
+                <Picker.Item label="4" value={4} />
+              </Picker>
             </Right>
           </Item>
           <Item picker inlineLabel>
             <Label>Friction Shear</Label>
             <Right>
-            <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: 100, }}
-              placeholder="assigned by"
-              placeholderStyle={{ color: '#bfc6ea' }}
-              placeholderIconColor="#007aff"
-              selectedValue={friction}
-              onValueChange={(value) => setFriction(value)}
-            >
-              <Picker.Item label="---" value={0} />
-              <Picker.Item label="1" value={1} />
-              <Picker.Item label="2 " value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-            </Picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{ width: 100, }}
+                placeholder="assigned by"
+                placeholderStyle={{ color: '#bfc6ea' }}
+                placeholderIconColor="#007aff"
+                selectedValue={friction}
+                onValueChange={(value) => setFriction(value)}
+              >
+                <Picker.Item label="---" value={0} />
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2 " value={2} />
+                <Picker.Item label="3" value={3} />
+                <Picker.Item label="4" value={4} />
+              </Picker>
             </Right>
           </Item>
         </Form>
         <ListItem>
-          <CheckBox checked={diabetes}
+          <CheckBox checked={diabetesChecked}
             style={{ fontSize: 30 }}
-            onPress={() => set_Diabetes_Checked(!diabetes)}
+            onPress={() => set_Diabetes_Checked(!diabetesChecked)}
           />
           <Body>
             <Text>Diabetes mellitus</Text>
@@ -304,9 +344,21 @@ export default function RiskScaleScene({ route, navigation }) {
           </Body>
         </ListItem>
         <Form>
-          <Textarea regular rowSpan={5} bordered placeholder="Insert your comments here" />
+          <Textarea regular rowSpan={5} onValueChange={(text) => setComments(text)} bordered placeholder="Insert your comments here" />
         </Form>
+        <View style={{ flexDirection: 'row', flex: 1 }}>
+          <Button
+            onPress={() => saveRiskData()}
+            primary
+            style={styles.button}
+          >
+            <Text>SAVE</Text>
+          </Button>
+        </View>
       </Content>
     </Container>
   );
 }
+const styles = StyleSheet.create({
+  button: { flex: 1, justifyContent: 'center', marginTop: 10 }
+});

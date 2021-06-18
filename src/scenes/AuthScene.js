@@ -38,6 +38,7 @@ class AuthScene extends Component {
   setToken = async (value) => {
     try {
       await AsyncStorage.setItem('@auth_token', this.state.auth_token);
+      await AsyncStorage.setItem('@username',this.state.username);
     } catch (e) {
       console.log("could not save auth token");
     }

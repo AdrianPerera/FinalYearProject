@@ -21,11 +21,12 @@ import {
   Footer,
   Row
 } from 'native-base';
-import {View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function UlcerRecordScene({ route, navigation }) {
-  const { name } = route.params;
+ 
+  const { name ,token,username} = route.params;
   const [reportedBy, setReportedBy] = useState("");
   const [site, setSite] = useState("---");
   const [stage, setStage] = useState("---");
@@ -65,10 +66,6 @@ export default function UlcerRecordScene({ route, navigation }) {
   const [smellChecked, setSmellChecked] = useState(false);
   const [painChecked, setPainChecked] = useState(false);
 
-  const saveUlcerRecord= ()=>{
-
-  }
-
   return (
     <Container>
       <Header noLeft>
@@ -100,9 +97,7 @@ export default function UlcerRecordScene({ route, navigation }) {
               placeholderIconColor="#007aff"
               selectedValue={reportedBy}
               onValueChange={(value) => setReportedBy(value)}>
-              <Picker.Item label="Doctor1" value="1" />
-              <Picker.Item label="Doctor2 " value="2" />
-              <Picker.Item label="Doctor3" value="3" />
+              <Picker.Item label={username} value={username} />
             </Picker>
           </Item>
           <Item picker inlineLabel>
@@ -476,7 +471,7 @@ export default function UlcerRecordScene({ route, navigation }) {
           </Item>
 
         </Form>
-        <View style={{flexDirection:'row',flex:1}}>
+        <View style={{ flexDirection: 'row', flex: 1 }}>
           <Button
             onPress={() => saveUlcerRecord()}
             primary
@@ -486,12 +481,11 @@ export default function UlcerRecordScene({ route, navigation }) {
           </Button>
         </View>
 
-
       </Content>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  button: { flex:1,justifyContent: 'center',marginTop:10}
+  button: { flex: 1, justifyContent: 'center', marginTop: 10 }
 });

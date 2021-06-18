@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import {
   Container,
@@ -15,11 +15,12 @@ import {
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { DataTable } from 'react-native-paper';
-import { SafeAreaFrameContext } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function PatientsTab({ navigation }) {
+
+export default function PatientsTab({ route, navigation }) {
+  const [token, setToken] = useState('');
+  const [username,setUsername]=useState("");
   const DATA = [
     {
       id: 1,
@@ -82,22 +83,40 @@ export default function PatientsTab({ navigation }) {
       name: 'Nicolea Spehr',
     },
   ];
+  
   const viewPatientRiskScale = (name) => {
+
     navigation.navigate(
       'doctorRiskScaleScene',
-      { name: name },
-      //TODO: mock parameter sent to doctorRiskScaleTab. All the  reposition data needs to be fetched before that
+      { name: name, token: token,username:username }
     );
   };
 
-  const viewPatientUclerRecord = (name)=>{
+  const viewPatientUclerRecord = (name) => {
     navigation.navigate(
       'ulcerRecordScene',
-      { name: name },
-      //TODO: mock parameter sent to doctorRiskScaleTab. All the  reposition data needs to be fetched before that
+      { name: name, token: token ,username:username},
     );
 
   }
+
+  const fetchToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('@auth_token');
+      const username= await AsyncStorage.getItem('@username');
+      if (token === null) {
+        console.log('token null');
+      }
+      setToken(token);
+      setUsername(username);
+    } catch (e) {
+      console.log("token error: " + e);
+    }
+  }
+
+  useEffect(() => {
+    fetchToken();
+  }, [])
 
   const renderThis = ({ item }) => (
     <View style={{ marginTop: 3, marginHorizontal: 10, padding: 5 }}>
@@ -120,6 +139,8 @@ export default function PatientsTab({ navigation }) {
       </View>
     </View>
   );
+
+
 
   return (
     <Container>
@@ -155,5 +176,5 @@ export default function PatientsTab({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  button: { flex: 1, justifyContent: 'center', borderRadius: 10,marginTop:1,marginHorizontal:5 }
+  button: { flex: 1, justifyContent: 'center', borderRadius: 10, marginTop: 1, marginHorizontal: 5 }
 });
