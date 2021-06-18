@@ -23,10 +23,11 @@ import {
 } from 'native-base';
 import { View, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 export default function UlcerRecordScene({ route, navigation }) {
- 
-  const { name ,token,username} = route.params;
+
+  const { name, token, username } = route.params;
   const [reportedBy, setReportedBy] = useState("");
   const [site, setSite] = useState("---");
   const [stage, setStage] = useState("---");
@@ -65,6 +66,46 @@ export default function UlcerRecordScene({ route, navigation }) {
   const [lymphNodesChecked, setLymphNodesChecked] = useState(false);
   const [smellChecked, setSmellChecked] = useState(false);
   const [painChecked, setPainChecked] = useState(false);
+  const [filePath, setFilePath] = useState('');
+  const [fileData, setFileData] = useState('');
+  const [fileUri, setFileUri] = useState('');
+
+  const cameraLanch = () => {
+    let cameraOptions = {
+      includeBase64: true,
+      saveToPhotos: true
+    }
+    launchCamera(cameraOptions, (response) => {
+      console.log("camera response :" + response);
+      console.log("camera response :" + JSON.stringify(response));
+    });
+  }
+
+  const chooseImage = () => {
+    let options = {
+      mediaType: 'photo',
+      includeBase64: true,
+      selectionLimit: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        const source = { uri: response.uri };
+        setFilePath(response);
+        setFileData(response.data);
+        setFileUri(response.uri);
+      }
+    });
+
+  }
+
+
 
   return (
     <Container>
@@ -469,6 +510,17 @@ export default function UlcerRecordScene({ route, navigation }) {
 
             </Picker>
           </Item>
+
+          <Item>
+            <Label> Image</Label>
+            <Button style={{ margin: 5, borderRadius: 7 }} onPress={() => chooseImage()}>
+              <Text>Choose File</Text>
+            </Button>
+            <Button style={{ margin: 5, borderRadius: 7 }} danger onPress={() => cameraLanch()}>
+              <Text>Camera</Text>
+            </Button>
+          </Item>
+
 
         </Form>
         <View style={{ flexDirection: 'row', flex: 1 }}>
