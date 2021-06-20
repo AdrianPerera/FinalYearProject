@@ -24,7 +24,6 @@ import {
 import { View, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { color } from 'react-native-reanimated';
 
 export default function UlcerRecordScene({ route, navigation }) {
 

@@ -20,14 +20,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Animated, Alert, StyleSheet, Image } from 'react-native';
 import Img from '../../images/profile_pic.png';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LandingTab({ route, navigation }) {
   const { param } = route.params;
   param.isLoggedIn = true;
   const [toggleImageMenu, setToggleImagemenu] = useState(false);
-  const [filePath, setFilePath] = useState('');
-  const [fileData, setFileData] = useState('');
-  const [fileUri, setFileUri] = useState('');
+  const [fileUri, setFileUri] = useState(null);
 
 
   const logOutHandler = () => {
@@ -48,14 +47,16 @@ function LandingTab({ route, navigation }) {
   };
 
   //hardware backbutton prevent going back
-  useEffect(() =>
+  useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
       if (param.isLoggedIn) {
         e.preventDefault();
         logOutHandler();
       }
     }),
-  );
+      fetchImagePath();
+  }, []);
+
   const FadeInView = (props) => {
     const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
 
@@ -82,25 +83,64 @@ function LandingTab({ route, navigation }) {
         style={{
           ...props.style,
           opacity: fadeAnim,         // Bind opacity to animated value
-          top: fadeAnim.interpolate({
+          bottom: fadeAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [15, 0],
           }),
+
         }}
       >
         {props.children}
       </Animated.View>
     );
   }
+  const storeImagePath = async (fileUri) => {
+    try {
+      await AsyncStorage.setItem('@img_path', fileUri);
+      console.log("store path: " + fileUri);
+      setToggleImagemenu(!toggleImageMenu);
+    } catch (error) {
+      console.log("store path error: " + error);
+    }
+  }
+
+  const fetchImagePath = async () => {
+    try {
+      const path = await AsyncStorage.getItem('@img_path');
+      console.log("fetch path: " + path);
+      if (path != null) {
+        setFileUri(path);
+      } else {
+        setFileData(null);
+      }
+
+    } catch (error) {
+      console.log('fetchpath error');
+    }
+
+  }
+
 
   const cameraLanch = () => {
     let cameraOptions = {
       includeBase64: true,
+      saveToPhotos: true,
       saveToPhotos: true
     }
     launchCamera(cameraOptions, (response) => {
-      console.log("camera response :" + response);
-      console.log("camera response :" + JSON.stringify(response));
+
+      if (response.didCancel) {
+        console.log('User cancelled camera');
+      } else if (response.error) {
+        console.log('Camera Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        let assets = response.assets;
+        setFileUri(assets[0].uri);
+        storeImagePath(assets[0].uri);
+      }
     });
   }
 
@@ -119,11 +159,21 @@ function LandingTab({ route, navigation }) {
         console.log('User tapped custom button: ', response.customButton);
         alert(response.customButton);
       } else {
-        setFilePath(response);
-        setFileData(response.data);
-        setFileUri(response.uri);
+        let assets = response.assets;
+        setFileUri(assets[0].uri);
+        storeImagePath(assets[0].uri);
       }
     });
+  }
+
+  const deleteImage = async () => {
+    try {
+      setFileUri(null);
+      await AsyncStorage.removeItem('@img_path');
+      setToggleImagemenu(!toggleImageMenu);
+    } catch (error) {
+      console.log("DP delete error: " + error);
+    }
 
   }
 
@@ -146,10 +196,17 @@ function LandingTab({ route, navigation }) {
       <View>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Image
-              style={styles.avatar}
-              source={Img}
-            />
+            {fileUri != null ?
+              <Image
+                style={styles.avatar}
+                source={{ uri: fileUri }}
+              />
+              :
+              <Image
+                style={styles.avatar}
+                source={Img}
+              />
+            }
             <Button small style={styles.profilePicEditBtn} onPress={() => setToggleImagemenu(!toggleImageMenu)}>
               <Icon name="camera" style={{ fontSize: 15, color: '#b5b4b4db' }} />
             </Button>
@@ -158,13 +215,27 @@ function LandingTab({ route, navigation }) {
                 <Item style={{ justifyContent: 'center' }}>
                   <Button small style={styles.cameraButton} onPress={() => chooseImage()}>
                     <Icon name="photo" style={styles.buttonIcon} />
-                    <Text style={{ color: "#a7a7a7" }} >Choose File</Text>
+                    <Text style={{ color: "#a7a7a7" }} >Choose Image</Text>
                   </Button>
                   <Button small style={styles.cameraButton} onPress={() => cameraLanch()}>
                     <Icon name="camera" style={styles.buttonIcon} />
                     <Text style={{ color: "#a7a7a7" }}>Camera</Text>
                   </Button>
+                  {fileUri != null ?
+                    <Button small style={{
+                      margin: 5, borderRadius: 5, borderColor: "white",
+                      borderWidth: 1.5, paddingHorizontal:5,
+                      height: 33
+                    }} danger onPress={() => deleteImage()}>
+                      <Icon name="trash" style={{ fontSize: 15, color: 'white' }} />
+                    </Button>
+                    :
+                    null
+
+                  }
                 </Item>
+
+
               </FadeInView>
 
               : null
@@ -266,10 +337,10 @@ const styles = StyleSheet.create({
     borderColor: "#a7a7a7",
     borderWidth: 1.5,
     backgroundColor: 'white',
-    padding:1,
-    height:33
+    padding: 1,
+    height: 33
   },
-  buttonIcon: { fontSize: 15, color: '#a7a7a7', paddingLeft: 10,paddingVertical:2, marginRight: -5 }
+  buttonIcon: { fontSize: 15, color: '#a7a7a7', paddingLeft: 10, paddingVertical: 2, marginRight: -5 }
 
 
 });
