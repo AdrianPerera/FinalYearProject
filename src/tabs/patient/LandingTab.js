@@ -13,9 +13,8 @@ import {
   Button,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Alert, StyleSheet, View, Image, FlatList } from 'react-native';
+import { Alert, StyleSheet, View, Image, FlatList, SafeAreaView } from 'react-native';
 import Img from '../../images/profile_pic.png';
-
 
 function LandingTab({ route, navigation }) {
   const { param } = route.params;
@@ -62,11 +61,6 @@ function LandingTab({ route, navigation }) {
       .then((carers) => {
         setCarers(carers);
       }).catch((error) => console.log('Doctor retrieve', error));
-
-    console.log(details);
-    console.log(phoneNumber);
-    console.log(doctors);
-    console.log(carers);
   }
 
   const logOutHandler = () => {
@@ -151,25 +145,29 @@ function LandingTab({ route, navigation }) {
                   <Icon name="user-md" style={{ fontSize: 20, color: '#005affeb' }} />
                 </Text>
               </View>
-              <View style={{ flex: 4 }}>
+              <SafeAreaView style={{ flex: 4 }}>
                 <FlatList
                   data={doctors}
                   keyExtractor={(item) => item.username}
                   renderItem={({ item }) =>
-                    <Text style={{fontWeight:'bold',color:'grey'}}>{item.first_name + " " + item.last_name}</Text>
+                    <Text style={{ fontWeight: 'bold', color: 'grey' }}>{item.first_name + " " + item.last_name}</Text>
                   }
                 />
-              </View>
+              </SafeAreaView>
             </Body>
           </CardItem>
-          <CardItem>
+        </Card>
+
+        <Card style={styles.card}>
+
+        <CardItem>
             <Body style={{ flexDirection: 'row' }}>
               <View style={{ flex: 1 }}>
                 <Text>
                   <Icon name="heartbeat" style={{ fontSize: 20, color: '#005affeb' }} />
                 </Text>
               </View>
-              <View style={{ flex: 4 }}>
+              <SafeAreaView style={{ flex: 4 }}>
                 <FlatList
                   data={carers}
                   keyExtractor={(item) => item.username}
@@ -177,7 +175,7 @@ function LandingTab({ route, navigation }) {
                     <Text style={{fontWeight:'bold',color:'grey'}}>{item.first_name + " " + item.last_name}</Text>
                   }
                 />
-              </View>
+              </SafeAreaView>
             </Body>
           </CardItem>
 
