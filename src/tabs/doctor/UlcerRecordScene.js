@@ -24,6 +24,7 @@ import {
 import { View, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { color } from 'react-native-reanimated';
 
 export default function UlcerRecordScene({ route, navigation }) {
 
@@ -96,7 +97,6 @@ export default function UlcerRecordScene({ route, navigation }) {
         console.log('User tapped custom button: ', response.customButton);
         alert(response.customButton);
       } else {
-        const source = { uri: response.uri };
         setFilePath(response);
         setFileData(response.data);
         setFileUri(response.uri);
@@ -513,11 +513,13 @@ export default function UlcerRecordScene({ route, navigation }) {
 
           <Item>
             <Label> Image</Label>
-            <Button style={{ margin: 5, borderRadius: 7 }} onPress={() => chooseImage()}>
-              <Text>Choose File</Text>
+            <Button style={styles.cameraButton} onPress={() => chooseImage()}>
+              <Icon name="photo" style={styles.buttonIcon} />
+              <Text style={{ color: "#a7a7a7" }} >Choose File</Text>
             </Button>
-            <Button style={{ margin: 5, borderRadius: 7 }} danger onPress={() => cameraLanch()}>
-              <Text>Camera</Text>
+            <Button style={styles.cameraButton} onPress={() => cameraLanch()}>
+              <Icon name="camera" style={styles.buttonIcon} />
+              <Text style={{ color: "#a7a7a7" }}>Camera</Text>
             </Button>
           </Item>
 
@@ -539,5 +541,15 @@ export default function UlcerRecordScene({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  button: { flex: 1, justifyContent: 'center', marginTop: 10 }
+  button: { flex: 1, justifyContent: 'center', marginTop: 10 },
+  cameraButton:
+  {
+    margin: 5,
+    borderRadius: 5,
+    borderColor: "#a7a7a7",
+    borderWidth: 2,
+    backgroundColor: 'white',
+  },
+  buttonIcon:{ fontSize: 20, color: '#a7a7a7',paddingLeft:10,marginRight:-5 }
+
 });
