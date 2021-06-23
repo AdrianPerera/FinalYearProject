@@ -27,6 +27,7 @@ function LandingTab({ route, navigation }) {
   param.isLoggedIn = true;
   const [toggleImageMenu, setToggleImagemenu] = useState(false);
   const [fileUri, setFileUri] = useState(null);
+  const [image,setImage]= useState(null);
 
 
   const logOutHandler = () => {
@@ -94,30 +95,54 @@ function LandingTab({ route, navigation }) {
       </Animated.View>
     );
   }
-  const storeImagePath = async (fileUri) => {
+  const uploadImage = async (fileUri) => {
     try {
-      await AsyncStorage.setItem('@img_path', fileUri);
-      console.log("store path: " + fileUri);
+      // await AsyncStorage.setItem('@img_path', fileUri);
+      // console.log("store path: " + fileUri);
       setToggleImagemenu(!toggleImageMenu);
+      
+      let formData = new FormData();
+      formData.append('picture',{
+        uri: fileUri,
+        type: 'image/jpeg',
+        name: image.fileName,
+     });
+    
+      var myHeaders = new Headers();
+      
+      myHeaders.append("Authorization", "Token " + param.auth_token);
+      myHeaders.append('Content-Type', 'multipart/form-data')
+      var requestOption = {
+          method: 'POST',
+          headers: myHeaders,
+          body:formData,
+          redirect: 'follow'
+      };
+
+
+      await fetch('https://prevelcer.herokuapp.com/api/profile/', requestOption)
+          .then((response) => response.json())
+          .then((conn) => { 
+            console.log(conn);
+            fetchImagePath();
+          }).catch((error) => console.log('Connected list', error));
+
     } catch (error) {
       console.log("store path error: " + error);
     }
   }
 
   const fetchImagePath = async () => {
-    try {
-      const path = await AsyncStorage.getItem('@img_path');
-      console.log("fetch path: " + path);
-      if (path != null) {
-        setFileUri(path);
-      } else {
-        setFileData(null);
-      }
-
-    } catch (error) {
-      console.log('fetchpath error');
-    }
-
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Token " + param.auth_token);
+      await fetch('https://prevelcer.herokuapp.com/api/profile/', {method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'})
+      .then((response) => response.json())
+      .then((conn) => { setFileUri(conn.picture);
+        console.log(conn);
+      }).catch((error) => console.log('fetchpath error', error));     
+  
   }
 
 
@@ -125,7 +150,10 @@ function LandingTab({ route, navigation }) {
     let cameraOptions = {
       includeBase64: true,
       saveToPhotos: true,
-      saveToPhotos: true
+      saveToPhotos: true,
+      maxWidth:200,
+      maxHeight:200,
+      quality:0.8
     }
     launchCamera(cameraOptions, (response) => {
 
@@ -138,8 +166,10 @@ function LandingTab({ route, navigation }) {
         alert(response.customButton);
       } else {
         let assets = response.assets;
-        setFileUri(assets[0].uri);
-        storeImagePath(assets[0].uri);
+        setImage(assets[0]);
+        uploadImage(assets[0].uri);
+        console.log(assets[0].uri);
+      
       }
     });
   }
@@ -149,6 +179,9 @@ function LandingTab({ route, navigation }) {
       mediaType: 'photo',
       includeBase64: true,
       selectionLimit: 1,
+      maxWidth:200,
+      maxHeight:200,
+      quality:0.8
     };
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
@@ -160,8 +193,9 @@ function LandingTab({ route, navigation }) {
         alert(response.customButton);
       } else {
         let assets = response.assets;
-        setFileUri(assets[0].uri);
-        storeImagePath(assets[0].uri);
+        setImage(assets[0]);
+        uploadImage(assets[0].uri);
+        console.log(assets[0].uri);      
       }
     });
   }
