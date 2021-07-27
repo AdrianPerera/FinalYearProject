@@ -27,7 +27,7 @@ function LandingTab({ route, navigation }) {
   param.isLoggedIn = true;
   const [toggleImageMenu, setToggleImagemenu] = useState(false);
   const [fileUri, setFileUri] = useState(null);
-  const [image,setImage]= useState(null);
+  const [image, setImage] = useState(null);
 
 
   const logOutHandler = () => {
@@ -100,32 +100,32 @@ function LandingTab({ route, navigation }) {
       // await AsyncStorage.setItem('@img_path', fileUri);
       // console.log("store path: " + fileUri);
       setToggleImagemenu(!toggleImageMenu);
-      
+
       let formData = new FormData();
-      formData.append('picture',{
+      formData.append('picture', {
         uri: fileUri,
         type: 'image/jpeg',
         name: image.fileName,
-     });
-    
+      });
+
       var myHeaders = new Headers();
-      
+
       myHeaders.append("Authorization", "Token " + param.auth_token);
       myHeaders.append('Content-Type', 'multipart/form-data')
       var requestOption = {
-          method: 'POST',
-          headers: myHeaders,
-          body:formData,
-          redirect: 'follow'
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow'
       };
 
 
       await fetch('https://prevelcer.herokuapp.com/api/profile/', requestOption)
-          .then((response) => response.json())
-          .then((conn) => { 
-            console.log(conn);
-            fetchImagePath();
-          }).catch((error) => console.log('Connected list', error));
+        .then((response) => response.json())
+        .then((conn) => {
+          console.log(conn);
+          fetchImagePath();
+        }).catch((error) => console.log('Profile upload error', error));
 
     } catch (error) {
       console.log("store path error: " + error);
@@ -133,16 +133,19 @@ function LandingTab({ route, navigation }) {
   }
 
   const fetchImagePath = async () => {
-      var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Token " + param.auth_token);
-      await fetch('https://prevelcer.herokuapp.com/api/profile/', {method: 'GET',
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token " + param.auth_token);
+    await fetch('https://prevelcer.herokuapp.com/api/profile/', {
+      method: 'GET',
       headers: myHeaders,
-      redirect: 'follow'})
+      redirect: 'follow'
+    })
       .then((response) => response.json())
-      .then((conn) => { setFileUri(conn.picture);
+      .then((conn) => {
+        setFileUri(conn.picture);
         console.log(conn);
-      }).catch((error) => console.log('fetchpath error', error));     
-  
+      }).catch((error) => console.log('fetchpath error', error));
+
   }
 
 
@@ -151,9 +154,9 @@ function LandingTab({ route, navigation }) {
       includeBase64: true,
       saveToPhotos: true,
       saveToPhotos: true,
-      maxWidth:200,
-      maxHeight:200,
-      quality:0.8
+      maxWidth: 200,
+      maxHeight: 200,
+      quality: 0.8
     }
     launchCamera(cameraOptions, (response) => {
 
@@ -169,7 +172,7 @@ function LandingTab({ route, navigation }) {
         setImage(assets[0]);
         uploadImage(assets[0].uri);
         console.log(assets[0].uri);
-      
+
       }
     });
   }
@@ -179,9 +182,9 @@ function LandingTab({ route, navigation }) {
       mediaType: 'photo',
       includeBase64: true,
       selectionLimit: 1,
-      maxWidth:200,
-      maxHeight:200,
-      quality:0.8
+      maxWidth: 200,
+      maxHeight: 200,
+      quality: 0.8
     };
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
@@ -195,7 +198,7 @@ function LandingTab({ route, navigation }) {
         let assets = response.assets;
         setImage(assets[0]);
         uploadImage(assets[0].uri);
-        console.log(assets[0].uri);      
+        console.log(assets[0].uri);
       }
     });
   }
@@ -203,8 +206,23 @@ function LandingTab({ route, navigation }) {
   const deleteImage = async () => {
     try {
       setFileUri(null);
-      await AsyncStorage.removeItem('@img_path');
+      uploadImage(null);
       setToggleImagemenu(!toggleImageMenu);
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Token " + param.auth_token);
+      var requestOption = {
+        method: 'DELETE',
+        headers: myHeaders,
+        redirect: 'follow'
+      };
+
+      await fetch('https://prevelcer.herokuapp.com/api/deletepicture/', requestOption)
+        .then((response) => response.json())
+        .then((conn) => {
+          console.log(conn);
+          fetchImagePath();
+        }).catch((error) => console.log('Connected list', error));
+
     } catch (error) {
       console.log("DP delete error: " + error);
     }
@@ -241,7 +259,7 @@ function LandingTab({ route, navigation }) {
                 source={Img}
               />
             }
-            <Button small style={styles.profilePicEditBtn} onPress={() => setToggleImagemenu(!toggleImageMenu)}>
+            <Button transparent small style={styles.profilePicEditBtn} onPress={() => setToggleImagemenu(!toggleImageMenu)}>
               <Icon name="camera" style={{ fontSize: 15, color: '#b5b4b4db' }} />
             </Button>
             {toggleImageMenu ?
@@ -258,7 +276,7 @@ function LandingTab({ route, navigation }) {
                   {fileUri != null ?
                     <Button small style={{
                       margin: 5, borderRadius: 5, borderColor: "white",
-                      borderWidth: 1.5, paddingHorizontal:5,
+                      borderWidth: 1.5, paddingHorizontal: 5,
                       height: 33
                     }} danger onPress={() => deleteImage()}>
                       <Icon name="trash" style={{ fontSize: 15, color: 'white' }} />
@@ -285,37 +303,36 @@ function LandingTab({ route, navigation }) {
       <Content style={{ padding: 20 }}>
         <Card
           style={{
-            height: 300,
+            height: 200,
             justifyContent: 'flex-start',
             borderRadius: 5,
           }}>
           <CardItem>
-            <Body>
-              <Text>Full Name: </Text>
+            <Body style={{ flexDirection: 'row' }}>
+              <Text style={{ flex: 1, fontWeight: "bold" }}>Name  </Text>
+              <Text style={{ flex: 1 }}>Adrian Perera</Text>
             </Body>
           </CardItem>
           <CardItem>
-            <Body>
-              <Text>Institution : </Text>
+            <Body style={{ flexDirection: 'row' }}>
+              <Text style={{ flex: 1, fontWeight: 'bold' }}>Institution  </Text>
+              <Text style={{ flex: 1 }}>Appolo Hospital</Text>
             </Body>
           </CardItem>
           <CardItem>
-            <Body>
-              <Text>Age: </Text>
+            <Body style={{ flexDirection: 'row' }}>
+              <Text style={{ flex: 1, fontWeight: 'bold' }}>Age  </Text>
+              <Text style={{ flex: 1}}>46</Text>
             </Body>
           </CardItem>
           <CardItem>
-            <Body>
-              <Text>Specilizations: </Text>
-            </Body>
-          </CardItem>
-          <CardItem>
-            <Body>
-              <Text>Age: </Text>
+            <Body style={{ flexDirection: 'row' }}>
+              <Text style={{ flex: 1, fontWeight: "bold" }}>Specialization </Text>
+              <Text style={{ flex: 1 }}>Dermatology</Text>
             </Body>
           </CardItem>
         </Card>
-        <View style={{ margin: 15 }}>
+        {/* <View style={{ margin: 15 }}>
           <Button
             primary
             block
@@ -329,7 +346,7 @@ function LandingTab({ route, navigation }) {
               }}
             />
           </Button>
-        </View>
+        </View> */}
       </Content>
     </Container>
   );
